@@ -1,0 +1,23 @@
+{
+  "name": "alzheimers-tv-movie-finder",
+  "version": "1.0.0",
+  "description": "Generate HTML pages of streaming movies for older viewers",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsc && node dist/index.js"
+  },
+  "keywords": ["streaming", "movies", "csv", "html-generator"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "streaming-availability": "^4.4.0",
+    "csv-parse": "^5.5.6"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3"
+  }
+}

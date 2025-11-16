@@ -1,0 +1,1751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classic Movies</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: #fff;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 20px;
+      margin-bottom: 40px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
+      background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      font-size: 1.2em;
+      color: #b8b8b8;
+      margin-top: 10px;
+    }
+
+    .generated-date {
+      font-size: 0.9em;
+      color: #888;
+      margin-top: 15px;
+    }
+
+    .movies-grid {
+      display: grid;
+      gap: 30px;
+    }
+
+    .movie-card {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 15px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 250px 1fr;
+      gap: 25px;
+      padding: 20px;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .movie-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    .movie-poster {
+      width: 250px;
+      height: 375px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    .movie-poster img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .no-image {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      font-size: 1.2em;
+    }
+
+    .movie-info {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      padding: 10px 0;
+    }
+
+    .movie-title {
+      font-size: 2em;
+      color: #fff;
+      margin-bottom: 5px;
+    }
+
+    .movie-meta {
+      display: flex;
+      gap: 20px;
+      font-size: 1.1em;
+      color: #b8b8b8;
+      flex-wrap: wrap;
+    }
+
+    .movie-meta span {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .rating {
+      color: #ffd700;
+      font-weight: bold;
+    }
+
+    .genres {
+      color: #4ecdc4;
+      font-size: 1em;
+      font-weight: 500;
+    }
+
+    .overview {
+      color: #d0d0d0;
+      font-size: 1.1em;
+      line-height: 1.8;
+      margin: 10px 0;
+    }
+
+    .streaming-services {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-top: auto;
+      font-size: 1.1em;
+    }
+
+    .streaming-services strong {
+      color: #fff;
+      margin-right: 10px;
+    }
+
+    .service-badge {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95em;
+      transition: transform 0.2s, opacity 0.2s;
+      color: white;
+    }
+
+    .service-badge:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
+
+    .netflix { background: #E50914; }
+    .prime { background: #00A8E1; }
+    .hulu { background: #1CE783; }
+    .disney { background: #113CCF; }
+    .disney\+ { background: #113CCF; }
+    .max { background: #002BE7; }
+    .hbo-max { background: #002BE7; }
+    .appletv { background: #000000; }
+    .apple-tv { background: #000000; }
+    .apple-tv\+ { background: #000000; }
+    .peacock { background: #000000; }
+    .paramount\+ { background: #0064FF; }
+    .paramount { background: #0064FF; }
+
+    @media (max-width: 768px) {
+      .movie-card {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+
+      .movie-poster {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+      }
+
+      h1 {
+        font-size: 2em;
+      }
+
+      .movie-title {
+        font-size: 1.5em;
+      }
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 60px;
+      padding: 30px;
+      color: #888;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Classic Movies</h1>
+      <p class="subtitle">Your Guide to Streaming Favorites</p>
+      <p class="generated-date">Updated: November 16, 2025</p>
+    </header>
+
+    <div class="movies-grid">
+      
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/82/poster/vertical/en/480.jpg?Expires=1784692888&Signature=Ri0td0ptc8F0jvoVJRFvZJVasv1AiAuWNE9B9yFyOtN1MgfEDMzwOFTvx8sRy4PYyGcVSNATUNlkNqaIVYmBopRHT~zZix2wJq15UC7j4Un1oq4UMAbH9gJtUl3HOv61HziEaxPheK7XEEVfqSeiAP2MKMT23Y4pQkoshgVrSN3ep~wr6OIu8G9~XcnQiosu~VuHxArtlXNueGftzkrGue3hAbORQntPVqVjSZ28IyaHyb5MLft3M7rQogWNMTWhy1emqACeiqeKbUYf7apJ7SbtalfigV0yLpdz0DxM08ev2ahhbyhu94PN4mozGrdq5kWhrji0pCRbgNk4UB0N2Q__&Key-Pair-Id=KK4HN3OO4AT5R" alt="The Godfather">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">The Godfather</h2>
+          <div class="movie-meta">
+            <span class="year">1972</span>
+            <span class="runtime">176 min</span>
+            <span class="rating">⭐ 90.0/10</span>
+          </div>
+          <div class="genres">Crime, Drama</div>
+          <p class="overview">Winner of three Academy Awards including Best Picture, Francis Ford Coppola's epic masterpiece paints a chilling portrait of the Corleone family, balancing the story between their family life and the ugly crime business in which they are engaged.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.hulu.com/movie/the-godfather-3807a622-d2cb-40f0-9743-7ad66ba19780" target="_blank" class="service-badge hulu">
+          Hulu
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/112/poster/vertical/en/480.jpg?Expires=1784706361&Signature=cSgenObZb3ilndMFOOOP8t6ehb6VEE1NAPhBNh996rT9FGpo2mzCPjDipX7Ysxq6YLN44GXQGenyBwUWU2u1CYv~4kEWjZPZdIZ6p9eDyqlNLNFf5b3O1jtqixJE3C3fep6d3zE9Jj89QauOWcjO1mL7pd7Hami352O9Yf7KccK7Qdf~Zu~Abjm9~IYEOsDgVl2Vfnkte0qYanavWBpZ4RFhbXaJufx-SeclfxRI6oV1Fy2VSTvjSDg4A~baEsLGVzrc~~0SdAaQ5ROdT6vi-OQaqHl8cl2zCoQz9-3~UiWOHJXjT3NRmNFyJ-LgZINjn0ECNhWosnrd4LBm0eGEwg__&Key-Pair-Id=KK4HN3OO4AT5R" alt="Schindler's List">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">Schindler's List</h2>
+          <div class="movie-meta">
+            <span class="year">1993</span>
+            <span class="runtime">196 min</span>
+            <span class="rating">⭐ 89.0/10</span>
+          </div>
+          <div class="genres">Drama, History</div>
+          <p class="overview">Liam Neeson stars as Oskar Schindler, who tries to save Jewish workers from the Nazis. Violence/strong language/mature themes/flashing images. (1993)(188 mins)</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B00BEN0V8S/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B00BEN0V8S/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/277/poster/vertical/en/480.jpg?Expires=1784704954&Signature=WHzkIcTUqj4Hosn2wr5BdeLE4oxKj8maj8jPNY6hVh~pzCNFiAEhmRIiDrIpPd0HYrHPZP1HhgpK90hwrsI1aW~CLNsTANwwZEGBSCoZBE8vN5QwUbxZ44FOdq7m2blOAIH-6K-pf~8MN6twpVLH20KyBu8I0uKUUuzukeJ2QD0LqgUWJuNzvkxrrQL9p15SM05U2ZXB~5cODlpQDX97FdT09raeqzIDtKjdZSuCw~yxvhz6jQZDBgwOVOQPQsf1LmexmT6ePgiI92TY6ppIgF0a8huQGV7p2YIRm5BFmPcwH8yr2H-iNzLnGtByv8mX0o-Gzq1grQxW1htW8wy2LQ__&Key-Pair-Id=KK4HN3OO4AT5R" alt="12 Angry Men">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">12 Angry Men</h2>
+          <div class="movie-meta">
+            <span class="year">1957</span>
+            <span class="runtime">92 min</span>
+            <span class="rating">⭐ 88.0/10</span>
+          </div>
+          <div class="genres">Crime, Drama</div>
+          <p class="overview">A twelve-person jury becomes increasingly tense with arguments continuing into the night as one juror must convince the other eleven he is right.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B001MLUHXQ/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B001MLUHXQ/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B001MLUHXQ/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/74/poster/vertical/en/480.jpg?Expires=1784706545&Signature=NJM6bfT7ym07TzQPRZOqVuPlTFUwsbwWAEWxzpQ4D5wJ3J4kPirWjhxebK7kUlrr2uhntZQVT2FPpDA~iMhksbD0NkeXFTbQW9-VKJpbplnQ~3WZJsid7XhSMoUxq91IzmFwnO0KDUaAPfEHHB-ksxbF4I0jLn8u8VWAsEvciCvCMFBP6mh9O~zGNW~8HWi585I4SGVpUDozBl9B8uW6xx63-FyzH2vnzT7e5a7lE9ZSP2Sqb4JAhUrbirsQeHJwqKoF~Wzvwu-67Jf4-ds8d~otxZLHh4dUQxdHwSm~w~8-zWU1VLRBqVPWB-nCBYG2fpGThT0WdlTjNY7HkTuFBQ__&Key-Pair-Id=KK4HN3OO4AT5R" alt="Forrest Gump">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">Forrest Gump</h2>
+          <div class="movie-meta">
+            <span class="year">1994</span>
+            <span class="runtime">142 min</span>
+            <span class="rating">⭐ 87.0/10</span>
+          </div>
+          <div class="genres">Drama, Romance</div>
+          <p class="overview">Tom Hanks gives an Oscar-winning performance as a simple-minded man who becomes a war hero and businessman all while pursuing the love of his life.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B002QVZ71I/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B002QVZ71I/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/646/poster/vertical/en/480.jpg?Expires=1784701538&Signature=Uw7Lma3Sbk03nG70W6k1vjnYV-K8Um3VRjWpKTPbfr9Gz0nGKi9cvNH54MJiK5gTPEn68q9iv8s-QgnwZYC2ldlnbP-SpMzbqlXnkQREPiVJ5Qp-hX5ncDHl0wo4dXyV8t-4hTC2UyN01VT50XJyswlhYLexcHVwnfhed-C~QpfH6kEPZ-eCSLFtsRfgov40uMoR71nZpgISQeHq4TSpnZic91aYau4~LsXb9LV~UJK-QnXCWlmPzTWqDYZ7He8JzOpFNsJBbG-2eWC8HDVUbom4XBqPWTP8Ni5ykp1SrbOisVNVkYuHbO0khL3rywKr3rQcGD1yY9UEuJfCMpujvA__&Key-Pair-Id=KK4HN3OO4AT5R" alt="Rear Window">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">Rear Window</h2>
+          <div class="movie-meta">
+            <span class="year">1954</span>
+            <span class="runtime">107 min</span>
+            <span class="rating">⭐ 84.0/10</span>
+          </div>
+          <div class="genres">Mystery, Thriller</div>
+          <p class="overview">When professional photographer J.B. “Jeff” Jeffries is confined to a wheelchair with a broken leg, he becomes obsessed with watching the private dramas of his neighbours play out across the courtyard. When he suspects a salesman may have murdered his nagging wife, Jeffries enlists the help of his glamorous socialite girlfriend to investigate the highly suspicious chain of events...</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B002RSOTSM/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B002RSOTSM/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B002RSOTSM/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/1208/poster/vertical/en/480.jpg?Expires=1784695536&Signature=C5D-5LmeLgjEK0QRLgIN7KgB8yiuHOLelyIkea7m5Z8IYe-S1uLvUVnSSmXUFpMSntjXEJrk363EUcVncUkj6ToR585LW2m1f8C0SaWPSmxOeDw1c2MQ17ZMktstxhxzcnj7i8~aEb-y-sGTlru5vy1kj47i4MIDCwSiOHw91zwWC8~nc946CMyB1mj6pFWrDGPTBBpLAc4jUJA60Z03rEkkIlMRp~AHPKCHtCUUl3pzd1U8kF8XyMI5HyYm-ELZ-1XWNLTIIn21hyzgOvmBcMDLkoJsrUmhAtLnCEWhR4haPkiH4oxym0JKPrIpAWnbgxGrHYYTW2J722EgUhNk1w__&Key-Pair-Id=KK4HN3OO4AT5R" alt="To Kill a Mockingbird">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">To Kill a Mockingbird</h2>
+          <div class="movie-meta">
+            <span class="year">1962</span>
+            <span class="runtime">129 min</span>
+            <span class="rating">⭐ 82.0/10</span>
+          </div>
+          <div class="genres">Crime, Drama</div>
+          <p class="overview">Atticus Finch, a lawyer in the Depression-era South, defends a black man against an undeserved rape charge, and his kids against prejudice.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B000I9VOO4/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B000I9VOO4/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/1339/poster/vertical/en/480.jpg?Expires=1784694615&Signature=Bhc48fwNftVC0cnlFHqbegMdxCuj8-cdyMUhHqL1wfXOtLaHSfia9xQrUqEhvxnsG-wSQgB9rq2QsL2delX-uotEfItVoo4H6i05YQsxP3rb5PYnI~XDHkc-4X0GjO0DMDFWF5pZwwJqZixBDNR7-3nvKpAkDcqmfDasOtX~83kIimtchJTVXTK-0Oia0cacIXFRYmb1I4p~twcSHfaCCupNIkNsAKfU4J1y8fAVoXvk2aqIr6P8Q7yMQYc8ZYtZycdYXMK9niTCpAnRcuvcfpomLefSMULYzidMFYyKS7ivlPbre4gwkyrj9SqQoDtXyVzC~dG6rcB3FDs0miGwcg__&Key-Pair-Id=KK4HN3OO4AT5R" alt="Lawrence of Arabia">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">Lawrence of Arabia</h2>
+          <div class="movie-meta">
+            <span class="year">1962</span>
+            <span class="runtime">213 min</span>
+            <span class="rating">⭐ 82.0/10</span>
+          </div>
+          <div class="genres">Adventure</div>
+          <p class="overview">Sweeping epic about the real life adventures of T.E. Lawrence, a British major who unified Arab tribes and led them in the fight for independence from the Ottoman Turks in the 1920s.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B0088OINTU/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0088OINTU/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/2488/poster/vertical/en/480.jpg?Expires=1784736136&Signature=QR0M0lcIXzR6u9cLy6I0OXg51UWl7BNOzw0yV0-4VZZzjPb0UjDZnFSmwPVU1UQde-GKxWRGF7HnobiKU~BNLTf1mKyppFAJwfbCybgrMt6M5Jchdy3lfyhNBktAEIMkze5riH2-VzRfchbiqGtNOA-AOW4WjyhwWoIzwiuWunFbdGOVq0B6ytlRapkKacwCPNkMgtzQFjG~Rp0mwmcvnQqCHXl6bCkTWZrVXy8Zji8mINCB-ZNSMV7Rp5Cuc8cUjouGpka2JKUvlMbgiqQT4J6C7X6Q5CXMn22vMpjZ2u-K6~vjvXRZHUfb3Szvmbsru11n2wzKgZaA0~iIzIIR4Q__&Key-Pair-Id=KK4HN3OO4AT5R" alt="The Apartment">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">The Apartment</h2>
+          <div class="movie-meta">
+            <span class="year">1960</span>
+            <span class="runtime">120 min</span>
+            <span class="rating">⭐ 82.0/10</span>
+          </div>
+          <div class="genres">Comedy, Drama, Romance</div>
+          <p class="overview">A corporate drone hatches a scheme for success: Let the execs use his apartment for “dates.” It goes beautifully, until his love interest gets hurt.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B0CMZZ22P3/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0CMZZ22P3/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0CMZZ22P3/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/1170/poster/vertical/en/480.jpg?Expires=1784696280&Signature=PYS2QUtpsIh0OjarJBZ5QZPO9L8Ec2BZ4iOTOmOz63nBO6VyuUnvXR86oVGkvmSab3orPz0He1E46O70fJsmuB3z4gcC13yZcmxBCv~fihHct5HCtgBdFrnN7Ho7569pvga01PSSHOEPF3y6dBtMLvew4U5lSRgE8ZQE1Osv7gX39z0Hz4sMCbxHx-7mzPkjTc~dlhVBP83Z7XUv1zlkr-he1srvkq29GbbylreqApqnZXLDbApNHk9y5fYNj-tieqb5Er7CMRaOO1SpZMseXksgJr4Hdoa4NNliWO379EmzcIBwEJw08Zg-tJv8v7t3lrIkLegT7IBDFxVzTFtx-w__&Key-Pair-Id=KK4HN3OO4AT5R" alt="North by Northwest">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">North by Northwest</h2>
+          <div class="movie-meta">
+            <span class="year">1959</span>
+            <span class="runtime">130 min</span>
+            <span class="rating">⭐ 82.0/10</span>
+          </div>
+          <div class="genres">Adventure, Mystery</div>
+          <p class="overview">A lethal case of mistaken identity plunges a New York ad man into a race across the continent as he's pursued by foreign spies out to kill him.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B002W7H3EA/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B002W7H3EA/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/1729/poster/vertical/en/480.jpg?Expires=1782484147&Signature=Upb6QuEm-XvCTfHHs~Mn5gi1UFNr8nwxwTQxNqbHnh25Ho2PmAEHrWmEKltjwxeUhGuX0G7olv-bMfJMD27TrlVY83Qb1CGUBgPTuXtgzxZtGfBc9E1VnOzmFLcZHnX2qOHnr-aZLMf2sJkyGeRCpEvaBnj7mzW5OEB~A1XXsevA0cDvNhut3Nyfq1Q4hQvqYolx4oNoxgosyME-OyJpP0zel6jiS8xBQfLc9HLihdCEWmBpVPAthMG3tQbUdppZOI0bM3hELfpAv1tPuYKp6629QwR5UYwEtmAsLThQTcxOf913XYUToLZtC2A4QSp~Lr-aM2ka6mczMZktv1Snww__&Key-Pair-Id=KK4HN3OO4AT5R" alt="Singin' in the Rain">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">Singin' in the Rain</h2>
+          <div class="movie-meta">
+            <span class="year">1952</span>
+            <span class="runtime">102 min</span>
+            <span class="rating">⭐ 82.0/10</span>
+          </div>
+          <div class="genres">Comedy, Romance</div>
+          <p class="overview">Gene Kelly stars in this musical about a silent-screen star who finds love while trying to adjust to the coming of sound.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B000NI8F5G/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B000NI8F5G/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.hulu.com/movie/singin%27-in-the-rain-5279691f-9b2b-477e-af76-4e8067b48136" target="_blank" class="service-badge hulu">
+          Hulu
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/206/poster/vertical/en/480.jpg?Expires=1784700760&Signature=e9ojw9VY9Lx86ca~y~Pv~wMf1MfthoqPNfCBkafZI2vYm1XY7hxykzsAjMwL8WMHQ2f5F~tGErgSjnG9UmlKNCRLEDnM4vPrYvH4JYEHqUXxXe5Euz9yC0vMr5GcxIuhBIZ5pLm0ajcLDKNBwxkgoxPV11JLDenGHKsRWyUmSvu2bhtqbKa1gm~zFLwDuRtx7t0Vx7EPufukmzhXnrrsN-VzcgBWGqQrNKpY92sL1VV95GxUPyiBI3TM-BvudCf1mjf~lRJlhakmj57TftmXxYNyEJvOSohz7YXhScTj28Fv7AI5tlhCjUAInXfKgpO1jSPvs7D1OTSx1VIawY3drA__&Key-Pair-Id=KK4HN3OO4AT5R" alt="A Beautiful Mind">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">A Beautiful Mind</h2>
+          <div class="movie-meta">
+            <span class="year">2001</span>
+            <span class="runtime">135 min</span>
+            <span class="rating">⭐ 81.0/10</span>
+          </div>
+          <div class="genres">Drama, Mystery</div>
+          <p class="overview">A Beautiful Mind stars Russell Crowe as brilliant mathematician John Nash, on the brink of international acclaim when he becomes entangled in a conspiracy. Now only his devoted wife can help him in this powerful story of courage and triumph.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B00ENYKBD0/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B00ENYKBD0/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/1564/poster/vertical/en/480.jpg?Expires=1782485792&Signature=eP8HkKOaIplCEixri5bsaSLwx4cgupQC1QcNvYWzazhnC1F~JUkRZFquLdsDphGcuf1KVGmG9itJIbcHRPOVufMVvWS6niXLuo6h0JPSwiOYNhDE0B3W-1Iveqli2WYa0jXd50Bc784d6tyYwGJ1MF2Cnhk1PhLIE6PZzqi5hMr7LJ5dZh80Zz~rSFQgzCfW0XPzz7~nsb9F8OP-XffA0IrEqJpBblKbOFjn15yjE5CkG9FqAXNtGDG0xUrkOY9mfYsmsuDc5IzNHZHEYcbUM1a9zgcSeubnhaWcQUt55gcR4YfOhK4IEXuuTVfgA7DsfHvWQNJqGQroPICHU5lMmQ__&Key-Pair-Id=KK4HN3OO4AT5R" alt="The Sting">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">The Sting</h2>
+          <div class="movie-meta">
+            <span class="year">1973</span>
+            <span class="runtime">129 min</span>
+            <span class="rating">⭐ 81.0/10</span>
+          </div>
+          <div class="genres">Comedy, Crime, Drama</div>
+          <p class="overview">Two con men (Robert Redford and Paul Newman) team up to avenge the murder of a mutual friend by pulling off the ultimate big con and swindling a mobster (Robert Shaw) in director George Roy Hill's Academy Award winning Best Picture.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B000I9S69K/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B000I9S69K/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/1711/poster/vertical/en/480.jpg?Expires=1782483574&Signature=Mft7F3hrARJ1pGwKj6AHvevV7zQsDuBdgIT6S0LNH7RVi2L1WySOLPMnHJlm5FteGI87gUeXhHGTJmVbK7iUwR84l32egvHo-OV9BfxRgEyGbCAY1w-Z379RR2MiuKSaRkdtd~YAdXzZZqLcTd1jAFjiUpfkccKjYtj~lg--y3~z39zGNPTYL4qMlhWHOFCF-Zuh10Glm4Qex5Qr1uhDgOwMIJ9HZ5JS7NWX86EQRWhnx1kgBZ5xLvxroT0EO2zeWycvDeJbXAIZbfwQiv92U2Xvpwap7gg4NGDuM69s77Qtc4VSzypKg5zHkpRhjN9jNhq2iEeOUDPh9CGUe2joog__&Key-Pair-Id=KK4HN3OO4AT5R" alt="The Great Escape">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">The Great Escape</h2>
+          <div class="movie-meta">
+            <span class="year">1963</span>
+            <span class="runtime">172 min</span>
+            <span class="rating">⭐ 81.0/10</span>
+          </div>
+          <div class="genres">Adventure, Drama, Thriller</div>
+          <p class="overview">The award-winning, high-energy World War II epic about a maximum-security Nazi POW camp that three U.S. military prisoners attempt to break out of.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B000IZ0WQ4/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B000IZ0WQ4/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B000IZ0WQ4/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/875/poster/vertical/en/480.jpg?Expires=1784699169&Signature=J8BSuRMmSqStePuo1gBR-VpKXa1enMICBuW31puE0K2BDRnUHLn8rIx4zoVpgtIePmQHwFFgM~51qK9eAsNab0r0hnh5xGJ4CPDH0PLDUCl~J0Vm17IMWnYEtTTlMspVi-gfJV~1tfdYx18rss09s6oophPBO-2ivqaq3V89cV0vHGFf29SzpB3aeze1XJQXs2zAwrvVqO8yv1hjvpTJRM24WNXdvsSUclDyhmKfAidXOrkegKg1AOUVWecqlJo6wVgMq0DliUjSizOUDVudtHBFo8u3mB3CQK~39fmgkmw5h2e3JVDP~tTynPTTouM99GRnv6QV9IwMIXbRDaB4Cg__&Key-Pair-Id=KK4HN3OO4AT5R" alt="Vertigo">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">Vertigo</h2>
+          <div class="movie-meta">
+            <span class="year">1958</span>
+            <span class="runtime">128 min</span>
+            <span class="rating">⭐ 81.0/10</span>
+          </div>
+          <div class="genres">Mystery, Romance, Thriller</div>
+          <p class="overview">Don't look down! One of Hitchcock's darkest and most compelling films tells the story of a police detective who has a crippling fear of heights. When an old friend asks him to tail his wife, he is drawn into a vortex of deceit, murder and obsession.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B0B48LBHFL/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0B48LBHFL/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0B48LBHFL/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/3488/poster/vertical/en/480.jpg?Expires=1784777997&Signature=GJz--IHUWse1zVctQG7wVMK2E9eVLlooJbTuScgxoDFZR~SlxVXOc7KdAnZsSZhqzKViIYn3~gs079mQynkFRXb-kf48-zwyVpnsYBGZWzKnBlI8T6~bGBq0crZoc7ua2D-27uqGfUKTM7Lnr3BM~285BnWybXVelD5unHUDwjQlLcduRgQnd36E7wBLilHZD1v~ZaBhWSjkCCZW7U4-spij0SDCLvdIJQz0~okFXGL7d8bwjpugV7ViHmGGI7m7SyMM1ny5R5Lk615eZQNdAxhe1AH5rP3ccqvuDr2h1SsP8l0yOtwo6G~9l7gTgDuPpIpGrF9PBcEd~SAD-~yRKA__&Key-Pair-Id=KK4HN3OO4AT5R" alt="All About Eve">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">All About Eve</h2>
+          <div class="movie-meta">
+            <span class="year">1950</span>
+            <span class="runtime">138 min</span>
+            <span class="rating">⭐ 81.0/10</span>
+          </div>
+          <div class="genres">Drama</div>
+          <p class="overview">Classic multi-Oscar-winning comic drama. Keen fan Eve ingratiates herself into the life of sharp-tongued Broadway star Margo Channing, whose friends come to suspect the younger woman's intentions.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B003K1IDL4/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B003K1IDL4/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B003K1IDL4/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/1808/poster/vertical/en/480.jpg?Expires=1782484673&Signature=hCJKU3W5TPYCNQDMmUbJ6IFd01riplNQwCgpmtJWEHB~uu5okS~AEsNQ3wq-XsgXxmrOQGDX0J9skGf7lg40Ee26K9EfsBHaCX7tLfvFsT6kNCZAuAnJ666ocC6Szr9MJxhWdGjH0Nqzt7jqkC8zs9Oh8j-4kDmTnYo29wdUiRYBd0H81~JFRq1zDy4fgu1CthkMUnmx0dz4R9Hh66UWiXDimxexgIXvh6kwvXOo1JvtuyhfdJi00LY~OvZwGGIXciRJGYcOQRxdXYdjeluRFt1oZTkPXEYu7UoIp0t6aekGKuS-sL-hDv8lWYTZD9RIGB7c83deqOD7E3nlhDqtbg__&Key-Pair-Id=KK4HN3OO4AT5R" alt="The Sound of Music">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">The Sound of Music</h2>
+          <div class="movie-meta">
+            <span class="year">1965</span>
+            <span class="runtime">175 min</span>
+            <span class="rating">⭐ 80.0/10</span>
+          </div>
+          <div class="genres">Drama, Family</div>
+          <p class="overview">A tuneful, heartwarming story based on the real life story of the Von Trapp Family singers, one of the world's best-known concert groups in the era immediately preceding World War II. Julie Andrews is Maria, the tomboyish postulant at an Austrian abbey who becomes a governess in the home of a widowed naval captain with seven children, and brings a new love of life and music into the home.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.disneyplus.com/browse/entity-23e857f7-5262-4f66-828d-8c75014a4ce9" target="_blank" class="service-badge disney+">
+          Disney+
+        </a>
+      
+        <a href="https://www.hulu.com/movie/the-sound-of-music-244ba86a-ad0f-4fb2-8c5f-18cc8623f809" target="_blank" class="service-badge hulu">
+          Hulu
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/1980/poster/vertical/en/480.jpg?Expires=1784909959&Signature=BLeQON1sSWkH6fxY3iHItaxualFJnYrWSRj8PdWvLJMZFfA1JU15cp3myMyRCAHsTSNR8ugToq8VM0If0oO46Z6ZTSkUhxtXzJ4f3JwIIO~grzAI~wk8gG7J2LHyrXpHwhkGpj5SIA1PxT5WxXfh70F1Fkvamqcd9wLQjqsBfH2-uAuSiDmGuEHwcvASIWG5MWRI20CY1vak7uS5pc~0CBPPFGgG0jfesHml7c0ORwy3DYvHPMAlokMxc5OZB~u9rycidRg~rP9olmb5v496~6cYo8mIJ6mqPWKrjcpONIXe1mnMF9twoeR19MoszzaoW7UEGGvFhXn0D-g-EpFD9Q__&Key-Pair-Id=KK4HN3OO4AT5R" alt="The Bridge on the River Kwai">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">The Bridge on the River Kwai</h2>
+          <div class="movie-meta">
+            <span class="year">1957</span>
+            <span class="runtime">154 min</span>
+            <span class="rating">⭐ 80.0/10</span>
+          </div>
+          <div class="genres">Adventure, Drama, War</div>
+          <p class="overview">A British POW orders his men to build a bridge.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B000I8G5GW/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B000I8G5GW/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/2946/poster/vertical/en/480.jpg?Expires=1784732059&Signature=gpUTsuFfVGsylgQf~softiFDODufieayMU8-whirkuLUlBh2nyk67sv61lq4Ze66ByDmTUE-bNdf7OpNKxoIu4q7Nj61HmdIpD7mNz0TYWKVqgEn0U7--VNgttQXEyIIPaOVE5XtKUXW7JPxQfnzzlCYJAXEAvgoXRC5Q8mlFsjNZKSa52PZptf4165VPG8aMB9crC68ZIcmMVXtiO3S1XPy-imMOhv6yZTH8U1i9Ma4Gy8Ss0IO4ZI~XaqH~OARQ3t28NRRFZnZoHMK6fVV2DuUe61hjeZXO9w~b7jCM1OABCFe05mjqCSvyZbHKbBcE06-C9p4dgbe81azMjBa6w__&Key-Pair-Id=KK4HN3OO4AT5R" alt="On the Waterfront">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">On the Waterfront</h2>
+          <div class="movie-meta">
+            <span class="year">1954</span>
+            <span class="runtime">103 min</span>
+            <span class="rating">⭐ 80.0/10</span>
+          </div>
+          <div class="genres">Crime, Drama, Thriller</div>
+          <p class="overview">A prizefighter-turned-longshoreman with a conscience goes up against labor leaders to expose corruption, extortion and murder among the union ranks.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B000I9VXSQ/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B000I9VXSQ/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/370/poster/vertical/en/480.jpg?Expires=1784703459&Signature=ceCnRuNBITsNq1LztLOqybepaRwgCx6yENIw4-3xNjhw-R0wWN9v2KP~WwczW6e7nBj~b82Sixfwb2RC9US7R7yJZ~~Tf69kB-PdGRiVV~5x5nSAaMqaIVn4kuA6xTm1LiRSpBIxUDFBdFzd6QKdaXn9qEi0-KjQqXFb7fBAuo~PeWYHbjWuhTyG~1p0LtyXVd4Xw6iQ~vZbMWRIn-CbeR8KN~dPYU3uNce-7~-jiXS6nxJoIoexY953UtbqBGtS-o4zi5JOfkYa8mLlwxlMPZUyXuZv7myH44yyYpeisewdZ-XVNNE-xc1k5RuX-1nUHZsyMsYm1zeOQ-nualuhVg__&Key-Pair-Id=KK4HN3OO4AT5R" alt="The King's Speech">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">The King's Speech</h2>
+          <div class="movie-meta">
+            <span class="year">2010</span>
+            <span class="runtime">118 min</span>
+            <span class="rating">⭐ 79.0/10</span>
+          </div>
+          <div class="genres">Drama, History</div>
+          <p class="overview">Based on the true story of King George VI (Colin Firth) as he reluctantly assumes the throne. Considered unfit to rule and cursed with a nervous stammer, the unprepared monarch turns to an unorthodox speech therapist, Lionel Logue (Geoffrey Rush).</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B0BZ6TSHR6/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0BZ6TSHR6/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0BZ6TSHR6/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/596/poster/vertical/en/480.jpg?Expires=1784701770&Signature=AD0TIUfoOB844Mpu2p-F1mVlBoiDZ3831ooqV-8~TwifpHh-AeKODGBByGvk13vO1SWAYZttCT4txejEShvxgbNP8wCtMh-ks4Sl6duky-3ihtA8XTRSQ9is5hnqQO7eJjXfnsKe-Q-PIOmCrv~9feJII821LobEAtcu-Io5eCCNarlnEgpbymPkZvcwa5VzyZ~3A~x7gTvR9hRyHYa38g4J~oCDUwJEo6lAwm7~ZFinRMPEjLiEWh2vXxV3CPWBKyYqVjG~wUmhCpTG01jNjiL3dIu0B155CVhgxzpFBxl9QC~JfnnxemHsfqZnln-RWSG~OJtvqqJ2ICc5DEXMUQ__&Key-Pair-Id=KK4HN3OO4AT5R" alt="Rain Man">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">Rain Man</h2>
+          <div class="movie-meta">
+            <span class="year">1988</span>
+            <span class="runtime">128 min</span>
+            <span class="rating">⭐ 79.0/10</span>
+          </div>
+          <div class="genres">Drama</div>
+          <p class="overview">A wheeler-dealer meets his brother, an institutionalised autistic-savant and heir to $3 million.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B002CNK1MK/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B002CNK1MK/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/791/poster/vertical/en/480.jpg?Expires=1784699838&Signature=MDL6fqDLTxvq4rt1jNNeTYneHDTagIVRHcUuaJTMuZ~1S3jINOc8TLGi8ypAOKRuff7HLTvazF2yw9ANWZd6B8qv3s-ajSiE255Q1HvGiyC1zQ2ziQlgULkkf9i87jc-LyO6TxEGhsalWqMMGYseS5De0L5xsqLb3EuI0yLvgGE4RnPHqUTM8AlF~gTi19zsV75mQz7II-KXJW2gB8oKQ~uerDOy-ZTPBEeaLTyG-doR9HMbvi317VREmeKlwrSISHC3POAyw0gzQEDq07DZ5AvJbuN5o7~UniUWJUoV7hNfhlEVRqosDI2XsNiV1cSC~XfYmf9c5Cxe0kJl~HIULA__&Key-Pair-Id=KK4HN3OO4AT5R" alt="The Princess Bride">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">The Princess Bride</h2>
+          <div class="movie-meta">
+            <span class="year">1987</span>
+            <span class="runtime">93 min</span>
+            <span class="rating">⭐ 79.0/10</span>
+          </div>
+          <div class="genres">Adventure, Comedy, Family</div>
+          <p class="overview">A fairytale adventure about a beautiful young woman and her one true love, who must find and save her after a long separation. To be reunited, they’ll battle the evils of the mythical kingdom of Florin, in this classic tale of love and escapades.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.disneyplus.com/browse/entity-bea6a183-8ed3-4c07-af03-027dc03c1c14" target="_blank" class="service-badge disney+">
+          Disney+
+        </a>
+      
+        <a href="https://www.hulu.com/movie/the-princess-bride-101b3fed-3125-4009-91e8-40ca97f1229c" target="_blank" class="service-badge hulu">
+          Hulu
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0FKT4YT9W/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/2045/poster/vertical/en/480.jpg?Expires=1784734448&Signature=XEdaygV2nHsv3J7NDKSphdV4Xc2GcCOwDN3IimVceMdxFQoC8brloFqeBpGT5licnEZMbMa6hlOVMjdPf8XZUcRlkic0OJw3DjElbUf5jt7c28iwYEaeMqtXCEpI8kZUdtkmG63O4l8TLiZIKkRNuNABrraKJpfvWsAPCJ9riYByom8GUXEgzEfD0JrI6irRfUlPsVnGUzNYDghxXX-DFKCiKEg7IAkNdt2OUy953jDtKfoFYUfezd2xCS0oqpleWw-ILBahDN0bS5Lg~SXfXmh0e~QP0FhzJN7MsrNqSh2-4YtztwxjkNFO67LrdxK1AR6ckVVhoq~B6sHqtx4IBQ__&Key-Pair-Id=KK4HN3OO4AT5R" alt="Butch Cassidy and the Sundance Kid">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">Butch Cassidy and the Sundance Kid</h2>
+          <div class="movie-meta">
+            <span class="year">1969</span>
+            <span class="runtime">110 min</span>
+            <span class="rating">⭐ 79.0/10</span>
+          </div>
+          <div class="genres">Adventure, Crime</div>
+          <p class="overview">Paul Newman and Robert Redford shine in the roles that will forever identify them as the daring, debonair outlaws on the run — and in love with the same beautiful woman (Katherine Ross).</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B004EERGHS/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B004EERGHS/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/2567/poster/vertical/en/480.jpg?Expires=1784737686&Signature=ZPH0fVFAccxFf5ldq0cfHVaovpAmFZ4zVv3em9u8PZYqOaLb56LV366a9IecqgtsJGFE1R5ybDXDzavu14fDNiXbnoQbm9zF5FU4wPUqN6q3pX-K2M~lug2CIKcdEHl057jEwaHr7ChPS1~-FWYiAuz-TczpkWaoNm5eywDLq5fbJYGrwvZn9CR-LRM8twtt38I2oNh3VeLMX5dLo3mdcblbaOl6fAQh8eCTc2KaldJ9Og~6OFj8OpmJSXmzlyputF~~yNRcGxMrDBSyX31CZt6Ifz2-Nw1wPm-xmIMPxvrhcKnALoOebPGFjIE8kdWZk6kA0UdqgXR63DCa7HGR7g__&Key-Pair-Id=KK4HN3OO4AT5R" alt="Cool Hand Luke">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">Cool Hand Luke</h2>
+          <div class="movie-meta">
+            <span class="year">1967</span>
+            <span class="runtime">121 min</span>
+            <span class="rating">⭐ 79.0/10</span>
+          </div>
+          <div class="genres">Crime, Drama</div>
+          <p class="overview">A brooding loner is sentenced to a prison chain gang, stands up to the Nazi-like guards.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B0C5L1QTC1/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0C5L1QTC1/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/4486/poster/vertical/en/480.jpg?Expires=1782745575&Signature=kXU2p9jdHH0oqQ6VyHmJDgJkpl4CgeEP0p793vDhKuW~3JYWdEsjatV-OYKAFcNpJfVpoJ3PAbry680fynGrv1L2I7mOHB~4bPvdPaW8GtpmjjfwzCNfhk4XewLxr1TUwLilQoFGCtO6XYpuyRKi1giT97OZWff3pkK46pjZCn0kQVdqFivJ-U7uysS~9r~~J3IZOT2Jp00SeXxCl2QAJm0Vev60maw320lJ1xjWlw86n4mdNbAFsGPzDPZqxXxRI6Tq8v~JM5MK9T3hf5PRNjDlgUJZhEcsiV-F3HpEdJ8YAGRQkhiPkmJmwJfZcbtJ7UXnmuFOKeArEmr~VM4GkA__&Key-Pair-Id=KK4HN3OO4AT5R" alt="Patton">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">Patton</h2>
+          <div class="movie-meta">
+            <span class="year">1970</span>
+            <span class="runtime">164 min</span>
+            <span class="rating">⭐ 78.0/10</span>
+          </div>
+          <div class="genres">Drama, War</div>
+          <p class="overview">This critically acclaimed, 1970 Best Picture Academy Award® Winner is a riveting portrait of one of the 20th century's greatest military geniuses. The only Allied general truly feared by the Nazis, George S. Patton (George C. Scott in a Best Actor OSCAR®-winning performance), Patton out-maneuvered Rommel in Africa, and after D-Day led his troops in an unstoppable campaign across Europe.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B004DBU0UW/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B004DBU0UW/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/5692/poster/vertical/en/480.jpg?Expires=1786632135&Signature=W4LYy7ZZs~F6LYUCLNwR8V3iDDJepg71peDZC3HhYnB5McSDmkrFssAa1iIqVHOxrlTadf~sXsEOQyOF2uxxz-MGt41yMUXyGpOKbyUwjJ0KL1Zh1txWuWPzu1UpZQ8Zrg1syM1QX7qAHRFzybzvgYSTYi8l3tYgI7bcoZZ72CghAD1OGSLfVKDSPGo1FDAjLhZfpze6cihpO7f3cRvg14zKr0V9ItZF20KM9uVFr78On5Y6BRTRdSjuB9GtlurRZriQEVC9-whnUEM-D7wrrPdE9DbH5XSSanYPbj1-Axv7-LZ2IVCThsma3bVoJF38SP1KJ26osNO5Vt6NDLEnbw__&Key-Pair-Id=KK4HN3OO4AT5R" alt="Doctor Zhivago">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">Doctor Zhivago</h2>
+          <div class="movie-meta">
+            <span class="year">1965</span>
+            <span class="runtime">185 min</span>
+            <span class="rating">⭐ 78.0/10</span>
+          </div>
+          <div class="genres">Drama, Romance, War</div>
+          <p class="overview">Illicit lovers fight to stay together during the turbulent years of the Russian Revolution.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B000NI8F4W/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B000NI8F4W/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/6085/poster/vertical/en/480.jpg?Expires=1784750437&Signature=FcDAg-IZi4T6ETXkAy9yUvZs7g2w-Vm6cxPqTzj8GFE-WX~Vk~bcJBYB~oSCegle19iw~3yE2p6W8uiU3Va6CKTCYrfkLBu39-ZBP2PDm7cmCZ0onQfJk7P4s8bOy94ad~Guaewiqh-LvfIbVCcF2xRVnu1vgsiY3QgfUFoyZ~87Bg6W~XIAokld-e9dpM0rsvj-~zjzpyXv81WWIyXtkSz6V3ETlcG8QwdSx30q3DY19NhEjVN0McpBOK7k5YuDFLT93fHkX7ACXuqMJHX9~bD2ue381p3FrgkeI5tDNknU6uojg62WLMMI5Xpr4PsS8PC5pSILIPf6qM4al3wQEw__&Key-Pair-Id=KK4HN3OO4AT5R" alt="The Ten Commandments">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">The Ten Commandments</h2>
+          <div class="movie-meta">
+            <span class="year">1956</span>
+            <span class="runtime">220 min</span>
+            <span class="rating">⭐ 78.0/10</span>
+          </div>
+          <div class="genres">Adventure, Drama, Family</div>
+          <p class="overview">The story of Moses who is banished from Egypt but returns to help the enslaved Hebrews and lead them against their overlords. He frees the Israelites from bondage and takes them to the Promised Land.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B08BJ7NXXD/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B000J0XJC2/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B08BJ7NXXD/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B08BJ7NXXD/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B000J0XJC2/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/4107/poster/vertical/en/480.jpg?Expires=1784725804&Signature=IHH4ghG6~BpwI6bosghErq~3r5KrHjTvxN7TEZi55yyEVDKWx3IhaOP6V8FXsjws-~YbSZvNKuuk5RvEyRB6T0aDPmB9XFSg9dYykSYL8OIe5VjN2uh4OSvyjkET9SsKqoK9HqUKR6kVnBETUoHRfTYXVxwE2d4uYloDSq0S51A-ZAPKCO9jFq9-3eALQl6C5IgY4N3kxWD9oE-poZn0pChoYsCULqGssE5jj3IARMxVC7NtXvztJIHdv21eSZvK5xB8wAZmyWUDlSiA58cA-bbwB6p4OvOONNkxDCJGQRX5BrRImJCf0W81QiZY9hoFhDcNeA4wVuIfPadfpKwEtw__&Key-Pair-Id=KK4HN3OO4AT5R" alt="Midnight Cowboy">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">Midnight Cowboy</h2>
+          <div class="movie-meta">
+            <span class="year">1969</span>
+            <span class="runtime">108 min</span>
+            <span class="rating">⭐ 77.0/10</span>
+          </div>
+          <div class="genres">Drama</div>
+          <p class="overview">Fresh off the bus, a naive Texan hoping to get rich in New York City selling his body forms a co-dependency with a con man surviving on the streets.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B09DLHBWDV/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B09DLHBWDV/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/8447/poster/vertical/en/480.jpg?Expires=1784760636&Signature=LBE3LJxcSJkwtAJGbl869vHvlstSSwLpbxhN3ILEgnHVffQxmQc8F8He7EWykcFg10D3I2MRuPztvJcKG1B~pIZUntRuVwAc1O31Q3vxSHkl8Rk0xD85DNSr~yOg9Yeu2v6vQGsQs6RC-WJAEc3Bcr2~PQJpbCniVRtlHH~n0lM1fhaNg9Zsn5HogYP-sSbMPi6QUl~CUalEKIWd02ecTgycMuHblGagsAKADjb7SevJJaG4s0wyUyR9Bb~cu1qyu5mnipBNKOUzo6i4RLKD9pSFoUwbs5eVQcBeYx2W8ERdelLC8djmr2iL7juI3muzNm8BpBGeDekgs2FJe4zOXg__&Key-Pair-Id=KK4HN3OO4AT5R" alt="Guess Who's Coming to Dinner">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">Guess Who's Coming to Dinner</h2>
+          <div class="movie-meta">
+            <span class="year">1967</span>
+            <span class="runtime">103 min</span>
+            <span class="rating">⭐ 77.0/10</span>
+          </div>
+          <div class="genres">Drama</div>
+          <p class="overview">A daughter visits her family to introduce them to her Black fiancé, whose kindness and loving demeanor changes the hearts of her reluctant parents.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B000T46ODO/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B000T46ODO/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B000T46ODO/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/2616/poster/vertical/en/480.jpg?Expires=1784712021&Signature=dL8HgaJEawqGCBWBLtgeUBK-AbY7OrnGOl44jr8rjOyI636LpM-Y6vydiJ0Yv0wpioi5YrUWtr3AX-10guJan5yRZAI6vEr1eFiLx0ocXTxr4FVKFPgWenYRjmvTBwaqL44VPNHViMkC6ADV1G8Ynhn8a7gsS~P-bQTOTST939BQ7Pv0a9o5p1~9wToJnJQLwPPImUIMvBfygnH4lzQr1PEIa6GcilnZJ9Ij5hFwsIHc1nZfrVBdTp-wrmYOAm9o2auTY5VJ~c~yf~xNCpwuEiSuHHplJVARdnM4Q-q7266onoF3WjeeoPlNkwWLq1xr~nVmaatbIsrIwSP7ARmlug__&Key-Pair-Id=KK4HN3OO4AT5R" alt="Mary Poppins">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">Mary Poppins</h2>
+          <div class="movie-meta">
+            <span class="year">1964</span>
+            <span class="runtime">143 min</span>
+            <span class="rating">⭐ 77.0/10</span>
+          </div>
+          <div class="genres">Comedy, Family, Fantasy</div>
+          <p class="overview">A magical nanny reconnects a father and mother with their two children.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.disneyplus.com/browse/entity-f63db666-b097-4c61-99c1-b778de2d4ae1" target="_blank" class="service-badge disney+">
+          Disney+
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B079LWK3JQ/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/4724/poster/vertical/en/480.jpg?Expires=1782742617&Signature=cJQE6afuzm6NaEgelqSNy9qZC2KqhWt0uUuHjBJpM4DaunByrQKbTP6S2GjOAUJrkWImKbV5yOgUM1K9v2HxmtAJLihTE1~6yL9BxtZ45Zl9UEAlI2Vo~YJX4EFPJZJIP4XPF1hJ-ViS0dW3bDGeL2nC6KeTczdpH0wgiIAwajNuWIjHKQ91lxagQ--cZ4n3XqIMtRSV69XpL46TndQResuUkW9jkw5YJYdW3~XjSyChbRq1IjvhzjRrPrftNXDKsmHv6zLjwULnEAUPWIEeh9S3JqKnDK1MrtRo7U7--NfoR87mMKJ583noc38LNY3VdiVj78SaknmYeL8T7j7fdg__&Key-Pair-Id=KK4HN3OO4AT5R" alt="My Fair Lady">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">My Fair Lady</h2>
+          <div class="movie-meta">
+            <span class="year">1964</span>
+            <span class="runtime">170 min</span>
+            <span class="rating">⭐ 76.0/10</span>
+          </div>
+          <div class="genres">Family</div>
+          <p class="overview">Multi Oscar winning musical, based on George Bernard Shaw's `Pygmalion', about a phonetics expert who, for a bet, takes on the challenge of teaching a Cockney flower girl to talk like a duchess. All the songs from the stage musical were retained, including `The Rain in Spain, I Could Have Danced All Night, With a Little Bit of Luck, and Wouldn't It Be Loverly'.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B08NDY3NRQ/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B08NDY3NRQ/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/7311/poster/vertical/en/480.jpg?Expires=1785454571&Signature=c4eYV8~AbdxQD3L-mGh4s3DhXau6tJ~K4CPOUGZ2ydSIi-~xghTNqPyN1jveVp0zaJrgpV8DRu0qRuwiOBs16E96bNc707dDSBUntwhTwYMsL6ITJAkUhuIy3HnWeUUasWwhkn6004qlgTJ71i72oDqFyYErn7taX8Y5Dn74C9nSpwGeL~eY~6mQlkPkgs866~E2aZOM1wAgYa2q3tDbYP1gCLLfE1Sghh8WuB0kof8O9quRBQJ5JRftNXmdGIOCYVPLefnLJqdBuA~QBT7YH7x3XSfzxZt~r8TxYbTAmZqBZFQaUH86Zg76z8Q7MEyeNADEs0o0Uu1V1HH-YaS8nw__&Key-Pair-Id=KK4HN3OO4AT5R" alt="The Longest Day">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">The Longest Day</h2>
+          <div class="movie-meta">
+            <span class="year">1962</span>
+            <span class="runtime">180 min</span>
+            <span class="rating">⭐ 76.0/10</span>
+          </div>
+          <div class="genres">Action, Drama, History</div>
+          <p class="overview">Allied forces prepare for a massive D-Day assault upon the beaches of Normandy during World War II.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B000UKYFFQ/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B000UKYFFQ/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/9304/poster/vertical/en/480.jpg?Expires=1784797592&Signature=lnzRtGg8ZZ3L96bB70yHv0TVk395kglUoKl4E4LPfXbLL8Osw6jwlvdwWl2N2CSmjPNh4PwmTknHZO6ROYZVK1TZDWq4eGrXR8p34eDWo4asgmzl5pGzwRfmePvY5tc-IdH0ZQnuna6eTQEV~8jPN7mP2zK4M5Eqvk1wEuPdFams2XIVP-Ju5HYtOYMv9CDqrwMTJN0Yspwn1~iTdBQffg4QBVONAK25X3-xcpYdQaclVH2wwbwaKt~OBkpYAg0SMClKDIXcmoxAFOKzFHwC8tMn4Fz7Q37z-i7Cr7AMrdV7RVXP7sZgdHOCf~l26rmCjgbap9LHoo~3QTy4vF2UOw__&Key-Pair-Id=KK4HN3OO4AT5R" alt="Giant">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">Giant</h2>
+          <div class="movie-meta">
+            <span class="year">1956</span>
+            <span class="runtime">201 min</span>
+            <span class="rating">⭐ 76.0/10</span>
+          </div>
+          <div class="genres">Drama, Western</div>
+          <p class="overview">A wealthy Texan marries a strong beautiful girl and their adjustments to life are interwoven with problems of Mexican workers and an ambitious ranch hand who becomes an oil tycoon.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B000WZUT18/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B000WZUT18/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/9355/poster/vertical/en/480.jpg?Expires=1785467214&Signature=TmFRtG5g3r1VXot7wMF0kMX0kiYGKZ2AKDRr0CUzNqRkf2OqXRSNFTkMsaAWgyU6b212hvkhG6gDQL9n-evBV5P8XzVVJAzjfBbDcOE5DTnfGqQnmTF8JCCTIeyNshQl47rfi1Q6dTlOvy7Gx~sK7tnoqrvzhnrfIs07ntSjBHmLCFkC3qvgNes~pGDwodnUhJ9z9RHuTUu7hVaO5cjSMGB9kpTKGU31LcXlxyxig362B2zMqJJk9dC-WKSgiWKri5gYLgypJ-Cm3BfaBDGCwJosMmGr04jADk2vwIoh4Ei4Qlxn15Km9xPB82aNKa0WrvO1-TBLqsQ~RXojDuMEYA__&Key-Pair-Id=KK4HN3OO4AT5R" alt="The Quiet Man">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">The Quiet Man</h2>
+          <div class="movie-meta">
+            <span class="year">1952</span>
+            <span class="runtime">129 min</span>
+            <span class="rating">⭐ 76.0/10</span>
+          </div>
+          <div class="genres">Comedy, Drama, Romance</div>
+          <p class="overview">A tired American ex-boxer returns to his native hamlet in Ireland to win the hand of a spirited young woman.  He is confronted by strict local customs and the woman's belligerent brother.  Set in the verdant Irish countryside, this lively film has beautiful scenery, brilliant repartee, and local charm.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B0B72B69XJ/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0B72B69XJ/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0B72B69XJ/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B00HAKSZ8C/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B00HAKSZ8C/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/5594/poster/vertical/en/480.jpg?Expires=1786631490&Signature=c~ylJ~-K0fb9p5WNw5rZKpuhIbU6vBHB2ULgpfy5FZz30pJqm8Hv3yj1glx~HhC-brhcMNLdFI7VdgiB5WwNYA2Le5dGOhVaHmgvYI-e3V~iOzK~8AxYdLg5B-95us3L7MSy5~cuy1PBTFT9TmSuYmj-ymT2C7ADSjBrSvgLn7wCDg-bL51tCuBK5-dSPYhV6XGBxXKMz41RfD1WSKJ7NYtx1wkTAnjWDKrM7nN53pEFPNPKSV3~F5AoDC6BTUReKj5qzOGIxx7p7piRXZaLFCjTyTCgAAMOEJ3Nu~vkoP5TiYKFnDV5l2p-DaDZ9gF~dTLNxT4b~EIZ9B8MP0mmvA__&Key-Pair-Id=KK4HN3OO4AT5R" alt="The African Queen">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">The African Queen</h2>
+          <div class="movie-meta">
+            <span class="year">1952</span>
+            <span class="runtime">105 min</span>
+            <span class="rating">⭐ 76.0/10</span>
+          </div>
+          <div class="genres">Adventure, Drama, Romance</div>
+          <p class="overview">Adapted from the novel by C.S. Forester, The African Queen (1951) directed by John Huston stars Humphrey Bogart in his Academy Award-winning portrayal of Charlie Allnut, the slovenly, gin-swilling captain of a tramp steamer called the African Queen, which ships supplies to small East African villages during World War I.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B003F3ITNE/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B003F3ITNE/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/10760/poster/vertical/en/480.jpg?Expires=1785521281&Signature=WEgL7AVUcfmGmA97w8l0O-hvml5CkxvLSK10c2c8T3fikGRpp-LzGc1~yNjb8vctkQ~y8rYipZyDiWKFuFNmywoDs3pCZl4-3hMeiTCDs~P-z38qsY5BFtGzWqQwjyTOY4G8TM5lLvHEbAe8M-u3~QNe~xJuuur9xu6ARnbUdbkUuaEP8Ul2dpQzMT5J8uOAlJ~dkJ4-l3LSrAkxRTWvE8hhB6rMh1DrY6Q2pwpexP5oe90kLDlwBlsnIPG32YMFdWFm7uPk87dPFj8oBP82QuIDFfLFuXgspADX8-tVY32jl3AGe1pZszGIA7kcsEl3wbnNMCyh2ATCcF0~0q66DA__&Key-Pair-Id=KK4HN3OO4AT5R" alt="On Golden Pond">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">On Golden Pond</h2>
+          <div class="movie-meta">
+            <span class="year">1981</span>
+            <span class="runtime">109 min</span>
+            <span class="rating">⭐ 75.0/10</span>
+          </div>
+          <div class="genres">Drama</div>
+          <p class="overview">At Golden Pond, a couple agree to care of Billy, the son of their daughter Chelsea's new boyfriend, and a most unexpected relationship blooms.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B0787FSFTX/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0787FSFTX/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0787FSFTX/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B002UM1ROO/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B002UM1ROO/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0787FSFTX/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0787FSFTX/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0787FSFTX/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B002UM1ROO/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B002UM1ROO/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B002UM1ROO/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/2355/poster/vertical/en/480.jpg?Expires=1784735749&Signature=IMIXQtCWlataOkDRZtHMJiZY5YF9wTm4HbOZULnW2HBDa~-GMxJwJiFWA42Px08WnFZvL06-sZqfPlYtTzQceF6zXNeZmyeGW2kFyTkqtYioRTzLm6kCvymFL9Hb3G5XB5NuIh9LOB34MCkhPd7KgkxCl~UC9se651KGl4qZqFovZaDaNTrcO8uRaA9bJjd-ZbtVwzDSW5Pzbk4PlzjVvPxfqdCbP9JkVFrpzqjuiB4IxL9vukxIAHMQ8G906MSj20zw4aIodBi69oxRDYCXPrpZGM75znwwuJYTB6evgorXm4razn8UZJJsSrpbI1NyGl4t6brFDOydV7Av1Fj4eg__&Key-Pair-Id=KK4HN3OO4AT5R" alt="The Birds">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">The Birds</h2>
+          <div class="movie-meta">
+            <span class="year">1963</span>
+            <span class="runtime">119 min</span>
+            <span class="rating">⭐ 75.0/10</span>
+          </div>
+          <div class="genres">Horror, Mystery</div>
+          <p class="overview">Socialite Melanie follows a handsome lawyer back to his coastal home. She is menaced by birds on the road and has to take cover as the aerial attacks intensify. Based on Daphne du Maurier's story.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B000I8H7RI/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B000I8H7RI/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/15436/poster/vertical/en/480.jpg?Expires=1784790513&Signature=KnTXXKEi5wJ2xQ5pvSQmA~ZhElaTiH1UEjt4Rg-hH~TlWz0BDRGLM8VfpHszEQVb36aIZVkNIOI8iO2mT74XE6lAcxzod6bbnYgfaIessNuB3ehnN8ROYlxmxPN7jML7DlrZdY8wCVjHSWmNiOEauPUAWxzGJEzpsphT3Q8dc7Wz8T~UWUS28-r6ckRj0Ub2fdom3WRO0V-ZspmGD9qNHn0jiArkcqOoP25LZYr3SOna53QGq9-fUOL0hVxUgTQUB13ndOrqMP4Q9M9Q1ZaeT0dQ0LpyityEzQVt21pAOCl8Z8pdu0pKGYdM0Xzx6UYQADKhvubhOE26Dudj6X-K6A__&Key-Pair-Id=KK4HN3OO4AT5R" alt="The Music Man">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">The Music Man</h2>
+          <div class="movie-meta">
+            <span class="year">1962</span>
+            <span class="runtime">151 min</span>
+            <span class="rating">⭐ 75.0/10</span>
+          </div>
+          <div class="genres">Comedy, Family</div>
+          <p class="overview">After convincing Iowa townsfolk to invest in a boys' marching band, a traveling con man's scheme is complicated by his feelings for a local librarian.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B002M85TF4/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B002M85TF4/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B002M85TF4/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B002M85TF4/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/2506/poster/vertical/en/480.jpg?Expires=1784737142&Signature=d~KB55pxo0S~q~RTTqTmeWi-rnuMYNSivLCyrgQl4Y~jFs1hODsQrSw-13ORNiptxbvIMKhppKoOGA39yEE8OFqWg02hZefBeIjIAybU0ENKbYIVhmXZ6BV44kQjKSs4iUNnqfFtVQhavzlklUbMDiu3y9Ogfc5a8EH~3TtgWaG9KkCEcrhA9NZnSj-HCCwK7xhZY0Sk72o6PLnqBSA4yq1kD8T2bBK6uf9~e34Ur0CuFvpHAovzxceWkC5itbHk4YbvifVk54OhvmPMKQowp9z4QnvGJAWpH06lJ6xH1uX1OKN0q6WBTowVvNBOcHUFRli-Z2go~GGbmc~H1lD-Sw__&Key-Pair-Id=KK4HN3OO4AT5R" alt="Breakfast at Tiffany's">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">Breakfast at Tiffany's</h2>
+          <div class="movie-meta">
+            <span class="year">1961</span>
+            <span class="runtime">110 min</span>
+            <span class="rating">⭐ 75.0/10</span>
+          </div>
+          <div class="genres">Comedy, Drama, Romance</div>
+          <p class="overview">George Peppard is the struggling and 'sponsored' young writer who finds himself swept into Holly's dizzying, delightfully unstructured lifestyle as she determinedly scours Manhattan for a suitable millionaire to marry.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B000HX499S/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B000HX499S/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.hulu.com/movie/breakfast-at-tiffany%27s-c195af2d-4ed6-4369-9684-ba029b10489a" target="_blank" class="service-badge hulu">
+          Hulu
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/6812/poster/vertical/en/480.jpg?Expires=1785432207&Signature=f4ETlVO45bqyaO4A~ceOlPFt3dveFoUm-OQhP2kVF8DuY1GxCFiMf~PJ602uzje-kHhXydCNyEcnnM-i4tzzx5c5rD~Tyjh~cRl2Guvn8z6cT7Yq159MZDy6ZrnoiB3IoJbL3w3cLpHyGvAKB1AnV9vtIOeI~kdc8dLEGcSePGZnh0Ep39FrTIuAFrv5F6FCqaS1MwMto6HtaHD4e8SWBa1zYUXzoahklVcXPbkcGwnQ3QOM1DFONSWVD4V59QPOcEZ9kYW6ydYKFABHrhFnOaGAwH~ejojipVUB-5S3kgRVqjWlb4u~yhWnIHCBJJ4YiWhe-L8aI4NTcWxXQ3XQLA__&Key-Pair-Id=KK4HN3OO4AT5R" alt="Terms of Endearment">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">Terms of Endearment</h2>
+          <div class="movie-meta">
+            <span class="year">1983</span>
+            <span class="runtime">132 min</span>
+            <span class="rating">⭐ 73.0/10</span>
+          </div>
+          <div class="genres">Comedy, Drama</div>
+          <p class="overview">While widow Aurora fends off a stream of admirers, daughter Emma learns the hard facts of married life.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B0CLVV8PY6/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0CLVV8PY6/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0CLVV8PY6/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0B6SXZFYR/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0B6SXZFYR/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/10981/poster/vertical/en/480.jpg?Expires=1784780822&Signature=UcuUQ--GrKcqZk2fJLYvKYmuWUHqbMC8S-9AxGLqy-NUyZciOf8PvGDsCELRMgM9pEKDZGc2rgXcfD7oxZh0ebYjdSt2qPOAsd~BNoaIcL6qkpv04XmP~Yo5bMMNtXKhl9rcPQqK26ePjvO5VcKtbDho60E-pbbaZ9bKG0C-o~IlhT~zc7d8fd-Ps6zJ1Nr-xZzM7HPVKlPpqekLJdCA2SDKk7B5jLvCOfHYi7bXJoYsQT0d-0y4DB2yzfzh30QAhyvobWfabZOdC3VSuQcQ~YuT3Fxcu8nmAvVw2rKXK7qAnrAp5R-F6b1sdiv3DTeECkjMsgxUFHxGYDjMzSCxeg__&Key-Pair-Id=KK4HN3OO4AT5R" alt="An Affair to Remember">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">An Affair to Remember</h2>
+          <div class="movie-meta">
+            <span class="year">1957</span>
+            <span class="runtime">110 min</span>
+            <span class="rating">⭐ 73.0/10</span>
+          </div>
+          <div class="genres">Drama, Romance</div>
+          <p class="overview">Although engaged to others, two cruise-ship passengers fall in love and plan to reunite six months later atop the Empire State Building.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B003JWTFWU/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B003JWTFWU/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B003JWTFWU/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/4139/poster/vertical/en/480.jpg?Expires=1784746218&Signature=O1mc-fK~MTSpyp1WAFX8g5vq4VGD~jtfO0YKAxxUPIlJLnNMvPcoAbN4cC74jigbvAW0xvcboCTZae-9NKign9qsLWUNXHyC8I6ZNlXaoAQ3EkaQcE45YC4UZES58hfbErO8h84YROsj3XPx6qKmng4e7JqTife8C4itChI0dbDRFiHKbiWk559k6BWXatUXo~h66vdP4f-iqry3PItXTdTtz5piBf0YtZX9xken~ZQJp8l9QruN0L2N~xKsnFUUmUDxdY6t3DgannKzhxQrdgycwvZoLXnoj129Nvcc~u1iPzS~r--~vwc8ozxJRa-eS~BBESddPaa30Sn1UIur1Q__&Key-Pair-Id=KK4HN3OO4AT5R" alt="Driving Miss Daisy">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">Driving Miss Daisy</h2>
+          <div class="movie-meta">
+            <span class="year">1989</span>
+            <span class="runtime">99 min</span>
+            <span class="rating">⭐ 72.0/10</span>
+          </div>
+          <div class="genres">Drama</div>
+          <p class="overview">Elderly Jewish widow Daisy is determined to maintain her independence. But when she crashes her car, her son arranges for her to have a chauffeur, an African-American man named Hoke. Daisy and Hoke’s relationship gets off to a rocky start, but they gradually form a close friendship over the years.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B001N3MY34/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B001N3MY34/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/12352/poster/vertical/en/480.jpg?Expires=1784765190&Signature=SoChSNNvUe1Ecw~fTRQ8OJEuSYXncbp~E74thjS1Ff0gbav6oEdJO731bMqDwfm4FrgPLIOC11qkTJ6UaCsIWE-kWuB1OGWDeecU2uLlQZJG02-WLEl0BBdW8hqOa5DVuqwpfHNcsmOoVyNUbl7UqcYlBzkVNNhrwxmQvrUPOR9HeCrF0yqQT6wfPOSmTB3oC-rCXExdSX2aeFodWTJeDS65ChLG7JNAPLO1ZKQarzZojZGz6VOtes7h9XrWrppY~6mwt8h12F5kf~UqjBQhKOggFhA-cDOQZqZJ7FMv0R4gJ6fMaK3xf~AXk4dRNV7mU5atRPLnXoNr0LGSDC8MSw__&Key-Pair-Id=KK4HN3OO4AT5R" alt="Seven Brides for Seven Brothers">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">Seven Brides for Seven Brothers</h2>
+          <div class="movie-meta">
+            <span class="year">1954</span>
+            <span class="runtime">101 min</span>
+            <span class="rating">⭐ 72.0/10</span>
+          </div>
+          <div class="genres">Comedy</div>
+          <p class="overview">A newlywed’s attempts to refine her six uncouth brothers-in-law spark their pursuit of love on the Oregon frontier in a musical showdown of the sexes.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B0031NYH20/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0031NYH20/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0031NYH20/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/15175/poster/vertical/en/480.jpg?Expires=1784798727&Signature=AJ-qisav6fbTNDe5B5V1K-kmw~6~WG4r-YBXdaxgZKHarZ3Rcp6BSTRwmsIyaiSDSETuecw6nmd9cOnnXlmlFtU7aGzkIvWIKRXBZjD-NIR8Aedho36j~GcTMyMTP2bxGd7gLud0q30FSegd0YBXZXbjMMjaJ0OCOcjtGviJ0N9EdXsVVjPtC3pbIpiSWvfqvAvl6ShjD1Xayglw5AhO4DKpMLw-AzprkBJOe8OgZzwjgyQoAj8eJp3W62ndSlQNf9A-atLWoCQcYHYP5lgac3eUVfGFo7tCXKDDkRBvf1Z9FYPE8yfTw24fQd-UQu5X-Cbk6suCADLzTk1tUEEWIQ__&Key-Pair-Id=KK4HN3OO4AT5R" alt="The Great Race">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">The Great Race</h2>
+          <div class="movie-meta">
+            <span class="year">1965</span>
+            <span class="runtime">146 min</span>
+            <span class="rating">⭐ 71.0/10</span>
+          </div>
+          <div class="genres">Action, Adventure, Comedy</div>
+          <p class="overview">Set in 1908, dastardly, black-garbed Professor Fate dares the world's greatest hero, The Great Leslie, to race 22,000 miles from New York to Paris.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B001N2GUNK/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B001N2GUNK/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/21605/poster/vertical/en/480.jpg?Expires=1784727455&Signature=CEkwywct6J62FcFC489cXPMVakZhtztJ3-5k6RdUzuJzZ~2CdOWZNhY1iowtA8TAn-C4HNUqzI1GbcAENSUOcBntPiNigAvuJe82PKaXOUuS~s7MciBv7K8gTbhibTicvwc3xV5pdgS-Cmxe9CKoqTGy7ggonYbMl9NKY5cnqZ0O~b54QhniL-hPOvuy6BaeXICqv825R3n4UXwo6mHE4lChivOjJSaayYZIMhhBika4UocA-6lknvI9AjWKMBAIFcPzi~ADbn7Jfryv6Mp3N~UJa4-Pk2Sz~BmkYxaDzyv34P8YloXDtnyTDrzRpzZclSHhQb4kN2-aTs9rKRREyw__&Key-Pair-Id=KK4HN3OO4AT5R" alt="Calamity Jane">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">Calamity Jane</h2>
+          <div class="movie-meta">
+            <span class="year">1953</span>
+            <span class="runtime">97 min</span>
+            <span class="rating">⭐ 71.0/10</span>
+          </div>
+          <div class="genres">Comedy, Romance</div>
+          <p class="overview">Doris Day and Howard Keel star as "Calamity" Jane and "Wild Bill"Hickock in this lighthearted musical based on the lives of two realcelebrities of the American West.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B004GEXZ8K/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B004GEXZ8K/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B004GEXZ8K/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/18549/poster/vertical/en/480.jpg?Expires=1784770464&Signature=YopR-2e-Vg9L~E0R2gxnoJ9m207XpduULdjMh9Gw6SN-WyRJfgw8rbUKN3JnERsg2OYgwbRjYF2qBTJDOJ8NLUNMb23dhxuJ3lED6G3aEaFedzYNIV5-fBtUSosVMlpzZP3LoDKHsMGibx01YKEWd2wCoQA8LU5tfKdSW7WlfUF~Y-XjmrQChhzhPgBdvpvk-OhC4lWgT7iQskycHVTfTXYqShFf6JZggF-Tm9Y7xT0Pq-Y45kLzZ7urVM9TSxOK0CV6vXAs9URV9hWkzVXG0P9IhIOQMgpwNBniv-HtcpOUsSkL-vUFQR3pmFyND70b8DOm3bpvcDigGLlBE-Pq2A__&Key-Pair-Id=KK4HN3OO4AT5R" alt="Oklahoma!">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">Oklahoma!</h2>
+          <div class="movie-meta">
+            <span class="year">1955</span>
+            <span class="runtime">140 min</span>
+            <span class="rating">⭐ 69.0/10</span>
+          </div>
+          <div class="genres">Romance</div>
+          <p class="overview">With a box social swiftly approaching, two cowboys compete for the affections of their sweethearts, attempting to one-up the womens’ other suitors.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B0CK74KH2L/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0CK74KH2L/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0CK74KH2L/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/5216/poster/vertical/en/480.jpg?Expires=1784781565&Signature=YsOcINvTRG57f~G94kTHP19VcaQEw9szxIwXiw~orLHc~SHGRZOlSEymhBU183cZzkzZCGUchUbPcpl98JEYoI0fMGxyYDt0wFApogIjJMWMHFYu3Yd9VUGwvG-E20rfa8ZlFajPnEPf9yTxJH6MbhVLSTxalxte44LA478TVUTaLjPDX8hSkjKJ4h~vh58k4KhrVkDOYhVTi~1FRErx0Q-pPWbVL98JQGVRVFfqXg1npvIbzD77S1THMQYskzkQC1Q~Z3UPro6PrLE8CDz4-jC5q54q4Tt0a6NuGzX~WaumtYDkvOWUOcbgtgMnRTAHH9UdY5M~je93pf3n0amWUg__&Key-Pair-Id=KK4HN3OO4AT5R" alt="Midway">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">Midway</h2>
+          <div class="movie-meta">
+            <span class="year">2019</span>
+            <span class="runtime">138 min</span>
+            <span class="rating">⭐ 68.0/10</span>
+          </div>
+          <div class="genres">Action, History</div>
+          <p class="overview">Based on real events, this is the story of the leaders and soldiers who used their instincts, fortitude and bravery to overcome the odds in the Battle of Midway between the US Navy and the Imperial Japanese Navy, a pivotal turning point in WWII.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B0DB84PM2H/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.disneyplus.com/browse/entity-d8e606ac-819e-4fa7-a879-5fc7d02f33e8" target="_blank" class="service-badge disney+">
+          Disney+
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B0DB84PM2H/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.netflix.com/title/81110665/" target="_blank" class="service-badge netflix">
+          Netflix
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="movie-card">
+        <div class="movie-poster">
+          <img src="https://cdn.movieofthenight.com/show/23122/poster/vertical/en/480.jpg?Expires=1782776464&Signature=cgWQf79Bt1B9YyAqwOaF8ZiSvNQjhu83ycvTyvs3~tFqVqnbkJ-Ng6VnkoUyyRHqAV5acsfxu-sOXSOYCP2IjjBCasH~IiuPiSx4BQlypONIWPBEjpsB77kRqczvS~nam6RYiIN9z0Xq~4iFqcng84IIG5UmENTlVJCNN10cjH6ejVPkqXYDj04JhrDYUh40YwVUitxUAxaGdIBQsqtzcy91UoiQs0yC-YulGYTkBhhBpiqsceUVmdsPj219qQK90AA-FHPPr1xPqcvbuDwfHuH9GRxy4lmpzBotxx-Afw7o-d-SsKTqJ5cHx1bg-uNr9-OZDM6gFvSZ5a5gJOpIZw__&Key-Pair-Id=KK4HN3OO4AT5R" alt="South Pacific">
+        </div>
+        <div class="movie-info">
+          <h2 class="movie-title">South Pacific</h2>
+          <div class="movie-meta">
+            <span class="year">1958</span>
+            <span class="runtime">157 min</span>
+            <span class="rating">⭐ 66.0/10</span>
+          </div>
+          <div class="genres">Romance</div>
+          <p class="overview">On a South Pacific island during World War II, love blooms between a young nurse and a secretive Frenchman courted for a dangerous military mission.</p>
+          <div class="streaming-services">
+            <strong>Watch on:</strong>
+            
+        <a href="https://www.amazon.com/gp/video/detail/B00480JAPE/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B00480JAPE/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+        <a href="https://www.amazon.com/gp/video/detail/B00480JAPE/ref=atv_dp" target="_blank" class="service-badge prime-video">
+          Prime Video
+        </a>
+      
+          </div>
+        </div>
+      </div>
+    
+    </div>
+
+    <div class="footer">
+      <p>Generated for AlzheimersTv</p>
+      <p>Streaming availability subject to change. Links valid as of generation date.</p>
+    </div>
+  </div>
+</body>
+</html>
