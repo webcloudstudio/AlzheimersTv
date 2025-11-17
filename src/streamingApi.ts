@@ -6,8 +6,11 @@ export class StreamingApiClient {
   private country: string;
   private targetServices: string[];
   private cacheDays: number;
+  private refreshAll: boolean;
+  private consecutiveErrors: number = 0;
+  private maxConsecutiveErrors: number = 5;
 
-  constructor(apiKey: string, country: string, targetServices: string[], cacheDays: number) {
+  constructor(apiKey: string, country: string, targetServices: string[], cacheDays: number, refreshAll: boolean = false) {
     this.client = new streamingAvailability.Client(
       new streamingAvailability.Configuration({
         apiKey: apiKey,
@@ -16,6 +19,7 @@ export class StreamingApiClient {
     this.country = country;
     this.targetServices = targetServices;
     this.cacheDays = cacheDays;
+    this.refreshAll = refreshAll;
   }
 
   private isCacheValid(lastApiCall?: string): boolean {
@@ -90,10 +94,18 @@ export class StreamingApiClient {
     input: ShowInput,
     showType: 'movie' | 'series'
   ): Promise<ShowWithStreaming | null> {
-    // Try to use cache first
-    const cached = this.getFromCache(input, showType);
-    if (cached) {
-      return cached;
+    // In normal mode, skip if we recently attempted and failed
+    if (!this.refreshAll && input.lastApiCallFailed === 'true' && this.isCacheValid(input.lastApiCall)) {
+      console.log(`  ⏭ Skipping ${input.title} - API call failed within cache period`);
+      return null;
+    }
+
+    // Try to use cache first (unless refresh-all mode)
+    if (!this.refreshAll) {
+      const cached = this.getFromCache(input, showType);
+      if (cached) {
+        return cached;
+      }
     }
 
     try {
@@ -190,8 +202,36 @@ export class StreamingApiClient {
         seasonCount: show.seasonCount,
       };
     } catch (error: any) {
-      console.error(`  ❌ ERROR fetching ${showType} "${input.title}":`, error.message);
-      return null;
+      this.consecutiveErrors++;
+
+      // Check if this is a rate limit error
+      const errorMsg = error.message || '';
+      const isRateLimitError = errorMsg.includes('Response returned an error code') ||
+                               errorMsg.includes('429') ||
+                               errorMsg.includes('rate limit');
+
+      if (isRateLimitError) {
+        console.error(`\n❌ API RATE LIMIT ERROR for ${showType} "${input.title}"`);
+
+        if (this.consecutiveErrors >= this.maxConsecutiveErrors) {
+          console.error('\n' + '='.repeat(80));
+          console.error('❌ CRITICAL: API RATE LIMIT EXCEEDED');
+          console.error('='.repeat(80));
+          console.error('\nYou have hit the RapidAPI rate limit for the Streaming Availability API.');
+          console.error('\nPossible solutions:');
+          console.error('  1. Wait 24 hours for the free tier quota to reset');
+          console.error('  2. Upgrade your RapidAPI subscription for higher limits');
+          console.error('  3. Use cached data by running without --refresh-all flag');
+          console.error('\nThe application will now stop to avoid further API errors.');
+          console.error('Your data has been saved up to this point.\n');
+          throw new Error('API_RATE_LIMIT_EXCEEDED');
+        }
+      } else {
+        console.error(`  ❌ ERROR fetching ${showType} "${input.title}":`, error.message);
+      }
+
+      // Return error indicator so we can mark it in the CSV
+      return { error: true, title: input.title } as any;
     }
   }
 
@@ -207,13 +247,22 @@ export class StreamingApiClient {
       const showDetails = await this.getShowDetails(show, showType);
 
       if (showDetails) {
+        // Check if this is an error response
+        if ((showDetails as any).error) {
+          // Don't add to results, will be marked as failed in CSV
+          continue;
+        }
+
+        // Success - reset consecutive error counter
+        this.consecutiveErrors = 0;
+
         results.push(showDetails);
         const totalServices = showDetails.freeStreamingServices.length + showDetails.paidStreamingServices.length;
         console.log(`✓ Found ${showDetails.title} (${showDetails.year}) - ${showDetails.freeStreamingServices.length} free, ${showDetails.paidStreamingServices.length} paid service(s)`);
       }
 
       // Add a small delay to avoid rate limiting (only if not using cache)
-      if (!this.isCacheValid(show.lastApiCall)) {
+      if (!this.isCacheValid(show.lastApiCall) || this.refreshAll) {
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
     }

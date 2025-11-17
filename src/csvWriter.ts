@@ -28,6 +28,7 @@ export async function updateCsvWithApiData(
         imdbId: input.imdbId || '',
         tmdbId: input.tmdbId || '',
         lastApiCall: timestamp,
+        lastApiCallFailed: 'false',
         cachedYear: apiData.year,
         cachedRating: apiData.rating,
         cachedOverview: apiData.overview.replace(/,/g, ';'), // Replace commas to avoid CSV issues
@@ -39,13 +40,16 @@ export async function updateCsvWithApiData(
         cachedPaidServices: paidServices,
       };
     } else {
-      // Keep existing cached data if API call failed
+      // Mark as failed if no API data (but was attempted)
+      const wasFreshAttempt = !input.lastApiCall || !apiResults.has(input.title);
+
       return {
         title: input.title,
         year: input.year || '',
         imdbId: input.imdbId || '',
         tmdbId: input.tmdbId || '',
-        lastApiCall: input.lastApiCall || '',
+        lastApiCall: wasFreshAttempt ? timestamp : (input.lastApiCall || ''),
+        lastApiCallFailed: wasFreshAttempt ? 'true' : (input.lastApiCallFailed || 'false'),
         cachedYear: input.cachedYear || '',
         cachedRating: input.cachedRating || '',
         cachedOverview: input.cachedOverview || '',
@@ -68,6 +72,7 @@ export async function updateCsvWithApiData(
       'imdbId',
       'tmdbId',
       'lastApiCall',
+      'lastApiCallFailed',
       'cachedYear',
       'cachedRating',
       'cachedOverview',

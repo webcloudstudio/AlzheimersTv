@@ -3,3 +3,14 @@ dist/
 *.log
 .env
 config.local.json
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

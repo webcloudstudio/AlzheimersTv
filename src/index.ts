@@ -9,6 +9,15 @@ import { Config } from './types.js';
 async function main() {
   console.log('=== AlzheimersTv Movie & TV Show Finder ===\n');
 
+  // Check for CLI flags
+  const refreshAll = process.argv.includes('--refresh-all');
+
+  if (refreshAll) {
+    console.log('🔄 REFRESH ALL MODE: Will re-fetch all shows from API, ignoring cache\n');
+  } else {
+    console.log('📋 NORMAL MODE: Using cache when available, skipping recently failed API calls\n');
+  }
+
   try {
     // Load configuration
     console.log('Loading configuration...');
@@ -38,7 +47,8 @@ async function main() {
       config.apiKey,
       config.country,
       config.targetServices,
-      config.cacheDays
+      config.cacheDays,
+      refreshAll
     );
     const htmlGenerator = new HtmlTableGenerator();
 

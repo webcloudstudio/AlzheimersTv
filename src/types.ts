@@ -24,6 +24,7 @@ export interface ShowInput {
   tmdbId?: string;
   // Cached data from previous API calls
   lastApiCall?: string;
+  lastApiCallFailed?: string; // 'true' or 'false' - whether the last API call failed
   cachedYear?: number;
   cachedRating?: number;
   cachedOverview?: string;

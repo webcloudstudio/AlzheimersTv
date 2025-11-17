@@ -78,18 +78,34 @@ A sample CSV with 50 classic movies is included.
 
 ## Usage
 
-### Build and Run
+### Normal Mode (Recommended)
 
-```bash
-npm run build
-npm start
-```
-
-Or use the combined command:
+Uses cached data when available and skips shows that recently failed API calls:
 
 ```bash
 npm run dev
 ```
+
+This mode:
+- ✅ Uses cached data for shows fetched within the cache period (default: 7 days)
+- ✅ Fetches new shows that haven't been attempted before
+- ⏭️ Skips shows that failed API calls within the cache period
+- 🛡️ Stops automatically if API rate limit is hit (after 5 consecutive errors)
+
+### Refresh All Mode
+
+Re-fetches ALL shows from the API, ignoring cache:
+
+```bash
+npm run dev:refresh-all
+```
+
+⚠️ **Warning**: This mode will make API calls for every show and may quickly exhaust your API quota.
+
+Use this mode when:
+- You want to update all data with fresh information
+- After the API rate limit has reset (usually 24 hours)
+- You've upgraded to a higher API tier
 
 ### What Happens
 
