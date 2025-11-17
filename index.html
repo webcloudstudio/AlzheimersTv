@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TV for Older People</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: #fff;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 40px 20px 20px;
+      margin-bottom: 30px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: left;
+    }
+
+    .subtitle {
+      font-size: 1.2em;
+      color: #b8b8b8;
+      margin-top: 10px;
+    }
+
+    .generated-date {
+      font-size: 0.75em;
+      color: #888;
+      text-align: right;
+    }
+
+    .filters {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+
+    .filter-section {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .filter-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .filter-label {
+      font-weight: 600;
+      color: #4ecdc4;
+      font-size: 1.1em;
+      white-space: nowrap;
+    }
+
+    .filter-btn {
+      padding: 10px 20px;
+      margin: 5px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .filter-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .filter-btn.active {
+      background: #4ecdc4;
+      border-color: #4ecdc4;
+      color: #1a1a2e;
+    }
+
+    .filter-btn.inactive {
+      opacity: 0.5;
+    }
+
+    .table-container {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    th {
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 1.1em;
+      color: #4ecdc4;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
+    }
+
+    th:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    th.sortable::after {
+      content: ' ↕';
+      opacity: 0.5;
+    }
+
+    th.sorted-asc::after {
+      content: ' ↑';
+      opacity: 1;
+    }
+
+    th.sorted-desc::after {
+      content: ' ↓';
+      opacity: 1;
+    }
+
+    td {
+      padding: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    tbody tr {
+      transition: background 0.2s;
+    }
+
+    tbody tr:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    tbody tr.hidden {
+      display: none;
+    }
+
+    .show-link {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.1em;
+    }
+
+    .show-link:hover {
+      color: #4ecdc4;
+      text-decoration: underline;
+    }
+
+    .stars {
+      color: #ffd700;
+      font-size: 1.1em;
+    }
+
+    .rating-number {
+      color: #b8b8b8;
+      font-size: 0.95em;
+    }
+
+    .services-cell {
+      font-size: 0.9em;
+    }
+
+    .service-badge {
+      display: inline-block;
+      padding: 5px 10px;
+      margin: 2px;
+      border-radius: 5px;
+      font-size: 0.85em;
+      font-weight: 600;
+      color: white;
+      white-space: nowrap;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .service-badge:hover {
+      opacity: 0.8;
+      transform: translateY(-1px);
+    }
+
+    .service-badge.netflix { background: #E50914; }
+    .service-badge.prime,
+    .service-badge.amazon-prime,
+    .service-badge.amazon-prime-video { background: #00A8E1; }
+    .service-badge.hulu { background: #1CE783; }
+    .service-badge.disney,
+    .service-badge.disney\+ { background: #113CCF; }
+    .service-badge.max,
+    .service-badge.hbo-max { background: #002BE7; }
+    .service-badge.appletv,
+    .service-badge.apple-tv,
+    .service-badge.apple-tv\+ { background: #000000; }
+    .service-badge.peacock { background: #000000; }
+    .service-badge.paramount,
+    .service-badge.paramount\+ { background: #0064FF; }
+    .service-badge.paid { background: #888; }
+
+    .footer {
+      text-align: center;
+      margin-top: 60px;
+      padding: 30px;
+      color: #888;
+      font-size: 0.9em;
+    }
+
+    .stats {
+      text-align: right;
+      color: #b8b8b8;
+      font-size: 1.1em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <h1>TV for Older People</h1>
+        <div style="display: flex; gap: 10px;">
+          <button class="filter-btn type-filter active" data-type="both">Both</button>
+          <button class="filter-btn type-filter" data-type="movie">Movies</button>
+          <button class="filter-btn type-filter" data-type="series">Series</button>
+        </div>
+      </div>
+      <p class="generated-date">Updated: November 17, 2025</p>
+    </header>
+
+    <div class="filters">
+      <div class="filter-section">
+        <div class="filter-label">Filter by Service:</div>
+        <button class="filter-btn service-filter active" data-service="all">All Services</button>
+        <button class="filter-btn service-filter" data-service="Hulu">Hulu</button>
+        <button class="filter-btn service-filter" data-service="Prime Video">Prime Video</button>
+        <button class="filter-btn service-filter" data-service="Disney+">Disney+</button>
+        <button class="filter-btn service-filter" data-service="Netflix">Netflix</button>
+      </div>
+      <div class="stats" id="stats">
+        Showing <span id="visible-count">78</span> of 78 shows
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table id="shows-table">
+        <thead>
+          <tr>
+            <th class="sortable" data-sort="title">Title</th>
+            <th class="sortable" data-sort="type">Type</th>
+            <th class="sortable" data-sort="year">Year</th>
+            <th>Length</th>
+            <th class="sortable" data-sort="rating">Rating</th>
+            <th>Genres</th>
+            <th>Free Streaming</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+      <tr class="show-row" data-type="movie" data-free-services="Hulu" data-has-free="true">
+        <td><a href="details/the-godfather.html" target="_blank" class="show-link">The Godfather</a></td>
+        <td>Movie</td>
+        <td data-sort="1972">1972</td>
+        <td>176 min</td>
+        <td data-sort="90"><span class="stars">⭐⭐⭐⭐½</span> <span class="rating-number">(90.0)</span></td>
+        <td>Crime, Drama</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/schindler-s-list.html" target="_blank" class="show-link">Schindler's List</a></td>
+        <td>Movie</td>
+        <td data-sort="1993">1993</td>
+        <td>196 min</td>
+        <td data-sort="89"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(89.0)</span></td>
+        <td>Drama, History</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/12-angry-men.html" target="_blank" class="show-link">12 Angry Men</a></td>
+        <td>Movie</td>
+        <td data-sort="1957">1957</td>
+        <td>92 min</td>
+        <td data-sort="88"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(88.0)</span></td>
+        <td>Crime, Drama</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/forrest-gump.html" target="_blank" class="show-link">Forrest Gump</a></td>
+        <td>Movie</td>
+        <td data-sort="1994">1994</td>
+        <td>142 min</td>
+        <td data-sort="87"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(87.0)</span></td>
+        <td>Drama, Romance</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="Prime Video" data-has-free="true">
+        <td><a href="details/rear-window.html" target="_blank" class="show-link">Rear Window</a></td>
+        <td>Movie</td>
+        <td data-sort="1954">1954</td>
+        <td>107 min</td>
+        <td data-sort="84"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(84.0)</span></td>
+        <td>Mystery, Thriller</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/to-kill-a-mockingbird.html" target="_blank" class="show-link">To Kill a Mockingbird</a></td>
+        <td>Movie</td>
+        <td data-sort="1962">1962</td>
+        <td>129 min</td>
+        <td data-sort="82"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(82.0)</span></td>
+        <td>Crime, Drama</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/lawrence-of-arabia.html" target="_blank" class="show-link">Lawrence of Arabia</a></td>
+        <td>Movie</td>
+        <td data-sort="1962">1962</td>
+        <td>213 min</td>
+        <td data-sort="82"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(82.0)</span></td>
+        <td>Adventure</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/the-apartment.html" target="_blank" class="show-link">The Apartment</a></td>
+        <td>Movie</td>
+        <td data-sort="1960">1960</td>
+        <td>120 min</td>
+        <td data-sort="82"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(82.0)</span></td>
+        <td>Comedy, Drama, Romance</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/north-by-northwest.html" target="_blank" class="show-link">North by Northwest</a></td>
+        <td>Movie</td>
+        <td data-sort="1959">1959</td>
+        <td>130 min</td>
+        <td data-sort="82"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(82.0)</span></td>
+        <td>Adventure, Mystery</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="Hulu" data-has-free="true">
+        <td><a href="details/singin--in-the-rain.html" target="_blank" class="show-link">Singin' in the Rain</a></td>
+        <td>Movie</td>
+        <td data-sort="1952">1952</td>
+        <td>102 min</td>
+        <td data-sort="82"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(82.0)</span></td>
+        <td>Comedy, Romance</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="Prime Video" data-has-free="true">
+        <td><a href="details/a-beautiful-mind.html" target="_blank" class="show-link">A Beautiful Mind</a></td>
+        <td>Movie</td>
+        <td data-sort="2001">2001</td>
+        <td>135 min</td>
+        <td data-sort="81"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(81.0)</span></td>
+        <td>Drama, Mystery</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/the-sting.html" target="_blank" class="show-link">The Sting</a></td>
+        <td>Movie</td>
+        <td data-sort="1973">1973</td>
+        <td>129 min</td>
+        <td data-sort="81"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(81.0)</span></td>
+        <td>Comedy, Crime, Drama</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/the-great-escape.html" target="_blank" class="show-link">The Great Escape</a></td>
+        <td>Movie</td>
+        <td data-sort="1963">1963</td>
+        <td>172 min</td>
+        <td data-sort="81"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(81.0)</span></td>
+        <td>Adventure, Drama, Thriller</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="Prime Video" data-has-free="true">
+        <td><a href="details/vertigo.html" target="_blank" class="show-link">Vertigo</a></td>
+        <td>Movie</td>
+        <td data-sort="1958">1958</td>
+        <td>128 min</td>
+        <td data-sort="81"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(81.0)</span></td>
+        <td>Mystery, Romance, Thriller</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/all-about-eve.html" target="_blank" class="show-link">All About Eve</a></td>
+        <td>Movie</td>
+        <td data-sort="1950">1950</td>
+        <td>138 min</td>
+        <td data-sort="81"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(81.0)</span></td>
+        <td>Drama</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="Disney+,Hulu" data-has-free="true">
+        <td><a href="details/the-sound-of-music.html" target="_blank" class="show-link">The Sound of Music</a></td>
+        <td>Movie</td>
+        <td data-sort="1965">1965</td>
+        <td>175 min</td>
+        <td data-sort="80"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(80.0)</span></td>
+        <td>Drama, Family</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge disney+" data-service="Disney+">Disney+</a> <a href="https" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/the-bridge-on-the-river-kwai.html" target="_blank" class="show-link">The Bridge on the River Kwai</a></td>
+        <td>Movie</td>
+        <td data-sort="1957">1957</td>
+        <td>154 min</td>
+        <td data-sort="80"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(80.0)</span></td>
+        <td>Adventure, Drama, War</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/on-the-waterfront.html" target="_blank" class="show-link">On the Waterfront</a></td>
+        <td>Movie</td>
+        <td data-sort="1954">1954</td>
+        <td>103 min</td>
+        <td data-sort="80"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(80.0)</span></td>
+        <td>Crime, Drama, Thriller</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/the-king-s-speech.html" target="_blank" class="show-link">The King's Speech</a></td>
+        <td>Movie</td>
+        <td data-sort="2010">2010</td>
+        <td>118 min</td>
+        <td data-sort="79"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(79.0)</span></td>
+        <td>Drama, History</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/rain-man.html" target="_blank" class="show-link">Rain Man</a></td>
+        <td>Movie</td>
+        <td data-sort="1988">1988</td>
+        <td>128 min</td>
+        <td data-sort="79"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(79.0)</span></td>
+        <td>Drama</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="Disney+,Hulu" data-has-free="true">
+        <td><a href="details/the-princess-bride.html" target="_blank" class="show-link">The Princess Bride</a></td>
+        <td>Movie</td>
+        <td data-sort="1987">1987</td>
+        <td>93 min</td>
+        <td data-sort="79"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(79.0)</span></td>
+        <td>Adventure, Comedy, Family</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge disney+" data-service="Disney+">Disney+</a> <a href="https" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/butch-cassidy-and-the-sundance-kid.html" target="_blank" class="show-link">Butch Cassidy and the Sundance Kid</a></td>
+        <td>Movie</td>
+        <td data-sort="1969">1969</td>
+        <td>110 min</td>
+        <td data-sort="79"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(79.0)</span></td>
+        <td>Adventure, Crime</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/cool-hand-luke.html" target="_blank" class="show-link">Cool Hand Luke</a></td>
+        <td>Movie</td>
+        <td data-sort="1967">1967</td>
+        <td>121 min</td>
+        <td data-sort="79"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(79.0)</span></td>
+        <td>Crime, Drama</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/patton.html" target="_blank" class="show-link">Patton</a></td>
+        <td>Movie</td>
+        <td data-sort="1970">1970</td>
+        <td>164 min</td>
+        <td data-sort="78"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(78.0)</span></td>
+        <td>Drama, War</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/doctor-zhivago.html" target="_blank" class="show-link">Doctor Zhivago</a></td>
+        <td>Movie</td>
+        <td data-sort="1965">1965</td>
+        <td>185 min</td>
+        <td data-sort="78"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(78.0)</span></td>
+        <td>Drama, Romance, War</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/the-ten-commandments.html" target="_blank" class="show-link">The Ten Commandments</a></td>
+        <td>Movie</td>
+        <td data-sort="1956">1956</td>
+        <td>220 min</td>
+        <td data-sort="78"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(78.0)</span></td>
+        <td>Adventure, Drama, Family</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/midnight-cowboy.html" target="_blank" class="show-link">Midnight Cowboy</a></td>
+        <td>Movie</td>
+        <td data-sort="1969">1969</td>
+        <td>108 min</td>
+        <td data-sort="77"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(77.0)</span></td>
+        <td>Drama</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/guess-who-s-coming-to-dinner.html" target="_blank" class="show-link">Guess Who's Coming to Dinner</a></td>
+        <td>Movie</td>
+        <td data-sort="1967">1967</td>
+        <td>103 min</td>
+        <td data-sort="77"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(77.0)</span></td>
+        <td>Drama</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="Disney+" data-has-free="true">
+        <td><a href="details/mary-poppins.html" target="_blank" class="show-link">Mary Poppins</a></td>
+        <td>Movie</td>
+        <td data-sort="1964">1964</td>
+        <td>143 min</td>
+        <td data-sort="77"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(77.0)</span></td>
+        <td>Comedy, Family, Fantasy</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge disney+" data-service="Disney+">Disney+</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/my-fair-lady.html" target="_blank" class="show-link">My Fair Lady</a></td>
+        <td>Movie</td>
+        <td data-sort="1964">1964</td>
+        <td>170 min</td>
+        <td data-sort="76"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(76.0)</span></td>
+        <td>Family</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/the-longest-day.html" target="_blank" class="show-link">The Longest Day</a></td>
+        <td>Movie</td>
+        <td data-sort="1962">1962</td>
+        <td>180 min</td>
+        <td data-sort="76"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(76.0)</span></td>
+        <td>Action, Drama, History</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/giant.html" target="_blank" class="show-link">Giant</a></td>
+        <td>Movie</td>
+        <td data-sort="1956">1956</td>
+        <td>201 min</td>
+        <td data-sort="76"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(76.0)</span></td>
+        <td>Drama, Western</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/the-quiet-man.html" target="_blank" class="show-link">The Quiet Man</a></td>
+        <td>Movie</td>
+        <td data-sort="1952">1952</td>
+        <td>129 min</td>
+        <td data-sort="76"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(76.0)</span></td>
+        <td>Comedy, Drama, Romance</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/the-african-queen.html" target="_blank" class="show-link">The African Queen</a></td>
+        <td>Movie</td>
+        <td data-sort="1951">1951</td>
+        <td>105 min</td>
+        <td data-sort="76"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(76.0)</span></td>
+        <td>Adventure, Drama, Romance</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/on-golden-pond.html" target="_blank" class="show-link">On Golden Pond</a></td>
+        <td>Movie</td>
+        <td data-sort="1981">1981</td>
+        <td>109 min</td>
+        <td data-sort="75"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(75.0)</span></td>
+        <td>Drama</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/the-birds.html" target="_blank" class="show-link">The Birds</a></td>
+        <td>Movie</td>
+        <td data-sort="1963">1963</td>
+        <td>119 min</td>
+        <td data-sort="75"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(75.0)</span></td>
+        <td>Horror, Mystery</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/the-music-man.html" target="_blank" class="show-link">The Music Man</a></td>
+        <td>Movie</td>
+        <td data-sort="1962">1962</td>
+        <td>151 min</td>
+        <td data-sort="75"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(75.0)</span></td>
+        <td>Comedy, Family</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="Hulu" data-has-free="true">
+        <td><a href="details/breakfast-at-tiffany-s.html" target="_blank" class="show-link">Breakfast at Tiffany's</a></td>
+        <td>Movie</td>
+        <td data-sort="1961">1961</td>
+        <td>110 min</td>
+        <td data-sort="75"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(75.0)</span></td>
+        <td>Comedy, Drama, Romance</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="Prime Video" data-has-free="true">
+        <td><a href="details/terms-of-endearment.html" target="_blank" class="show-link">Terms of Endearment</a></td>
+        <td>Movie</td>
+        <td data-sort="1983">1983</td>
+        <td>132 min</td>
+        <td data-sort="73"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(73.0)</span></td>
+        <td>Comedy, Drama</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/an-affair-to-remember.html" target="_blank" class="show-link">An Affair to Remember</a></td>
+        <td>Movie</td>
+        <td data-sort="1957">1957</td>
+        <td>110 min</td>
+        <td data-sort="73"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(73.0)</span></td>
+        <td>Drama, Romance</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/driving-miss-daisy.html" target="_blank" class="show-link">Driving Miss Daisy</a></td>
+        <td>Movie</td>
+        <td data-sort="1989">1989</td>
+        <td>99 min</td>
+        <td data-sort="72"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(72.0)</span></td>
+        <td>Drama</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/the-great-race.html" target="_blank" class="show-link">The Great Race</a></td>
+        <td>Movie</td>
+        <td data-sort="1965">1965</td>
+        <td>146 min</td>
+        <td data-sort="71"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(71.0)</span></td>
+        <td>Action, Adventure, Comedy</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="details/calamity-jane.html" target="_blank" class="show-link">Calamity Jane</a></td>
+        <td>Movie</td>
+        <td data-sort="1953">1953</td>
+        <td>97 min</td>
+        <td data-sort="71"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(71.0)</span></td>
+        <td>Comedy, Romance</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="Prime Video" data-has-free="true">
+        <td><a href="details/oklahoma-.html" target="_blank" class="show-link">Oklahoma!</a></td>
+        <td>Movie</td>
+        <td data-sort="1955">1955</td>
+        <td>140 min</td>
+        <td data-sort="69"><span class="stars">⭐⭐⭐</span> <span class="rating-number">(69.0)</span></td>
+        <td>Romance</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="Disney+,Netflix" data-has-free="true">
+        <td><a href="details/midway.html" target="_blank" class="show-link">Midway</a></td>
+        <td>Movie</td>
+        <td data-sort="2019">2019</td>
+        <td>138 min</td>
+        <td data-sort="68"><span class="stars">⭐⭐⭐</span> <span class="rating-number">(68.0)</span></td>
+        <td>Action, History</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge disney+" data-service="Disney+">Disney+</a> <a href="https" target="_blank" class="service-badge netflix" data-service="Netflix">Netflix</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="movie" data-free-services="Prime Video" data-has-free="true">
+        <td><a href="details/south-pacific.html" target="_blank" class="show-link">South Pacific</a></td>
+        <td>Movie</td>
+        <td data-sort="1958">1958</td>
+        <td>157 min</td>
+        <td data-sort="66"><span class="stars">⭐⭐⭐</span> <span class="rating-number">(66.0)</span></td>
+        <td>Romance</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="Prime Video,Prime Video,Netflix,Disney+" data-has-free="true">
+        <td><a href="details/the-chosen.html" target="_blank" class="show-link">The Chosen</a></td>
+        <td>Series</td>
+        <td data-sort="2019">2019</td>
+        <td>5 Seasons</td>
+        <td data-sort="85"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(85.0)</span></td>
+        <td>Drama, History</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a> <a href="https" target="_blank" class="service-badge netflix" data-service="Netflix">Netflix</a> <a href="https" target="_blank" class="service-badge disney+" data-service="Disney+">Disney+</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="Hulu" data-has-free="true">
+        <td><a href="details/pushing-daisies.html" target="_blank" class="show-link">Pushing Daisies</a></td>
+        <td>Series</td>
+        <td data-sort="2007">2007</td>
+        <td>2 Seasons</td>
+        <td data-sort="82"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(82.0)</span></td>
+        <td>Drama, Fantasy</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="Netflix" data-has-free="true">
+        <td><a href="details/call-the-midwife.html" target="_blank" class="show-link">Call the Midwife</a></td>
+        <td>Series</td>
+        <td data-sort="2012">2012</td>
+        <td>14 Seasons</td>
+        <td data-sort="81"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(81.0)</span></td>
+        <td>Drama, History</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge netflix" data-service="Netflix">Netflix</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="Prime Video" data-has-free="true">
+        <td><a href="details/monk.html" target="_blank" class="show-link">Monk</a></td>
+        <td>Series</td>
+        <td data-sort="2002">2002</td>
+        <td>8 Seasons</td>
+        <td data-sort="80"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(80.0)</span></td>
+        <td>Comedy, Crime, Drama</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="Hulu" data-has-free="true">
+        <td><a href="details/the-golden-girls.html" target="_blank" class="show-link">The Golden Girls</a></td>
+        <td>Series</td>
+        <td data-sort="1985">1985</td>
+        <td>7 Seasons</td>
+        <td data-sort="80"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(80.0)</span></td>
+        <td>Comedy</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="Prime Video" data-has-free="true">
+        <td><a href="details/miss-fisher-s-murder-mysteries.html" target="_blank" class="show-link">Miss Fisher's Murder Mysteries</a></td>
+        <td>Series</td>
+        <td data-sort="2012">2012</td>
+        <td>3 Seasons</td>
+        <td data-sort="79"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(79.0)</span></td>
+        <td>Crime, Drama, History</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="Prime Video,Netflix" data-has-free="true">
+        <td><a href="details/heartland.html" target="_blank" class="show-link">Heartland</a></td>
+        <td>Series</td>
+        <td data-sort="2007">2007</td>
+        <td>19 Seasons</td>
+        <td data-sort="79"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(79.0)</span></td>
+        <td>Drama, Family</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a> <a href="https" target="_blank" class="service-badge netflix" data-service="Netflix">Netflix</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
+        <td><a href="details/doc-martin.html" target="_blank" class="show-link">Doc Martin</a></td>
+        <td>Series</td>
+        <td data-sort="2004">2004</td>
+        <td>10 Seasons</td>
+        <td data-sort="79"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(79.0)</span></td>
+        <td>Comedy, Drama, Romance</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
+        <td><a href="details/when-calls-the-heart.html" target="_blank" class="show-link">When Calls the Heart</a></td>
+        <td>Series</td>
+        <td data-sort="2014">2014</td>
+        <td>13 Seasons</td>
+        <td data-sort="78"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(78.0)</span></td>
+        <td>Drama, History, Romance</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video" data-has-free="true">
+        <td><a href="details/midsomer-murders.html" target="_blank" class="show-link">Midsomer Murders</a></td>
+        <td>Series</td>
+        <td data-sort="1997">1997</td>
+        <td>24 Seasons</td>
+        <td data-sort="78"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(78.0)</span></td>
+        <td>Crime, Drama, Mystery</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="Prime Video" data-has-free="true">
+        <td><a href="details/northern-exposure.html" target="_blank" class="show-link">Northern Exposure</a></td>
+        <td>Series</td>
+        <td data-sort="1990">1990</td>
+        <td>6 Seasons</td>
+        <td data-sort="78"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(78.0)</span></td>
+        <td>Comedy, Drama</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
+        <td><a href="details/i-love-lucy.html" target="_blank" class="show-link">I Love Lucy</a></td>
+        <td>Series</td>
+        <td data-sort="1951">1951</td>
+        <td>6 Seasons</td>
+        <td data-sort="78"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(78.0)</span></td>
+        <td>Comedy</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="Prime Video,Prime Video,Prime Video,Prime Video" data-has-free="true">
+        <td><a href="details/grantchester.html" target="_blank" class="show-link">Grantchester</a></td>
+        <td>Series</td>
+        <td data-sort="2014">2014</td>
+        <td>10 Seasons</td>
+        <td data-sort="77"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(77.0)</span></td>
+        <td>Crime, Drama, Mystery</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
+        <td><a href="details/father-brown.html" target="_blank" class="show-link">Father Brown</a></td>
+        <td>Series</td>
+        <td data-sort="2013">2013</td>
+        <td>12 Seasons</td>
+        <td data-sort="77"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(77.0)</span></td>
+        <td>Crime, Drama, Mystery</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="Prime Video,Prime Video,Prime Video,Prime Video" data-has-free="true">
+        <td><a href="details/little-house-on-the-prairie.html" target="_blank" class="show-link">Little House on the Prairie</a></td>
+        <td>Series</td>
+        <td data-sort="1974">1974</td>
+        <td>9 Seasons</td>
+        <td data-sort="76"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(76.0)</span></td>
+        <td>Drama, Family, Romance</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
+        <td><a href="details/the-andy-griffith-show.html" target="_blank" class="show-link">The Andy Griffith Show</a></td>
+        <td>Series</td>
+        <td data-sort="1960">1960</td>
+        <td>8 Seasons</td>
+        <td data-sort="76"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(76.0)</span></td>
+        <td>Comedy, Family</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
+        <td><a href="details/drop-dead-diva.html" target="_blank" class="show-link">Drop Dead Diva</a></td>
+        <td>Series</td>
+        <td data-sort="2009">2009</td>
+        <td>6 Seasons</td>
+        <td data-sort="75"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(75.0)</span></td>
+        <td>Comedy, Drama</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
+        <td><a href="details/lark-rise-to-candleford.html" target="_blank" class="show-link">Lark Rise to Candleford</a></td>
+        <td>Series</td>
+        <td data-sort="2008">2008</td>
+        <td>4 Seasons</td>
+        <td data-sort="75"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(75.0)</span></td>
+        <td>Drama, Romance</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="Prime Video,Prime Video" data-has-free="true">
+        <td><a href="details/the-dick-van-dyke-show.html" target="_blank" class="show-link">The Dick Van Dyke Show</a></td>
+        <td>Series</td>
+        <td data-sort="1961">1961</td>
+        <td>5 Seasons</td>
+        <td data-sort="75"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(75.0)</span></td>
+        <td>Comedy, Family</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
+        <td><a href="details/perry-mason.html" target="_blank" class="show-link">Perry Mason</a></td>
+        <td>Series</td>
+        <td data-sort="1957">1957</td>
+        <td>9 Seasons</td>
+        <td data-sort="75"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(75.0)</span></td>
+        <td>Crime, Drama, Mystery</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
+        <td><a href="details/a-place-to-call-home.html" target="_blank" class="show-link">A Place to Call Home</a></td>
+        <td>Series</td>
+        <td data-sort="2013">2013</td>
+        <td>6 Seasons</td>
+        <td data-sort="74"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(74.0)</span></td>
+        <td>Drama</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="Prime Video,Prime Video" data-has-free="true">
+        <td><a href="details/the-waltons.html" target="_blank" class="show-link">The Waltons</a></td>
+        <td>Series</td>
+        <td data-sort="1972">1972</td>
+        <td>9 Seasons</td>
+        <td data-sort="74"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(74.0)</span></td>
+        <td>Drama, Family, Romance</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
+        <td><a href="details/rosemary---thyme.html" target="_blank" class="show-link">Rosemary & Thyme</a></td>
+        <td>Series</td>
+        <td data-sort="2003">2003</td>
+        <td>3 Seasons</td>
+        <td data-sort="73"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(73.0)</span></td>
+        <td>Crime, Drama, Mystery</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="Hulu" data-has-free="true">
+        <td><a href="details/mcleod-s-daughters.html" target="_blank" class="show-link">McLeod's Daughters</a></td>
+        <td>Series</td>
+        <td data-sort="2001">2001</td>
+        <td>8 Seasons</td>
+        <td data-sort="73"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(73.0)</span></td>
+        <td>Drama, Romance</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="Prime Video" data-has-free="true">
+        <td><a href="details/the-carol-burnett-show.html" target="_blank" class="show-link">The Carol Burnett Show</a></td>
+        <td>Series</td>
+        <td data-sort="1967">1967</td>
+        <td>11 Seasons</td>
+        <td data-sort="73"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(73.0)</span></td>
+        <td>Comedy, Family</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="Prime Video" data-has-free="true">
+        <td><a href="details/the-bob-newhart-show.html" target="_blank" class="show-link">The Bob Newhart Show</a></td>
+        <td>Series</td>
+        <td data-sort="1972">1972</td>
+        <td>6 Seasons</td>
+        <td data-sort="72"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(72.0)</span></td>
+        <td>Comedy</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
+        <td><a href="details/all-creatures-great-and-small.html" target="_blank" class="show-link">All Creatures Great and Small</a></td>
+        <td>Series</td>
+        <td data-sort="2020">2020</td>
+        <td>7 Seasons</td>
+        <td data-sort="71"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(71.0)</span></td>
+        <td>Comedy, Drama</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
+        <td><a href="details/road-to-avonlea.html" target="_blank" class="show-link">Road to Avonlea</a></td>
+        <td>Series</td>
+        <td data-sort="1990">1990</td>
+        <td>7 Seasons</td>
+        <td data-sort="71"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(71.0)</span></td>
+        <td>Adventure, Drama, Family</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="Prime Video,Prime Video,Prime Video" data-has-free="true">
+        <td><a href="details/matlock.html" target="_blank" class="show-link">Matlock</a></td>
+        <td>Series</td>
+        <td data-sort="1986">1986</td>
+        <td>9 Seasons</td>
+        <td data-sort="71"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(71.0)</span></td>
+        <td>Crime, Drama, Mystery</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
+        <td><a href="details/the-repair-shop.html" target="_blank" class="show-link">The Repair Shop</a></td>
+        <td>Series</td>
+        <td data-sort="2017">2017</td>
+        <td>15 Seasons</td>
+        <td data-sort="70"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(70.0)</span></td>
+        <td>Documentary, Reality</td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="Prime Video" data-has-free="true">
+        <td><a href="details/highway-to-heaven.html" target="_blank" class="show-link">Highway to Heaven</a></td>
+        <td>Series</td>
+        <td data-sort="1984">1984</td>
+        <td>5 Seasons</td>
+        <td data-sort="70"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(70.0)</span></td>
+        <td>Drama, Fantasy</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+      </tr>
+    
+
+      <tr class="show-row" data-type="series" data-free-services="Netflix" data-has-free="true">
+        <td><a href="details/touched-by-an-angel.html" target="_blank" class="show-link">Touched by an Angel</a></td>
+        <td>Series</td>
+        <td data-sort="1994">1994</td>
+        <td>9 Seasons</td>
+        <td data-sort="63"><span class="stars">⭐⭐⭐</span> <span class="rating-number">(63.0)</span></td>
+        <td>Drama, Family, Fantasy</td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge netflix" data-service="Netflix">Netflix</a></td>
+      </tr>
+    
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer">
+      <p>Generated for AlzheimersTv</p>
+      <p>Click on any show title to see full details. Streaming availability subject to change.</p>
+    </div>
+  </div>
+
+  <script>
+    // Table sorting
+    let currentSort = { column: 'rating', direction: 'desc' };
+
+    document.querySelectorAll('th.sortable').forEach(th => {
+      th.addEventListener('click', () => {
+        const column = th.dataset.sort;
+        const table = document.getElementById('shows-table');
+        const tbody = table.querySelector('tbody');
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+
+        // Toggle direction if clicking same column
+        if (currentSort.column === column) {
+          currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+          currentSort.column = column;
+          currentSort.direction = 'asc';
+        }
+
+        // Remove sorted class from all headers
+        document.querySelectorAll('th.sorted-asc, th.sorted-desc').forEach(h => {
+          h.classList.remove('sorted-asc', 'sorted-desc');
+        });
+
+        // Add sorted class to current header
+        th.classList.add(currentSort.direction === 'asc' ? 'sorted-asc' : 'sorted-desc');
+
+        // Sort rows
+        rows.sort((a, b) => {
+          let aVal, bVal;
+
+          if (column === 'title') {
+            aVal = a.querySelector('td:nth-child(1)').textContent.trim();
+            bVal = b.querySelector('td:nth-child(1)').textContent.trim();
+            return currentSort.direction === 'asc'
+              ? aVal.localeCompare(bVal)
+              : bVal.localeCompare(aVal);
+          } else {
+            // Use data-sort attribute for year and rating
+            aVal = parseFloat(a.querySelector(`td[data-sort]`).dataset.sort);
+            bVal = parseFloat(b.querySelector(`td[data-sort]`).dataset.sort);
+            return currentSort.direction === 'asc' ? aVal - bVal : bVal - aVal;
+          }
+        });
+
+        // Re-append sorted rows
+        rows.forEach(row => tbody.appendChild(row));
+      });
+    });
+
+    // Filters
+    let currentTypeFilter = 'both';
+    let currentServiceFilter = 'all';
+
+    function updateFilters() {
+      const rows = document.querySelectorAll('.show-row');
+      let visibleCount = 0;
+
+      rows.forEach(row => {
+        let show = true;
+
+        // Type filter (Movie/Series/Both)
+        const rowType = row.dataset.type;
+        if (currentTypeFilter !== 'both' && rowType !== currentTypeFilter) {
+          show = false;
+        }
+
+        // Only show items with free streaming (paid options are removed)
+        const hasFree = row.dataset.hasFree === 'true';
+        if (!hasFree) {
+          show = false;
+        }
+
+        // Service filter
+        if (currentServiceFilter !== 'all') {
+          const freeServices = row.dataset.freeServices.split(',');
+          if (!freeServices.includes(currentServiceFilter)) {
+            show = false;
+          }
+        }
+
+        if (show) {
+          row.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          row.classList.add('hidden');
+        }
+      });
+
+      document.getElementById('visible-count').textContent = visibleCount;
+    }
+
+    // Type filter buttons (Movie/Series/Both)
+    document.querySelectorAll('.type-filter').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.type-filter').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentTypeFilter = btn.dataset.type;
+        updateFilters();
+      });
+    });
+
+    // Service filter buttons
+    document.querySelectorAll('.service-filter').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.service-filter').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentServiceFilter = btn.dataset.service;
+        updateFilters();
+      });
+    });
+
+    // Initial filter application (show all with free streaming)
+    updateFilters();
+  </script>
+</body>
+</html>

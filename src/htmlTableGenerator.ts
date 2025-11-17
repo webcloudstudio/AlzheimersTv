@@ -22,35 +22,37 @@ export class HtmlTableGenerator {
     const stars = this.generateStars(show.rating);
     const genres = show.genres.slice(0, 3).join(', ');
 
-    const freeServices = show.freeStreamingServices.map(s => {
+    // Get unique free services (remove duplicates)
+    const uniqueFreeServices = new Map<string, any>();
+    show.freeStreamingServices.forEach(s => {
+      if (!uniqueFreeServices.has(s.name)) {
+        uniqueFreeServices.set(s.name, s);
+      }
+    });
+
+    const freeServices = Array.from(uniqueFreeServices.values()).map(s => {
       let serviceName = s.name;
       if (s.name.toLowerCase().includes('prime')) {
         serviceName += ' (free)';
       }
-      return `<span class="service-badge ${s.name.toLowerCase().replace(/\s+/g, '-')}" data-service="${s.name}">${serviceName}</span>`;
-    }).join(' ');
-
-    const paidServices = show.paidStreamingServices.map(s => {
-      let serviceName = s.name;
-      if (s.name.toLowerCase().includes('prime')) {
-        serviceName += ' (pay)';
-      }
-      return `<span class="service-badge paid ${s.name.toLowerCase().replace(/\s+/g, '-')}" data-service="${s.name}">${serviceName}</span>`;
+      return `<a href="${s.link}" target="_blank" class="service-badge ${s.name.toLowerCase().replace(/\s+/g, '-')}" data-service="${s.name}">${serviceName}</a>`;
     }).join(' ');
 
     const metaInfo = show.showType === 'series'
       ? (show.seasonCount ? `${show.seasonCount} Season${show.seasonCount > 1 ? 's' : ''}` : 'Series')
       : (show.runtime ? `${show.runtime} min` : 'Movie');
 
+    const showType = show.showType === 'series' ? 'Series' : 'Movie';
+
     return `
-      <tr class="show-row" data-free-services="${show.freeStreamingServices.map(s => s.name).join(',')}" data-paid-services="${show.paidStreamingServices.map(s => s.name).join(',')}" data-has-free="${show.freeStreamingServices.length > 0}" data-has-paid="${show.paidStreamingServices.length > 0}">
+      <tr class="show-row" data-type="${showType.toLowerCase()}" data-free-services="${show.freeStreamingServices.map(s => s.name).join(',')}" data-has-free="${show.freeStreamingServices.length > 0}">
         <td><a href="${detailFile}" target="_blank" class="show-link">${show.title}</a></td>
+        <td>${showType}</td>
         <td data-sort="${show.year}">${show.year}</td>
         <td>${metaInfo}</td>
         <td data-sort="${show.rating}"><span class="stars">${stars}</span> <span class="rating-number">(${show.rating.toFixed(1)})</span></td>
         <td>${genres}</td>
         <td class="services-cell">${freeServices}</td>
-        <td class="services-cell">${paidServices}</td>
       </tr>
     `;
   }
@@ -143,6 +145,7 @@ export class HtmlTableGenerator {
       backdrop-filter: blur(10px);
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 30px;
       flex-wrap: wrap;
     }
@@ -290,6 +293,13 @@ export class HtmlTableGenerator {
       font-weight: 600;
       color: white;
       white-space: nowrap;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .service-badge:hover {
+      opacity: 0.8;
+      transform: translateY(-1px);
     }
 
     .service-badge.netflix { background: #E50914; }
@@ -318,8 +328,7 @@ export class HtmlTableGenerator {
     }
 
     .stats {
-      text-align: center;
-      padding: 20px;
+      text-align: right;
       color: #b8b8b8;
       font-size: 1.1em;
     }
@@ -328,27 +337,26 @@ export class HtmlTableGenerator {
 <body>
   <div class="container">
     <header>
-      <h1>${title}</h1>
+      <div style="display: flex; align-items: center; gap: 20px;">
+        <h1>${title}</h1>
+        <div style="display: flex; gap: 10px;">
+          <button class="filter-btn type-filter active" data-type="both">Both</button>
+          <button class="filter-btn type-filter" data-type="movie">Movies</button>
+          <button class="filter-btn type-filter" data-type="series">Series</button>
+        </div>
+      </div>
       <p class="generated-date">Updated: ${generatedDate}</p>
     </header>
 
     <div class="filters">
       <div class="filter-section">
-        <div class="filter-label">Show:</div>
-        <button class="filter-btn free-paid-filter active" data-filter="free">FREE Only</button>
-        <button class="filter-btn free-paid-filter" data-filter="all">ALL</button>
-        <button class="filter-btn free-paid-filter" data-filter="paid">PAID Only</button>
-      </div>
-
-      <div class="filter-section">
         <div class="filter-label">Filter by Service:</div>
         <button class="filter-btn service-filter active" data-service="all">All Services</button>
         ${serviceButtons}
       </div>
-    </div>
-
-    <div class="stats" id="stats">
-      Showing <span id="visible-count">${shows.length}</span> of ${shows.length} shows
+      <div class="stats" id="stats">
+        Showing <span id="visible-count">${shows.length}</span> of ${shows.length} shows
+      </div>
     </div>
 
     <div class="table-container">
@@ -356,12 +364,12 @@ export class HtmlTableGenerator {
         <thead>
           <tr>
             <th class="sortable" data-sort="title">Title</th>
+            <th class="sortable" data-sort="type">Type</th>
             <th class="sortable" data-sort="year">Year</th>
             <th>Length</th>
             <th class="sortable" data-sort="rating">Rating</th>
             <th>Genres</th>
             <th>Free Streaming</th>
-            <th>Paid Options</th>
           </tr>
         </thead>
         <tbody>
@@ -427,7 +435,7 @@ export class HtmlTableGenerator {
     });
 
     // Filters
-    let currentFreePaidFilter = 'free';
+    let currentTypeFilter = 'both';
     let currentServiceFilter = 'all';
 
     function updateFilters() {
@@ -437,23 +445,22 @@ export class HtmlTableGenerator {
       rows.forEach(row => {
         let show = true;
 
-        // Free/Paid filter
-        const hasFree = row.dataset.hasFree === 'true';
-        const hasPaid = row.dataset.hasPaid === 'true';
-
-        if (currentFreePaidFilter === 'free' && !hasFree) {
+        // Type filter (Movie/Series/Both)
+        const rowType = row.dataset.type;
+        if (currentTypeFilter !== 'both' && rowType !== currentTypeFilter) {
           show = false;
-        } else if (currentFreePaidFilter === 'paid' && !hasPaid) {
+        }
+
+        // Only show items with free streaming (paid options are removed)
+        const hasFree = row.dataset.hasFree === 'true';
+        if (!hasFree) {
           show = false;
         }
 
         // Service filter
         if (currentServiceFilter !== 'all') {
           const freeServices = row.dataset.freeServices.split(',');
-          const paidServices = row.dataset.paidServices.split(',');
-          const allServices = [...freeServices, ...paidServices];
-
-          if (!allServices.includes(currentServiceFilter)) {
+          if (!freeServices.includes(currentServiceFilter)) {
             show = false;
           }
         }
@@ -469,12 +476,12 @@ export class HtmlTableGenerator {
       document.getElementById('visible-count').textContent = visibleCount;
     }
 
-    // Free/Paid filter buttons
-    document.querySelectorAll('.free-paid-filter').forEach(btn => {
+    // Type filter buttons (Movie/Series/Both)
+    document.querySelectorAll('.type-filter').forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.free-paid-filter').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.type-filter').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        currentFreePaidFilter = btn.dataset.filter;
+        currentTypeFilter = btn.dataset.type;
         updateFilters();
       });
     });
@@ -489,7 +496,7 @@ export class HtmlTableGenerator {
       });
     });
 
-    // Initial filter application (show FREE only by default)
+    // Initial filter application (show all with free streaming)
     updateFilters();
   </script>
 </body>
@@ -527,20 +534,20 @@ export class HtmlTableGenerator {
     const stars = this.generateStars(show.rating);
     const genresList = show.genres.join(', ');
 
-    const freeServices = show.freeStreamingServices.map(s => {
+    // Get unique free services (remove duplicates)
+    const uniqueFreeServices = new Map<string, any>();
+    show.freeStreamingServices.forEach(s => {
+      if (!uniqueFreeServices.has(s.name)) {
+        uniqueFreeServices.set(s.name, s);
+      }
+    });
+
+    const freeServices = Array.from(uniqueFreeServices.values()).map(s => {
       let serviceName = s.name;
       if (s.name.toLowerCase().includes('prime')) {
         serviceName += ' (free with subscription)';
       }
       return `<a href="${s.link}" target="_blank" class="service-link ${s.name.toLowerCase().replace(/\s+/g, '-')}">${serviceName}</a>`;
-    }).join('');
-
-    const paidServices = show.paidStreamingServices.map(s => {
-      let serviceName = s.name;
-      if (s.name.toLowerCase().includes('prime')) {
-        serviceName += ' (rental/purchase)';
-      }
-      return `<a href="${s.link}" target="_blank" class="service-link paid ${s.name.toLowerCase().replace(/\s+/g, '-')}">${serviceName}</a>`;
     }).join('');
 
     const metaInfo = show.showType === 'series'
@@ -714,14 +721,7 @@ export class HtmlTableGenerator {
       <h2>Watch Free (with subscription)</h2>
       ${freeServices}
     </div>
-    ` : ''}
-
-    ${paidServices ? `
-    <div class="info-section streaming-section">
-      <h2>Rent or Buy</h2>
-      ${paidServices}
-    </div>
-    ` : ''}
+    ` : '<div class="info-section"><p>No free streaming options available.</p></div>'}
   </div>
 </body>
 </html>`;

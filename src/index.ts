@@ -62,24 +62,15 @@ async function main() {
       await updateCsvWithApiData(config.movies.csvInputFile, moviesInput, moviesMap);
     }
 
+    // Sort and filter movies
+    let sortedMovies: any[] = [];
     if (moviesWithStreaming.length > 0) {
       console.log('Sorting and filtering movies...');
-      const sortedMovies = ShowSorter.prepareForOlderViewers(
+      sortedMovies = ShowSorter.prepareForOlderViewers(
         moviesWithStreaming,
         config.minYear
       );
       console.log(`✓ ${sortedMovies.length} movies after filtering and sorting\n`);
-
-      console.log(`Generating HTML table: ${config.movies.outputHtmlFile}...`);
-      await htmlGenerator.generateTableHtmlFile(
-        sortedMovies,
-        config.movies.outputHtmlFile,
-        config.movies.detailsDirectory,
-        'Recommended Movies for Older People',
-        ''
-      );
-
-      await htmlGenerator.generateAllDetailPages(sortedMovies, config.movies.detailsDirectory);
     } else {
       console.log('⚠ No movies found on target streaming services.\n');
     }
@@ -104,33 +95,45 @@ async function main() {
       await updateCsvWithApiData(config.tvShows.csvInputFile, tvShowsInput, tvShowsMap);
     }
 
+    // Sort and filter TV shows
+    let sortedTvShows: any[] = [];
     if (tvShowsWithStreaming.length > 0) {
       console.log('Sorting and filtering TV shows...');
-      const sortedTvShows = ShowSorter.prepareForOlderViewers(
+      sortedTvShows = ShowSorter.prepareForOlderViewers(
         tvShowsWithStreaming,
         config.minYear
       );
       console.log(`✓ ${sortedTvShows.length} TV shows after filtering and sorting\n`);
-
-      console.log(`Generating HTML table: ${config.tvShows.outputHtmlFile}...`);
-      await htmlGenerator.generateTableHtmlFile(
-        sortedTvShows,
-        config.tvShows.outputHtmlFile,
-        config.tvShows.detailsDirectory,
-        'Recommended TV Shows for Older People',
-        ''
-      );
-
-      await htmlGenerator.generateAllDetailPages(sortedTvShows, config.tvShows.detailsDirectory);
     } else {
       console.log('⚠ No TV shows found on target streaming services.\n');
     }
 
+    // ========== GENERATE COMBINED PAGE ==========
+    if (sortedMovies.length > 0 || sortedTvShows.length > 0) {
+      console.log('Generating combined HTML page...');
+      const combined = [...sortedMovies, ...sortedTvShows];
+      console.log(`✓ Combined ${sortedMovies.length} movies and ${sortedTvShows.length} TV shows\n`);
+
+      console.log(`Generating HTML table: index.html...`);
+      await htmlGenerator.generateTableHtmlFile(
+        combined,
+        'index.html',
+        'details',
+        'TV for Older People',
+        ''
+      );
+
+      // Generate detail pages for all shows
+      await htmlGenerator.generateAllDetailPages(sortedMovies, config.movies.detailsDirectory);
+      await htmlGenerator.generateAllDetailPages(sortedTvShows, config.tvShows.detailsDirectory);
+    }
+
     // ========== SUMMARY ==========
     console.log('\n=== Completed Successfully! ===');
-    console.log(`\n📺 Movies: ${moviesWithStreaming.length > 0 ? config.movies.outputHtmlFile : 'None found'}`);
-    console.log(`📺 TV Shows: ${tvShowsWithStreaming.length > 0 ? config.tvShows.outputHtmlFile : 'None found'}`);
-    console.log('\nThe files are ready to be used in your YouTube videos!\n');
+    console.log(`\n📺 Combined Page: index.html`);
+    console.log(`   - ${sortedMovies.length} movies`);
+    console.log(`   - ${sortedTvShows.length} TV shows`);
+    console.log('\nThe file is ready to be used in your YouTube videos!\n');
 
   } catch (error: any) {
     console.error('\n❌ Error:', error.message);
