@@ -23,6 +23,17 @@ export async function parseShowsCSV(filePath: string, maxRows?: number): Promise
           year: row.year ? parseInt(row.year) : (row.Year ? parseInt(row.Year) : undefined),
           imdbId: row.imdbId || row.imdb_id || row.ImdbId,
           tmdbId: row.tmdbId || row.tmdb_id || row.TmdbId,
+          // Read cached data from CSV
+          lastApiCall: row.lastApiCall || undefined,
+          cachedYear: row.cachedYear ? parseInt(row.cachedYear) : undefined,
+          cachedRating: row.cachedRating ? parseFloat(row.cachedRating) : undefined,
+          cachedOverview: row.cachedOverview || undefined,
+          cachedGenres: row.cachedGenres || undefined,
+          cachedRuntime: row.cachedRuntime ? parseInt(row.cachedRuntime) : undefined,
+          cachedSeasonCount: row.cachedSeasonCount ? parseInt(row.cachedSeasonCount) : undefined,
+          cachedImageUrl: row.cachedImageUrl || undefined,
+          cachedFreeServices: row.cachedFreeServices || undefined,
+          cachedPaidServices: row.cachedPaidServices || undefined,
         });
       })
       .on('end', () => {

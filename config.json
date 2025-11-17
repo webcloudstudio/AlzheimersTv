@@ -4,12 +4,15 @@
   "maxItemsToProcess": 100,
   "targetServices": ["netflix", "prime", "hulu", "disney", "max", "appletv"],
   "minYear": 1950,
+  "cacheDays": 7,
   "movies": {
     "csvInputFile": "movies.csv",
-    "outputHtmlFile": "movies.html"
+    "outputHtmlFile": "movies.html",
+    "detailsDirectory": "details/movies"
   },
   "tvShows": {
     "csvInputFile": "tvshows.csv",
-    "outputHtmlFile": "tvshows.html"
+    "outputHtmlFile": "tvshows.html",
+    "detailsDirectory": "details/tvshows"
   }
 }

@@ -1,8 +1,9 @@
 import { readFile } from 'fs/promises';
 import { parseShowsCSV } from './csvParser.js';
 import { StreamingApiClient } from './streamingApi.js';
-import { HtmlGenerator } from './htmlGenerator.js';
+import { HtmlTableGenerator } from './htmlTableGenerator.js';
 import { ShowSorter } from './movieSorter.js';
+import { updateCsvWithApiData } from './csvWriter.js';
 import { Config } from './types.js';
 
 async function main() {
@@ -29,15 +30,17 @@ async function main() {
     console.log(`  - Country: ${config.country}`);
     console.log(`  - Max items to process: ${config.maxItemsToProcess}`);
     console.log(`  - Target services: ${config.targetServices.join(', ')}`);
-    console.log(`  - Minimum year: ${config.minYear}\n`);
+    console.log(`  - Minimum year: ${config.minYear}`);
+    console.log(`  - Cache days: ${config.cacheDays}\n`);
 
     // Initialize API client and HTML generator
     const apiClient = new StreamingApiClient(
       config.apiKey,
       config.country,
-      config.targetServices
+      config.targetServices,
+      config.cacheDays
     );
-    const htmlGenerator = new HtmlGenerator();
+    const htmlGenerator = new HtmlTableGenerator();
 
     // ========== PROCESS MOVIES ==========
     console.log('========== PROCESSING MOVIES ==========\n');
@@ -53,6 +56,12 @@ async function main() {
     const moviesWithStreaming = await apiClient.getShowsWithStreaming(moviesInput, 'movie');
     console.log(`\n✓ Found ${moviesWithStreaming.length} movies available on streaming services\n`);
 
+    // Update CSV with API data
+    if (moviesWithStreaming.length > 0) {
+      const moviesMap = new Map(moviesWithStreaming.map(m => [m.title, m]));
+      await updateCsvWithApiData(config.movies.csvInputFile, moviesInput, moviesMap);
+    }
+
     if (moviesWithStreaming.length > 0) {
       console.log('Sorting and filtering movies...');
       const sortedMovies = ShowSorter.prepareForOlderViewers(
@@ -61,13 +70,16 @@ async function main() {
       );
       console.log(`✓ ${sortedMovies.length} movies after filtering and sorting\n`);
 
-      console.log(`Generating HTML file: ${config.movies.outputHtmlFile}...`);
-      await htmlGenerator.generateHtmlFile(
+      console.log(`Generating HTML table: ${config.movies.outputHtmlFile}...`);
+      await htmlGenerator.generateTableHtmlFile(
         sortedMovies,
         config.movies.outputHtmlFile,
-        'Classic Movies',
-        'Your Guide to Streaming Favorites'
+        config.movies.detailsDirectory,
+        'Recommended Movies for Older People',
+        ''
       );
+
+      await htmlGenerator.generateAllDetailPages(sortedMovies, config.movies.detailsDirectory);
     } else {
       console.log('⚠ No movies found on target streaming services.\n');
     }
@@ -86,6 +98,12 @@ async function main() {
     const tvShowsWithStreaming = await apiClient.getShowsWithStreaming(tvShowsInput, 'series');
     console.log(`\n✓ Found ${tvShowsWithStreaming.length} TV shows available on streaming services\n`);
 
+    // Update CSV with API data
+    if (tvShowsWithStreaming.length > 0) {
+      const tvShowsMap = new Map(tvShowsWithStreaming.map(s => [s.title, s]));
+      await updateCsvWithApiData(config.tvShows.csvInputFile, tvShowsInput, tvShowsMap);
+    }
+
     if (tvShowsWithStreaming.length > 0) {
       console.log('Sorting and filtering TV shows...');
       const sortedTvShows = ShowSorter.prepareForOlderViewers(
@@ -94,13 +112,16 @@ async function main() {
       );
       console.log(`✓ ${sortedTvShows.length} TV shows after filtering and sorting\n`);
 
-      console.log(`Generating HTML file: ${config.tvShows.outputHtmlFile}...`);
-      await htmlGenerator.generateHtmlFile(
+      console.log(`Generating HTML table: ${config.tvShows.outputHtmlFile}...`);
+      await htmlGenerator.generateTableHtmlFile(
         sortedTvShows,
         config.tvShows.outputHtmlFile,
-        'Classic TV Shows',
-        'Your Guide to Streaming Series'
+        config.tvShows.detailsDirectory,
+        'Recommended TV Shows for Older People',
+        ''
       );
+
+      await htmlGenerator.generateAllDetailPages(sortedTvShows, config.tvShows.detailsDirectory);
     } else {
       console.log('⚠ No TV shows found on target streaming services.\n');
     }

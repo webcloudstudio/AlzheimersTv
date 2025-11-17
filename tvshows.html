@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Classic TV Shows</title>
+  <title>Recommended TV Shows for Older People</title>
   <style>
     * {
       margin: 0;
@@ -20,26 +20,28 @@
     }
 
     .container {
-      max-width: 1400px;
+      max-width: 1600px;
       margin: 0 auto;
     }
 
     header {
-      text-align: center;
-      padding: 40px 20px;
-      margin-bottom: 40px;
+      padding: 40px 20px 20px;
+      margin-bottom: 30px;
       background: rgba(255, 255, 255, 0.05);
       border-radius: 20px;
       backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     h1 {
-      font-size: 3em;
-      margin-bottom: 10px;
+      font-size: 2.5em;
       background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      text-align: left;
     }
 
     .subtitle {
@@ -49,167 +51,184 @@
     }
 
     .generated-date {
-      font-size: 0.9em;
+      font-size: 0.75em;
       color: #888;
-      margin-top: 15px;
+      text-align: right;
     }
 
-    .movies-grid {
-      display: grid;
+    .filters {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
       gap: 30px;
+      flex-wrap: wrap;
     }
 
-    .movie-card {
-      background: rgba(255, 255, 255, 0.08);
+    .filter-section {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .filter-section:last-child {
+      margin-bottom: 0;
+    }
+
+    .filter-label {
+      font-weight: 600;
+      color: #4ecdc4;
+      font-size: 1.1em;
+      white-space: nowrap;
+    }
+
+    .filter-btn {
+      padding: 10px 20px;
+      margin: 5px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1em;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .filter-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .filter-btn.active {
+      background: #4ecdc4;
+      border-color: #4ecdc4;
+      color: #1a1a2e;
+    }
+
+    .filter-btn.inactive {
+      opacity: 0.5;
+    }
+
+    .table-container {
+      background: rgba(255, 255, 255, 0.05);
       border-radius: 15px;
       overflow: hidden;
-      display: grid;
-      grid-template-columns: 250px 1fr;
-      gap: 25px;
-      padding: 20px;
-      transition: transform 0.3s, box-shadow 0.3s;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
     }
 
-    .movie-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    }
-
-    .movie-poster {
-      width: 250px;
-      height: 375px;
-      border-radius: 10px;
-      overflow: hidden;
-      background: rgba(0, 0, 0, 0.3);
-    }
-
-    .movie-poster img {
+    table {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      border-collapse: collapse;
     }
 
-    .no-image {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      font-size: 1.2em;
+    thead {
+      background: rgba(255, 255, 255, 0.1);
     }
 
-    .movie-info {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      padding: 10px 0;
-    }
-
-    .movie-title {
-      font-size: 2em;
-      color: #fff;
-      margin-bottom: 5px;
-    }
-
-    .movie-meta {
-      display: flex;
-      gap: 20px;
+    th {
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
       font-size: 1.1em;
-      color: #b8b8b8;
-      flex-wrap: wrap;
-    }
-
-    .movie-meta span {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    .rating {
-      color: #ffd700;
-      font-weight: bold;
-    }
-
-    .genres {
       color: #4ecdc4;
-      font-size: 1em;
-      font-weight: 500;
+      cursor: pointer;
+      user-select: none;
+      position: relative;
     }
 
-    .overview {
-      color: #d0d0d0;
-      font-size: 1.1em;
-      line-height: 1.8;
-      margin: 10px 0;
+    th:hover {
+      background: rgba(255, 255, 255, 0.15);
     }
 
-    .streaming-services {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      margin-top: auto;
-      font-size: 1.1em;
+    th.sortable::after {
+      content: ' ↕';
+      opacity: 0.5;
     }
 
-    .streaming-services strong {
+    th.sorted-asc::after {
+      content: ' ↑';
+      opacity: 1;
+    }
+
+    th.sorted-desc::after {
+      content: ' ↓';
+      opacity: 1;
+    }
+
+    td {
+      padding: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    tbody tr {
+      transition: background 0.2s;
+    }
+
+    tbody tr:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    tbody tr.hidden {
+      display: none;
+    }
+
+    .show-link {
       color: #fff;
-      margin-right: 10px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.1em;
+    }
+
+    .show-link:hover {
+      color: #4ecdc4;
+      text-decoration: underline;
+    }
+
+    .stars {
+      color: #ffd700;
+      font-size: 1.1em;
+    }
+
+    .rating-number {
+      color: #b8b8b8;
+      font-size: 0.95em;
+    }
+
+    .services-cell {
+      font-size: 0.9em;
     }
 
     .service-badge {
       display: inline-block;
-      padding: 8px 16px;
-      border-radius: 8px;
-      text-decoration: none;
+      padding: 5px 10px;
+      margin: 2px;
+      border-radius: 5px;
+      font-size: 0.85em;
       font-weight: 600;
-      font-size: 0.95em;
-      transition: transform 0.2s, opacity 0.2s;
       color: white;
+      white-space: nowrap;
     }
 
-    .service-badge:hover {
-      transform: scale(1.05);
-      opacity: 0.9;
-    }
-
-    .netflix { background: #E50914; }
-    .prime { background: #00A8E1; }
-    .hulu { background: #1CE783; }
-    .disney { background: #113CCF; }
-    .disney\+ { background: #113CCF; }
-    .max { background: #002BE7; }
-    .hbo-max { background: #002BE7; }
-    .appletv { background: #000000; }
-    .apple-tv { background: #000000; }
-    .apple-tv\+ { background: #000000; }
-    .peacock { background: #000000; }
-    .paramount\+ { background: #0064FF; }
-    .paramount { background: #0064FF; }
-
-    @media (max-width: 768px) {
-      .movie-card {
-        grid-template-columns: 1fr;
-        gap: 15px;
-      }
-
-      .movie-poster {
-        width: 100%;
-        max-width: 300px;
-        margin: 0 auto;
-      }
-
-      h1 {
-        font-size: 2em;
-      }
-
-      .movie-title {
-        font-size: 1.5em;
-      }
-    }
+    .service-badge.netflix { background: #E50914; }
+    .service-badge.prime,
+    .service-badge.amazon-prime,
+    .service-badge.amazon-prime-video { background: #00A8E1; }
+    .service-badge.hulu { background: #1CE783; }
+    .service-badge.disney,
+    .service-badge.disney\+ { background: #113CCF; }
+    .service-badge.max,
+    .service-badge.hbo-max { background: #002BE7; }
+    .service-badge.appletv,
+    .service-badge.apple-tv,
+    .service-badge.apple-tv\+ { background: #000000; }
+    .service-badge.peacock { background: #000000; }
+    .service-badge.paramount,
+    .service-badge.paramount\+ { background: #0064FF; }
+    .service-badge.paid { background: #888; }
 
     .footer {
       text-align: center;
@@ -218,52 +237,469 @@
       color: #888;
       font-size: 0.9em;
     }
+
+    .stats {
+      text-align: center;
+      padding: 20px;
+      color: #b8b8b8;
+      font-size: 1.1em;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>Classic TV Shows</h1>
-      <p class="subtitle">Your Guide to Streaming Series</p>
+      <h1>Recommended TV Shows for Older People</h1>
       <p class="generated-date">Updated: November 16, 2025</p>
     </header>
 
-    <div class="movies-grid">
-      
-      <div class="movie-card">
-        <div class="movie-poster">
-          <img src="https://cdn.movieofthenight.com/show/14178/poster/vertical/en/480.jpg?Expires=1784803815&Signature=kshJVzEw4Y3TGbTDSv3gSxtWnXGNllzq6L0kgfZbuCZWSu1TfvuDuSQdW~rO2RRxg5kIXVHxvD4VesBTaolNeWtPK~s9HWq~h2phML69s9z3HWPqL7tQbgYyhgV2KLIwP2~-u9MuTA~Y-UTUzJtEujU0jdZQw~dTzivGF5W2B4p4t0GLEuqTzjHl2Zsdq3PNqSZT4G3ISSeMgoRmCZ66f6cCOK6PiYAL1u0Tk1W5Vw2ObszRvExBGJQwDzzbB31A-LOL5vlaVnC19UmChtSPzVRhMx4byGmRR-Pdp7G7Fl-iCcprDX-OWWbMk2blar20ADGENDelhyI7~~cG47gpmA__&Key-Pair-Id=KK4HN3OO4AT5R" alt="Wadjda">
-        </div>
-        <div class="movie-info">
-          <h2 class="movie-title">Wadjda</h2>
-          <div class="movie-meta">
-            <span class="year">2012</span>
-            
-            <span class="rating">⭐ 74.0/10</span>
-          </div>
-          <div class="genres">Drama</div>
-          <p class="overview">Wadjda is a 10-year-old girl living in a suburb of Riyadh, the capital of Saudi Arabia. Although she lives in a conservative world, Wadjda is fun loving, entrepreneurial and always pushing the boundaries of what she can get away with.</p>
-          <div class="streaming-services">
-            <strong>Watch on:</strong>
-            
-        <a href="https://www.amazon.com/gp/video/detail/B00HZSAZ28/ref=atv_dp" target="_blank" class="service-badge prime-video">
-          Prime Video
-        </a>
-      
-        <a href="https://www.amazon.com/gp/video/detail/B00HZSAZ28/ref=atv_dp" target="_blank" class="service-badge prime-video">
-          Prime Video
-        </a>
-      
-          </div>
-        </div>
+    <div class="filters">
+      <div class="filter-section">
+        <div class="filter-label">Show:</div>
+        <button class="filter-btn free-paid-filter active" data-filter="free">FREE Only</button>
+        <button class="filter-btn free-paid-filter" data-filter="all">ALL</button>
+        <button class="filter-btn free-paid-filter" data-filter="paid">PAID Only</button>
       </div>
+
+      <div class="filter-section">
+        <div class="filter-label">Filter by Service:</div>
+        <button class="filter-btn service-filter active" data-service="all">All Services</button>
+        <button class="filter-btn service-filter" data-service="Prime Video">Prime Video</button>
+        <button class="filter-btn service-filter" data-service="Netflix">Netflix</button>
+        <button class="filter-btn service-filter" data-service="Disney+">Disney+</button>
+        <button class="filter-btn service-filter" data-service="Hulu">Hulu</button>
+      </div>
+    </div>
+
+    <div class="stats" id="stats">
+      Showing <span id="visible-count">26</span> of 26 shows
+    </div>
+
+    <div class="table-container">
+      <table id="shows-table">
+        <thead>
+          <tr>
+            <th class="sortable" data-sort="title">Title</th>
+            <th class="sortable" data-sort="year">Year</th>
+            <th>Length</th>
+            <th class="sortable" data-sort="rating">Rating</th>
+            <th>Genres</th>
+            <th>Free Streaming</th>
+            <th>Paid Options</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+      <tr class="show-row" data-free-services="Prime Video,Prime Video,Netflix,Disney+" data-paid-services="Prime Video,Prime Video,Prime Video,Prime Video" data-has-free="true" data-has-paid="true">
+        <td><a href="details/tvshows/the-chosen.html" target="_blank" class="show-link">The Chosen</a></td>
+        <td data-sort="2019">2019</td>
+        <td>5 Seasons</td>
+        <td data-sort="85"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(85.0)</span></td>
+        <td>Drama, History</td>
+        <td class="services-cell"><span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span> <span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span> <span class="service-badge netflix" data-service="Netflix">Netflix</span> <span class="service-badge disney+" data-service="Disney+">Disney+</span></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
     
+
+      <tr class="show-row" data-free-services="Hulu" data-paid-services="Prime Video,Prime Video,Prime Video,Prime Video,Prime Video" data-has-free="true" data-has-paid="true">
+        <td><a href="details/tvshows/pushing-daisies.html" target="_blank" class="show-link">Pushing Daisies</a></td>
+        <td data-sort="2007">2007</td>
+        <td>2 Seasons</td>
+        <td data-sort="82"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(82.0)</span></td>
+        <td>Drama, Fantasy</td>
+        <td class="services-cell"><span class="service-badge hulu" data-service="Hulu">Hulu</span></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
+    
+
+      <tr class="show-row" data-free-services="Netflix" data-paid-services="Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video" data-has-free="true" data-has-paid="true">
+        <td><a href="details/tvshows/call-the-midwife.html" target="_blank" class="show-link">Call the Midwife</a></td>
+        <td data-sort="2012">2012</td>
+        <td>14 Seasons</td>
+        <td data-sort="81"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(81.0)</span></td>
+        <td>Drama, History</td>
+        <td class="services-cell"><span class="service-badge netflix" data-service="Netflix">Netflix</span></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
+    
+
+      <tr class="show-row" data-free-services="Prime Video" data-paid-services="Prime Video" data-has-free="true" data-has-paid="true">
+        <td><a href="details/tvshows/monk.html" target="_blank" class="show-link">Monk</a></td>
+        <td data-sort="2002">2002</td>
+        <td>8 Seasons</td>
+        <td data-sort="80"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(80.0)</span></td>
+        <td>Comedy, Crime, Drama</td>
+        <td class="services-cell"><span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
+    
+
+      <tr class="show-row" data-free-services="Hulu" data-paid-services="Prime Video" data-has-free="true" data-has-paid="true">
+        <td><a href="details/tvshows/the-golden-girls.html" target="_blank" class="show-link">The Golden Girls</a></td>
+        <td data-sort="1985">1985</td>
+        <td>7 Seasons</td>
+        <td data-sort="80"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(80.0)</span></td>
+        <td>Comedy</td>
+        <td class="services-cell"><span class="service-badge hulu" data-service="Hulu">Hulu</span></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
+    
+
+      <tr class="show-row" data-free-services="Prime Video" data-paid-services="Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video" data-has-free="true" data-has-paid="true">
+        <td><a href="details/tvshows/miss-fisher-s-murder-mysteries.html" target="_blank" class="show-link">Miss Fisher's Murder Mysteries</a></td>
+        <td data-sort="2012">2012</td>
+        <td>3 Seasons</td>
+        <td data-sort="79"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(79.0)</span></td>
+        <td>Crime, Drama, History</td>
+        <td class="services-cell"><span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
+    
+
+      <tr class="show-row" data-free-services="Prime Video,Netflix" data-paid-services="Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video" data-has-free="true" data-has-paid="true">
+        <td><a href="details/tvshows/heartland.html" target="_blank" class="show-link">Heartland</a></td>
+        <td data-sort="2007">2007</td>
+        <td>19 Seasons</td>
+        <td data-sort="79"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(79.0)</span></td>
+        <td>Drama, Family</td>
+        <td class="services-cell"><span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span> <span class="service-badge netflix" data-service="Netflix">Netflix</span></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
+    
+
+      <tr class="show-row" data-free-services="" data-paid-services="Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video" data-has-free="false" data-has-paid="true">
+        <td><a href="details/tvshows/doc-martin.html" target="_blank" class="show-link">Doc Martin</a></td>
+        <td data-sort="2004">2004</td>
+        <td>10 Seasons</td>
+        <td data-sort="79"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(79.0)</span></td>
+        <td>Comedy, Drama, Romance</td>
+        <td class="services-cell"></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
+    
+
+      <tr class="show-row" data-free-services="" data-paid-services="Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video" data-has-free="false" data-has-paid="true">
+        <td><a href="details/tvshows/when-calls-the-heart.html" target="_blank" class="show-link">When Calls the Heart</a></td>
+        <td data-sort="2014">2014</td>
+        <td>13 Seasons</td>
+        <td data-sort="78"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(78.0)</span></td>
+        <td>Drama, History, Romance</td>
+        <td class="services-cell"></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
+    
+
+      <tr class="show-row" data-free-services="Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video" data-paid-services="Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video" data-has-free="true" data-has-paid="true">
+        <td><a href="details/tvshows/midsomer-murders.html" target="_blank" class="show-link">Midsomer Murders</a></td>
+        <td data-sort="1997">1997</td>
+        <td>24 Seasons</td>
+        <td data-sort="78"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(78.0)</span></td>
+        <td>Crime, Drama, Mystery</td>
+        <td class="services-cell"><span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span> <span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span> <span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span> <span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span> <span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span> <span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
+    
+
+      <tr class="show-row" data-free-services="Prime Video" data-paid-services="Prime Video" data-has-free="true" data-has-paid="true">
+        <td><a href="details/tvshows/northern-exposure.html" target="_blank" class="show-link">Northern Exposure</a></td>
+        <td data-sort="1990">1990</td>
+        <td>6 Seasons</td>
+        <td data-sort="78"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(78.0)</span></td>
+        <td>Comedy, Drama</td>
+        <td class="services-cell"><span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
+    
+
+      <tr class="show-row" data-free-services="" data-paid-services="Prime Video,Prime Video" data-has-free="false" data-has-paid="true">
+        <td><a href="details/tvshows/i-love-lucy.html" target="_blank" class="show-link">I Love Lucy</a></td>
+        <td data-sort="1951">1951</td>
+        <td>6 Seasons</td>
+        <td data-sort="78"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(78.0)</span></td>
+        <td>Comedy</td>
+        <td class="services-cell"></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
+    
+
+      <tr class="show-row" data-free-services="Prime Video,Prime Video,Prime Video,Prime Video" data-paid-services="Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video" data-has-free="true" data-has-paid="true">
+        <td><a href="details/tvshows/grantchester.html" target="_blank" class="show-link">Grantchester</a></td>
+        <td data-sort="2014">2014</td>
+        <td>10 Seasons</td>
+        <td data-sort="77"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(77.0)</span></td>
+        <td>Crime, Drama, Mystery</td>
+        <td class="services-cell"><span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span> <span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span> <span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span> <span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
+    
+
+      <tr class="show-row" data-free-services="" data-paid-services="Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video" data-has-free="false" data-has-paid="true">
+        <td><a href="details/tvshows/father-brown.html" target="_blank" class="show-link">Father Brown</a></td>
+        <td data-sort="2013">2013</td>
+        <td>12 Seasons</td>
+        <td data-sort="77"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(77.0)</span></td>
+        <td>Crime, Drama, Mystery</td>
+        <td class="services-cell"></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
+    
+
+      <tr class="show-row" data-free-services="Prime Video,Prime Video,Prime Video,Prime Video" data-paid-services="Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video" data-has-free="true" data-has-paid="true">
+        <td><a href="details/tvshows/little-house-on-the-prairie.html" target="_blank" class="show-link">Little House on the Prairie</a></td>
+        <td data-sort="1974">1974</td>
+        <td>9 Seasons</td>
+        <td data-sort="76"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(76.0)</span></td>
+        <td>Drama, Family, Romance</td>
+        <td class="services-cell"><span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span> <span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span> <span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span> <span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
+    
+
+      <tr class="show-row" data-free-services="" data-paid-services="Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video" data-has-free="false" data-has-paid="true">
+        <td><a href="details/tvshows/the-andy-griffith-show.html" target="_blank" class="show-link">The Andy Griffith Show</a></td>
+        <td data-sort="1960">1960</td>
+        <td>8 Seasons</td>
+        <td data-sort="76"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(76.0)</span></td>
+        <td>Comedy, Family</td>
+        <td class="services-cell"></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
+    
+
+      <tr class="show-row" data-free-services="" data-paid-services="Prime Video" data-has-free="false" data-has-paid="true">
+        <td><a href="details/tvshows/drop-dead-diva.html" target="_blank" class="show-link">Drop Dead Diva</a></td>
+        <td data-sort="2009">2009</td>
+        <td>6 Seasons</td>
+        <td data-sort="75"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(75.0)</span></td>
+        <td>Comedy, Drama</td>
+        <td class="services-cell"></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
+    
+
+      <tr class="show-row" data-free-services="" data-paid-services="Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video" data-has-free="false" data-has-paid="true">
+        <td><a href="details/tvshows/lark-rise-to-candleford.html" target="_blank" class="show-link">Lark Rise to Candleford</a></td>
+        <td data-sort="2008">2008</td>
+        <td>4 Seasons</td>
+        <td data-sort="75"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(75.0)</span></td>
+        <td>Drama, Romance</td>
+        <td class="services-cell"></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
+    
+
+      <tr class="show-row" data-free-services="Prime Video,Prime Video" data-paid-services="" data-has-free="true" data-has-paid="false">
+        <td><a href="details/tvshows/the-dick-van-dyke-show.html" target="_blank" class="show-link">The Dick Van Dyke Show</a></td>
+        <td data-sort="1961">1961</td>
+        <td>5 Seasons</td>
+        <td data-sort="75"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(75.0)</span></td>
+        <td>Comedy, Family</td>
+        <td class="services-cell"><span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span> <span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span></td>
+        <td class="services-cell"></td>
+      </tr>
+    
+
+      <tr class="show-row" data-free-services="" data-paid-services="Prime Video,Prime Video,Prime Video" data-has-free="false" data-has-paid="true">
+        <td><a href="details/tvshows/perry-mason.html" target="_blank" class="show-link">Perry Mason</a></td>
+        <td data-sort="1957">1957</td>
+        <td>9 Seasons</td>
+        <td data-sort="75"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(75.0)</span></td>
+        <td>Crime, Drama, Mystery</td>
+        <td class="services-cell"></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
+    
+
+      <tr class="show-row" data-free-services="Prime Video,Prime Video" data-paid-services="Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video" data-has-free="true" data-has-paid="true">
+        <td><a href="details/tvshows/the-waltons.html" target="_blank" class="show-link">The Waltons</a></td>
+        <td data-sort="1972">1972</td>
+        <td>9 Seasons</td>
+        <td data-sort="74"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(74.0)</span></td>
+        <td>Drama, Family, Romance</td>
+        <td class="services-cell"><span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span> <span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
+    
+
+      <tr class="show-row" data-free-services="" data-paid-services="Prime Video" data-has-free="false" data-has-paid="true">
+        <td><a href="details/tvshows/all-creatures-great-and-small.html" target="_blank" class="show-link">All Creatures Great and Small</a></td>
+        <td data-sort="2020">2020</td>
+        <td>7 Seasons</td>
+        <td data-sort="71"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(71.0)</span></td>
+        <td>Comedy, Drama</td>
+        <td class="services-cell"></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
+    
+
+      <tr class="show-row" data-free-services="Prime Video,Prime Video,Prime Video" data-paid-services="Prime Video,Prime Video,Prime Video" data-has-free="true" data-has-paid="true">
+        <td><a href="details/tvshows/matlock.html" target="_blank" class="show-link">Matlock</a></td>
+        <td data-sort="1986">1986</td>
+        <td>9 Seasons</td>
+        <td data-sort="71"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(71.0)</span></td>
+        <td>Crime, Drama, Mystery</td>
+        <td class="services-cell"><span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span> <span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span> <span class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</span></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
+    
+
+      <tr class="show-row" data-free-services="" data-paid-services="Prime Video" data-has-free="false" data-has-paid="true">
+        <td><a href="details/tvshows/the-repair-shop.html" target="_blank" class="show-link">The Repair Shop</a></td>
+        <td data-sort="2017">2017</td>
+        <td>15 Seasons</td>
+        <td data-sort="70"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(70.0)</span></td>
+        <td>Documentary, Reality</td>
+        <td class="services-cell"></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
+    
+
+      <tr class="show-row" data-free-services="" data-paid-services="Prime Video,Prime Video" data-has-free="false" data-has-paid="true">
+        <td><a href="details/tvshows/cliffhanger.html" target="_blank" class="show-link">Cliffhanger</a></td>
+        <td data-sort="1993">1993</td>
+        <td>Series</td>
+        <td data-sort="65"><span class="stars">⭐⭐⭐</span> <span class="rating-number">(65.0)</span></td>
+        <td>Action, Adventure, Thriller</td>
+        <td class="services-cell"></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
+    
+
+      <tr class="show-row" data-free-services="Netflix" data-paid-services="Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video" data-has-free="true" data-has-paid="true">
+        <td><a href="details/tvshows/touched-by-an-angel.html" target="_blank" class="show-link">Touched by an Angel</a></td>
+        <td data-sort="1994">1994</td>
+        <td>9 Seasons</td>
+        <td data-sort="63"><span class="stars">⭐⭐⭐</span> <span class="rating-number">(63.0)</span></td>
+        <td>Drama, Family, Fantasy</td>
+        <td class="services-cell"><span class="service-badge netflix" data-service="Netflix">Netflix</span></td>
+        <td class="services-cell"><span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span> <span class="service-badge paid prime-video" data-service="Prime Video">Prime Video (pay)</span></td>
+      </tr>
+    
+        </tbody>
+      </table>
     </div>
 
     <div class="footer">
       <p>Generated for AlzheimersTv</p>
-      <p>Streaming availability subject to change. Links valid as of generation date.</p>
+      <p>Click on any show title to see full details. Streaming availability subject to change.</p>
     </div>
   </div>
+
+  <script>
+    // Table sorting
+    let currentSort = { column: 'rating', direction: 'desc' };
+
+    document.querySelectorAll('th.sortable').forEach(th => {
+      th.addEventListener('click', () => {
+        const column = th.dataset.sort;
+        const table = document.getElementById('shows-table');
+        const tbody = table.querySelector('tbody');
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+
+        // Toggle direction if clicking same column
+        if (currentSort.column === column) {
+          currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+        } else {
+          currentSort.column = column;
+          currentSort.direction = 'asc';
+        }
+
+        // Remove sorted class from all headers
+        document.querySelectorAll('th.sorted-asc, th.sorted-desc').forEach(h => {
+          h.classList.remove('sorted-asc', 'sorted-desc');
+        });
+
+        // Add sorted class to current header
+        th.classList.add(currentSort.direction === 'asc' ? 'sorted-asc' : 'sorted-desc');
+
+        // Sort rows
+        rows.sort((a, b) => {
+          let aVal, bVal;
+
+          if (column === 'title') {
+            aVal = a.querySelector('td:nth-child(1)').textContent.trim();
+            bVal = b.querySelector('td:nth-child(1)').textContent.trim();
+            return currentSort.direction === 'asc'
+              ? aVal.localeCompare(bVal)
+              : bVal.localeCompare(aVal);
+          } else {
+            // Use data-sort attribute for year and rating
+            aVal = parseFloat(a.querySelector(`td[data-sort]`).dataset.sort);
+            bVal = parseFloat(b.querySelector(`td[data-sort]`).dataset.sort);
+            return currentSort.direction === 'asc' ? aVal - bVal : bVal - aVal;
+          }
+        });
+
+        // Re-append sorted rows
+        rows.forEach(row => tbody.appendChild(row));
+      });
+    });
+
+    // Filters
+    let currentFreePaidFilter = 'free';
+    let currentServiceFilter = 'all';
+
+    function updateFilters() {
+      const rows = document.querySelectorAll('.show-row');
+      let visibleCount = 0;
+
+      rows.forEach(row => {
+        let show = true;
+
+        // Free/Paid filter
+        const hasFree = row.dataset.hasFree === 'true';
+        const hasPaid = row.dataset.hasPaid === 'true';
+
+        if (currentFreePaidFilter === 'free' && !hasFree) {
+          show = false;
+        } else if (currentFreePaidFilter === 'paid' && !hasPaid) {
+          show = false;
+        }
+
+        // Service filter
+        if (currentServiceFilter !== 'all') {
+          const freeServices = row.dataset.freeServices.split(',');
+          const paidServices = row.dataset.paidServices.split(',');
+          const allServices = [...freeServices, ...paidServices];
+
+          if (!allServices.includes(currentServiceFilter)) {
+            show = false;
+          }
+        }
+
+        if (show) {
+          row.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          row.classList.add('hidden');
+        }
+      });
+
+      document.getElementById('visible-count').textContent = visibleCount;
+    }
+
+    // Free/Paid filter buttons
+    document.querySelectorAll('.free-paid-filter').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.free-paid-filter').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFreePaidFilter = btn.dataset.filter;
+        updateFilters();
+      });
+    });
+
+    // Service filter buttons
+    document.querySelectorAll('.service-filter').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.service-filter').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentServiceFilter = btn.dataset.service;
+        updateFilters();
+      });
+    });
+
+    // Initial filter application (show FREE only by default)
+    updateFilters();
+  </script>
 </body>
 </html>

@@ -4,13 +4,16 @@ export interface Config {
   maxItemsToProcess: number;
   targetServices: string[];
   minYear: number;
+  cacheDays: number;
   movies: {
     csvInputFile: string;
     outputHtmlFile: string;
+    detailsDirectory: string;
   };
   tvShows: {
     csvInputFile: string;
     outputHtmlFile: string;
+    detailsDirectory: string;
   };
 }
 
@@ -19,6 +22,17 @@ export interface ShowInput {
   year?: number;
   imdbId?: string;
   tmdbId?: string;
+  // Cached data from previous API calls
+  lastApiCall?: string;
+  cachedYear?: number;
+  cachedRating?: number;
+  cachedOverview?: string;
+  cachedGenres?: string;
+  cachedRuntime?: number;
+  cachedSeasonCount?: number;
+  cachedImageUrl?: string;
+  cachedFreeServices?: string;
+  cachedPaidServices?: string;
 }
 
 export interface ShowWithStreaming {
@@ -28,7 +42,8 @@ export interface ShowWithStreaming {
   rating: number;
   imageUrl: string;
   genres: string[];
-  streamingServices: StreamingService[];
+  freeStreamingServices: StreamingService[];
+  paidStreamingServices: StreamingService[];
   imdbId?: string;
   runtime?: number;
   showType: 'movie' | 'series';
@@ -41,4 +56,5 @@ export interface StreamingService {
   link: string;
   type: string;
   quality?: string;
+  isFree: boolean;
 }
