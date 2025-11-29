@@ -205,26 +205,40 @@
 
     .service-badge {
       display: inline-block;
-      padding: 5px 10px;
+      padding: 8px 12px;
       margin: 2px;
-      border-radius: 5px;
+      border-radius: 8px;
       font-size: 0.85em;
       font-weight: 600;
       color: white;
-      white-space: nowrap;
+      white-space: normal;
       text-decoration: none;
-      transition: opacity 0.2s, transform 0.2s;
+      transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+      text-align: center;
+      line-height: 1.3;
+      min-width: 90px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
     .service-badge:hover {
-      opacity: 0.8;
-      transform: translateY(-1px);
+      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .service-badge .free-label {
+      font-size: 0.75em;
+      font-weight: 400;
+      opacity: 0.9;
+      display: block;
+      margin-top: 2px;
     }
 
     .service-badge.netflix { background: #E50914; }
     .service-badge.prime,
+    .service-badge.prime-video,
     .service-badge.amazon-prime,
-    .service-badge.amazon-prime-video { background: #00A8E1; }
+    .service-badge.amazon-prime-video { background: #146F3E; }
     .service-badge.hulu { background: #1CE783; }
     .service-badge.disney,
     .service-badge.disney\+ { background: #113CCF; }
@@ -303,7 +317,7 @@
         <td>176 min</td>
         <td data-sort="90"><span class="stars">⭐⭐⭐⭐½</span> <span class="rating-number">(90.0)</span></td>
         <td>Crime, Drama</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/82" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
       </tr>
     
 
@@ -347,7 +361,7 @@
         <td>107 min</td>
         <td data-sort="84"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(84.0)</span></td>
         <td>Mystery, Thriller</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/646" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
@@ -402,7 +416,7 @@
         <td>102 min</td>
         <td data-sort="82"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(82.0)</span></td>
         <td>Comedy, Romance</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/1729" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
       </tr>
     
 
@@ -413,7 +427,7 @@
         <td>135 min</td>
         <td data-sort="81"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(81.0)</span></td>
         <td>Drama, Mystery</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/206" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
@@ -446,7 +460,7 @@
         <td>128 min</td>
         <td data-sort="81"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(81.0)</span></td>
         <td>Mystery, Romance, Thriller</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/875" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
@@ -468,7 +482,7 @@
         <td>175 min</td>
         <td data-sort="80"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(80.0)</span></td>
         <td>Drama, Family</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge disney+" data-service="Disney+">Disney+</a> <a href="https" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/1808" target="_blank" class="service-badge disney+" data-service="Disney+">Disney+</a> <a href="https://www.movieofthenight.com/show/1808" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
       </tr>
     
 
@@ -523,7 +537,7 @@
         <td>93 min</td>
         <td data-sort="79"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(79.0)</span></td>
         <td>Adventure, Comedy, Family</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge disney+" data-service="Disney+">Disney+</a> <a href="https" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/791" target="_blank" class="service-badge disney+" data-service="Disney+">Disney+</a> <a href="https://www.movieofthenight.com/show/791" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
       </tr>
     
 
@@ -611,7 +625,7 @@
         <td>143 min</td>
         <td data-sort="77"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(77.0)</span></td>
         <td>Comedy, Family, Fantasy</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge disney+" data-service="Disney+">Disney+</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/2616" target="_blank" class="service-badge disney+" data-service="Disney+">Disney+</a></td>
       </tr>
     
 
@@ -710,7 +724,7 @@
         <td>110 min</td>
         <td data-sort="75"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(75.0)</span></td>
         <td>Comedy, Drama, Romance</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/2506" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
       </tr>
     
 
@@ -721,7 +735,7 @@
         <td>132 min</td>
         <td data-sort="73"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(73.0)</span></td>
         <td>Comedy, Drama</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/6812" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
@@ -776,7 +790,7 @@
         <td>140 min</td>
         <td data-sort="69"><span class="stars">⭐⭐⭐</span> <span class="rating-number">(69.0)</span></td>
         <td>Romance</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/18549" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
@@ -787,7 +801,7 @@
         <td>138 min</td>
         <td data-sort="68"><span class="stars">⭐⭐⭐</span> <span class="rating-number">(68.0)</span></td>
         <td>Action, History</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge disney+" data-service="Disney+">Disney+</a> <a href="https" target="_blank" class="service-badge netflix" data-service="Netflix">Netflix</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/5216" target="_blank" class="service-badge disney+" data-service="Disney+">Disney+</a> <a href="https://www.movieofthenight.com/show/5216" target="_blank" class="service-badge netflix" data-service="Netflix">Netflix</a></td>
       </tr>
     
 
@@ -798,7 +812,7 @@
         <td>157 min</td>
         <td data-sort="66"><span class="stars">⭐⭐⭐</span> <span class="rating-number">(66.0)</span></td>
         <td>Romance</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/23122" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
@@ -809,7 +823,7 @@
         <td>5 Seasons</td>
         <td data-sort="85"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(85.0)</span></td>
         <td>Drama, History</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a> <a href="https" target="_blank" class="service-badge netflix" data-service="Netflix">Netflix</a> <a href="https" target="_blank" class="service-badge disney+" data-service="Disney+">Disney+</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/1506" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a> <a href="https://www.movieofthenight.com/show/1506" target="_blank" class="service-badge netflix" data-service="Netflix">Netflix</a> <a href="https://www.movieofthenight.com/show/1506" target="_blank" class="service-badge disney+" data-service="Disney+">Disney+</a></td>
       </tr>
     
 
@@ -820,7 +834,7 @@
         <td>2 Seasons</td>
         <td data-sort="82"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(82.0)</span></td>
         <td>Drama, Fantasy</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/874" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
       </tr>
     
 
@@ -831,7 +845,7 @@
         <td>14 Seasons</td>
         <td data-sort="81"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(81.0)</span></td>
         <td>Drama, History</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge netflix" data-service="Netflix">Netflix</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/1665" target="_blank" class="service-badge netflix" data-service="Netflix">Netflix</a></td>
       </tr>
     
 
@@ -842,7 +856,7 @@
         <td>8 Seasons</td>
         <td data-sort="80"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(80.0)</span></td>
         <td>Comedy, Crime, Drama</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/686" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
@@ -853,7 +867,7 @@
         <td>7 Seasons</td>
         <td data-sort="80"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(80.0)</span></td>
         <td>Comedy</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/1157" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
       </tr>
     
 
@@ -864,7 +878,7 @@
         <td>3 Seasons</td>
         <td data-sort="79"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(79.0)</span></td>
         <td>Crime, Drama, History</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/2646" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
@@ -875,7 +889,7 @@
         <td>19 Seasons</td>
         <td data-sort="79"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(79.0)</span></td>
         <td>Drama, Family</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a> <a href="https" target="_blank" class="service-badge netflix" data-service="Netflix">Netflix</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/2526" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a> <a href="https://www.movieofthenight.com/show/2526" target="_blank" class="service-badge netflix" data-service="Netflix">Netflix</a></td>
       </tr>
     
 
@@ -908,7 +922,7 @@
         <td>24 Seasons</td>
         <td data-sort="78"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(78.0)</span></td>
         <td>Crime, Drama, Mystery</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/1390" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
@@ -919,7 +933,7 @@
         <td>6 Seasons</td>
         <td data-sort="78"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(78.0)</span></td>
         <td>Comedy, Drama</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
@@ -941,7 +955,7 @@
         <td>10 Seasons</td>
         <td data-sort="77"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(77.0)</span></td>
         <td>Crime, Drama, Mystery</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/2916" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
@@ -963,7 +977,7 @@
         <td>9 Seasons</td>
         <td data-sort="76"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(76.0)</span></td>
         <td>Drama, Family, Romance</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/1902" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
@@ -1007,7 +1021,7 @@
         <td>5 Seasons</td>
         <td data-sort="75"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(75.0)</span></td>
         <td>Comedy, Family</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/3600" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
@@ -1040,7 +1054,7 @@
         <td>9 Seasons</td>
         <td data-sort="74"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(74.0)</span></td>
         <td>Drama, Family, Romance</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/4510" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
@@ -1062,7 +1076,7 @@
         <td>8 Seasons</td>
         <td data-sort="73"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(73.0)</span></td>
         <td>Drama, Romance</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/5425" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
       </tr>
     
 
@@ -1073,7 +1087,7 @@
         <td>11 Seasons</td>
         <td data-sort="73"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(73.0)</span></td>
         <td>Comedy, Family</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/5255" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
@@ -1084,7 +1098,7 @@
         <td>6 Seasons</td>
         <td data-sort="72"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(72.0)</span></td>
         <td>Comedy</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
@@ -1117,7 +1131,7 @@
         <td>9 Seasons</td>
         <td data-sort="71"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(71.0)</span></td>
         <td>Crime, Drama, Mystery</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/4407" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
@@ -1139,7 +1153,7 @@
         <td>5 Seasons</td>
         <td data-sort="70"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(70.0)</span></td>
         <td>Drama, Fantasy</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video (free)</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/5779" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
@@ -1150,7 +1164,7 @@
         <td>9 Seasons</td>
         <td data-sort="63"><span class="stars">⭐⭐⭐</span> <span class="rating-number">(63.0)</span></td>
         <td>Drama, Family, Fantasy</td>
-        <td class="services-cell"><a href="https" target="_blank" class="service-badge netflix" data-service="Netflix">Netflix</a></td>
+        <td class="services-cell"><a href="https://www.movieofthenight.com/show/4834" target="_blank" class="service-badge netflix" data-service="Netflix">Netflix</a></td>
       </tr>
     
         </tbody>

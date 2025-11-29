@@ -80,6 +80,7 @@ export class StreamingApiClient {
       overview: input.cachedOverview || '',
       rating: input.cachedRating,
       imageUrl: input.cachedImageUrl || '',
+      showUrl: input.cachedShowUrl || '',
       genres: input.cachedGenres ? input.cachedGenres.split('|') : [],
       freeStreamingServices: freeServices,
       paidStreamingServices: paidServices,
@@ -164,6 +165,8 @@ export class StreamingApiClient {
       for (const option of streamingOptions) {
         if (this.targetServices.includes(option.service.id)) {
           const isFree = this.isServiceFree(option.type, option.service.name);
+
+
           const service: StreamingService = {
             name: option.service.name,
             link: option.link,
@@ -186,12 +189,16 @@ export class StreamingApiClient {
         return null;
       }
 
+      // Construct Movie of the Night show page URL
+      const showUrl = `https://www.movieofthenight.com/show/${show.id}`;
+
       return {
         title: show.title,
         year: show.releaseYear || 0,
         overview: show.overview || '',
         rating: show.rating || 0,
         imageUrl: show.imageSet?.verticalPoster?.w480 || show.imageSet?.horizontalPoster?.w480 || '',
+        showUrl: showUrl,
         genres: show.genres.map(g => g.name),
         freeStreamingServices: freeServices,
         paidStreamingServices: paidServices,

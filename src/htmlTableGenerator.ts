@@ -31,11 +31,13 @@ export class HtmlTableGenerator {
     });
 
     const freeServices = Array.from(uniqueFreeServices.values()).map(s => {
-      let serviceName = s.name;
+      let serviceHtml = s.name;
       if (s.name.toLowerCase().includes('prime')) {
-        serviceName += ' (free)';
+        serviceHtml = `${s.name}<br><span class="free-label">(free)</span>`;
       }
-      return `<a href="${s.link}" target="_blank" class="service-badge ${s.name.toLowerCase().replace(/\s+/g, '-')}" data-service="${s.name}">${serviceName}</a>`;
+      // Use Movie of the Night show URL instead of incomplete streaming service links
+      const linkUrl = show.showUrl || s.link;
+      return `<a href="${linkUrl}" target="_blank" class="service-badge ${s.name.toLowerCase().replace(/\s+/g, '-')}" data-service="${s.name}">${serviceHtml}</a>`;
     }).join(' ');
 
     const metaInfo = show.showType === 'series'
@@ -286,26 +288,40 @@ export class HtmlTableGenerator {
 
     .service-badge {
       display: inline-block;
-      padding: 5px 10px;
+      padding: 8px 12px;
       margin: 2px;
-      border-radius: 5px;
+      border-radius: 8px;
       font-size: 0.85em;
       font-weight: 600;
       color: white;
-      white-space: nowrap;
+      white-space: normal;
       text-decoration: none;
-      transition: opacity 0.2s, transform 0.2s;
+      transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+      text-align: center;
+      line-height: 1.3;
+      min-width: 90px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
     .service-badge:hover {
-      opacity: 0.8;
-      transform: translateY(-1px);
+      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .service-badge .free-label {
+      font-size: 0.75em;
+      font-weight: 400;
+      opacity: 0.9;
+      display: block;
+      margin-top: 2px;
     }
 
     .service-badge.netflix { background: #E50914; }
     .service-badge.prime,
+    .service-badge.prime-video,
     .service-badge.amazon-prime,
-    .service-badge.amazon-prime-video { background: #00A8E1; }
+    .service-badge.amazon-prime-video { background: #146F3E; }
     .service-badge.hulu { background: #1CE783; }
     .service-badge.disney,
     .service-badge.disney\\+ { background: #113CCF; }

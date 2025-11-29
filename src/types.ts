@@ -32,6 +32,7 @@ export interface ShowInput {
   cachedRuntime?: number;
   cachedSeasonCount?: number;
   cachedImageUrl?: string;
+  cachedShowUrl?: string; // Movie of the Night show page URL
   cachedFreeServices?: string;
   cachedPaidServices?: string;
 }
@@ -42,6 +43,7 @@ export interface ShowWithStreaming {
   overview: string;
   rating: number;
   imageUrl: string;
+  showUrl: string; // Movie of the Night show page URL
   genres: string[];
   freeStreamingServices: StreamingService[];
   paidStreamingServices: StreamingService[];

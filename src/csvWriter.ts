@@ -36,6 +36,7 @@ export async function updateCsvWithApiData(
         cachedRuntime: apiData.runtime || '',
         cachedSeasonCount: apiData.seasonCount || '',
         cachedImageUrl: apiData.imageUrl,
+        cachedShowUrl: apiData.showUrl,
         cachedFreeServices: freeServices,
         cachedPaidServices: paidServices,
       };
@@ -57,6 +58,7 @@ export async function updateCsvWithApiData(
         cachedRuntime: input.cachedRuntime || '',
         cachedSeasonCount: input.cachedSeasonCount || '',
         cachedImageUrl: input.cachedImageUrl || '',
+        cachedShowUrl: input.cachedShowUrl || '',
         cachedFreeServices: input.cachedFreeServices || '',
         cachedPaidServices: input.cachedPaidServices || '',
       };
@@ -80,6 +82,7 @@ export async function updateCsvWithApiData(
       'cachedRuntime',
       'cachedSeasonCount',
       'cachedImageUrl',
+      'cachedShowUrl',
       'cachedFreeServices',
       'cachedPaidServices',
     ],

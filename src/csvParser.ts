@@ -25,6 +25,7 @@ export async function parseShowsCSV(filePath: string, maxRows?: number): Promise
           tmdbId: row.tmdbId || row.tmdb_id || row.TmdbId,
           // Read cached data from CSV
           lastApiCall: row.lastApiCall || undefined,
+          lastApiCallFailed: row.lastApiCallFailed || undefined,
           cachedYear: row.cachedYear ? parseInt(row.cachedYear) : undefined,
           cachedRating: row.cachedRating ? parseFloat(row.cachedRating) : undefined,
           cachedOverview: row.cachedOverview || undefined,
@@ -32,6 +33,7 @@ export async function parseShowsCSV(filePath: string, maxRows?: number): Promise
           cachedRuntime: row.cachedRuntime ? parseInt(row.cachedRuntime) : undefined,
           cachedSeasonCount: row.cachedSeasonCount ? parseInt(row.cachedSeasonCount) : undefined,
           cachedImageUrl: row.cachedImageUrl || undefined,
+          cachedShowUrl: row.cachedShowUrl || undefined,
           cachedFreeServices: row.cachedFreeServices || undefined,
           cachedPaidServices: row.cachedPaidServices || undefined,
         });
