@@ -1,0 +1,95 @@
+╔════════════════════════════════════════════════════════════════╗
+║          STAR RATING SYSTEM - SETUP INSTRUCTIONS               ║
+╔════════════════════════════════════════════════════════════════╝
+
+✅ COMPLETED AUTOMATICALLY:
+- Added "Your Rating" column to index.html with 5 interactive stars
+- Created database schema in supabase-setup.sql
+- Added JavaScript code for Supabase integration
+- Styled the star ratings with hover effects
+
+🔧 YOU NEED TO DO (5 minutes):
+
+STEP 1: Setup Supabase Database
+────────────────────────────────
+1. Go to: https://supabase.com/dashboard/project/azdxbbkhbasjpbcqtchw/sql
+2. Click "New Query"
+3. Open the file: supabase-setup.sql
+4. Copy ALL the contents and paste into the SQL editor
+5. Click "Run" button (or Ctrl+Enter)
+6. Wait for success message ✓
+
+
+STEP 2: Get Your API Key
+────────────────────────
+1. Go to: https://supabase.com/dashboard/project/azdxbbkhbasjpbcqtchw/settings/api
+2. Find the section "Project API keys"
+3. Copy the "anon public" key (the long string starting with eyJ...)
+
+
+STEP 3: Update index.html
+─────────────────────────
+1. Open: index.html in a text editor
+2. Press Ctrl+F and search for: PLACEHOLDER
+3. You'll find this line (around line 1363):
+
+   const SUPABASE_ANON_KEY = 'eyJ...PLACEHOLDER';
+
+4. Replace PLACEHOLDER with your actual key from Step 2
+   (Keep the quotes, replace only PLACEHOLDER)
+5. Save the file
+
+
+STEP 4: Test It!
+────────────────
+1. Open index.html in your web browser
+2. Look for the new "Your Rating" column
+3. Hover over stars - they should turn gold
+4. Click a star to rate a show
+5. You should see "Saving..." then "Saved!"
+6. Refresh the page - your rating should still be there!
+
+
+STEP 5: Verify Database
+───────────────────────
+1. Go to: https://supabase.com/dashboard/project/azdxbbkhbasjpbcqtchw/editor
+2. Click on "show_ratings" table
+3. You should see your test ratings!
+
+
+🎯 HOW IT WORKS:
+- Each browser gets a unique ID (stored in localStorage)
+- Users can rate each show 1-5 stars
+- Ratings save to Supabase database
+- One rating per show per browser
+- No login required!
+
+
+📊 DATABASE INFO:
+- URL: https://azdxbbkhbasjpbcqtchw.supabase.co
+- Password: gRGdfaT2geWk32yV
+- Table: show_ratings
+- Columns: show_id, rating (1-5), user_fingerprint, created_at
+
+
+⚠️ SECURITY NOTE:
+The anon key is safe to expose in client-side code. It only allows:
+- Reading all ratings
+- Inserting/updating own ratings
+- Row Level Security (RLS) prevents abuse
+
+
+❓ TROUBLESHOOTING:
+- "Error saving" message → Check API key is correct
+- Stars don't appear → Check browser console (F12) for errors
+- Ratings don't save → Verify SQL setup ran successfully
+
+
+📝 NEXT STEPS (Optional):
+- Deploy to GitHub Pages (already configured)
+- Add community average ratings display
+- Add "most rated shows" section
+- Export ratings data for analysis
+
+
+Need help? Check SUPABASE_SETUP.md for detailed guide.

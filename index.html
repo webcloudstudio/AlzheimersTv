@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>TV for Older People</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     * {
       margin: 0;
@@ -265,6 +266,55 @@
       color: #b8b8b8;
       font-size: 1.1em;
     }
+
+    /* User Rating Styles */
+    .user-rating-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .user-stars {
+      display: flex;
+      gap: 3px;
+      font-size: 1.3em;
+      cursor: pointer;
+    }
+
+    .user-stars .star {
+      color: #444;
+      transition: color 0.2s, transform 0.1s;
+      cursor: pointer;
+    }
+
+    .user-stars .star:hover,
+    .user-stars .star.hover {
+      color: #ffd700;
+      transform: scale(1.2);
+    }
+
+    .user-stars .star.selected {
+      color: #ffd700;
+    }
+
+    .rating-info {
+      font-size: 0.75em;
+      color: #888;
+      min-height: 16px;
+    }
+
+    .rating-loading {
+      color: #4ecdc4;
+    }
+
+    .rating-success {
+      color: #4ecdc4;
+    }
+
+    .rating-error {
+      color: #ff6b6b;
+    }
   </style>
 </head>
 <body>
@@ -303,866 +353,1725 @@
             <th class="sortable" data-sort="type">Type</th>
             <th class="sortable" data-sort="year">Year</th>
             <th>Length</th>
-            <th class="sortable" data-sort="rating">Rating</th>
+            
+            <th>Community Rating</th>
             <th>Genres</th>
             <th>Free Streaming</th>
           </tr>
         </thead>
         <tbody>
           
-      <tr class="show-row" data-type="movie" data-free-services="Hulu" data-has-free="true">
-        <td><a href="details/the-godfather.html" target="_blank" class="show-link">The Godfather</a></td>
+      <tr class="show-row" data-type="movie" data-free-services="Hulu" data-has-free="true" data-show-id="the-godfather">
+        <td><a href="https://www.movieofthenight.com/show/82" target="_blank" class="show-link">The Godfather</a></td>
         <td>Movie</td>
         <td data-sort="1972">1972</td>
         <td>176 min</td>
-        <td data-sort="90"><span class="stars">⭐⭐⭐⭐½</span> <span class="rating-number">(90.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="the-godfather">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Crime, Drama</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/82" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/schindler-s-list.html" target="_blank" class="show-link">Schindler's List</a></td>
+      <tr class="show-row" data-show-id="schindler-s-list" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/112" target="_blank" class="show-link">Schindler's List</a></td>
         <td>Movie</td>
         <td data-sort="1993">1993</td>
         <td>196 min</td>
-        <td data-sort="89"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(89.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="schindler-s-list">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama, History</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/12-angry-men.html" target="_blank" class="show-link">12 Angry Men</a></td>
+      <tr class="show-row" data-show-id="12-angry-men" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/277" target="_blank" class="show-link">12 Angry Men</a></td>
         <td>Movie</td>
         <td data-sort="1957">1957</td>
         <td>92 min</td>
-        <td data-sort="88"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(88.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="12-angry-men">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Crime, Drama</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/forrest-gump.html" target="_blank" class="show-link">Forrest Gump</a></td>
+      <tr class="show-row" data-show-id="forrest-gump" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/74" target="_blank" class="show-link">Forrest Gump</a></td>
         <td>Movie</td>
         <td data-sort="1994">1994</td>
         <td>142 min</td>
-        <td data-sort="87"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(87.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="forrest-gump">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama, Romance</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="Prime Video" data-has-free="true">
-        <td><a href="details/rear-window.html" target="_blank" class="show-link">Rear Window</a></td>
+      <tr class="show-row" data-show-id="rear-window" data-type="movie" data-free-services="Prime Video" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/646" target="_blank" class="show-link">Rear Window</a></td>
         <td>Movie</td>
         <td data-sort="1954">1954</td>
         <td>107 min</td>
-        <td data-sort="84"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(84.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="rear-window">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Mystery, Thriller</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/646" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/to-kill-a-mockingbird.html" target="_blank" class="show-link">To Kill a Mockingbird</a></td>
+      <tr class="show-row" data-show-id="to-kill-a-mockingbird" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/1208" target="_blank" class="show-link">To Kill a Mockingbird</a></td>
         <td>Movie</td>
         <td data-sort="1962">1962</td>
         <td>129 min</td>
-        <td data-sort="82"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(82.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="to-kill-a-mockingbird">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Crime, Drama</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/lawrence-of-arabia.html" target="_blank" class="show-link">Lawrence of Arabia</a></td>
+      <tr class="show-row" data-show-id="lawrence-of-arabia" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/1339" target="_blank" class="show-link">Lawrence of Arabia</a></td>
         <td>Movie</td>
         <td data-sort="1962">1962</td>
         <td>213 min</td>
-        <td data-sort="82"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(82.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="lawrence-of-arabia">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Adventure</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/the-apartment.html" target="_blank" class="show-link">The Apartment</a></td>
+      <tr class="show-row" data-show-id="the-apartment" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/2488" target="_blank" class="show-link">The Apartment</a></td>
         <td>Movie</td>
         <td data-sort="1960">1960</td>
         <td>120 min</td>
-        <td data-sort="82"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(82.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="the-apartment">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Comedy, Drama, Romance</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/north-by-northwest.html" target="_blank" class="show-link">North by Northwest</a></td>
+      <tr class="show-row" data-show-id="north-by-northwest" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/1170" target="_blank" class="show-link">North by Northwest</a></td>
         <td>Movie</td>
         <td data-sort="1959">1959</td>
         <td>130 min</td>
-        <td data-sort="82"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(82.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="north-by-northwest">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Adventure, Mystery</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="Hulu" data-has-free="true">
+      <tr class="show-row" data-show-id="singin--in-the-rain" data-type="movie" data-free-services="Hulu" data-has-free="true">
         <td><a href="details/singin--in-the-rain.html" target="_blank" class="show-link">Singin' in the Rain</a></td>
         <td>Movie</td>
         <td data-sort="1952">1952</td>
         <td>102 min</td>
-        <td data-sort="82"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(82.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="singin--in-the-rain">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Comedy, Romance</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/1729" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="Prime Video" data-has-free="true">
-        <td><a href="details/a-beautiful-mind.html" target="_blank" class="show-link">A Beautiful Mind</a></td>
+      <tr class="show-row" data-show-id="a-beautiful-mind" data-type="movie" data-free-services="Prime Video" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/206" target="_blank" class="show-link">A Beautiful Mind</a></td>
         <td>Movie</td>
         <td data-sort="2001">2001</td>
         <td>135 min</td>
-        <td data-sort="81"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(81.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="a-beautiful-mind">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama, Mystery</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/206" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/the-sting.html" target="_blank" class="show-link">The Sting</a></td>
+      <tr class="show-row" data-show-id="the-sting" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/1564" target="_blank" class="show-link">The Sting</a></td>
         <td>Movie</td>
         <td data-sort="1973">1973</td>
         <td>129 min</td>
-        <td data-sort="81"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(81.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="the-sting">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Comedy, Crime, Drama</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/the-great-escape.html" target="_blank" class="show-link">The Great Escape</a></td>
+      <tr class="show-row" data-show-id="the-great-escape" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/1711" target="_blank" class="show-link">The Great Escape</a></td>
         <td>Movie</td>
         <td data-sort="1963">1963</td>
         <td>172 min</td>
-        <td data-sort="81"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(81.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="the-great-escape">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Adventure, Drama, Thriller</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="Prime Video" data-has-free="true">
-        <td><a href="details/vertigo.html" target="_blank" class="show-link">Vertigo</a></td>
+      <tr class="show-row" data-show-id="vertigo" data-type="movie" data-free-services="Prime Video" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/875" target="_blank" class="show-link">Vertigo</a></td>
         <td>Movie</td>
         <td data-sort="1958">1958</td>
         <td>128 min</td>
-        <td data-sort="81"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(81.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="vertigo">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Mystery, Romance, Thriller</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/875" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/all-about-eve.html" target="_blank" class="show-link">All About Eve</a></td>
+      <tr class="show-row" data-show-id="all-about-eve" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/3488" target="_blank" class="show-link">All About Eve</a></td>
         <td>Movie</td>
         <td data-sort="1950">1950</td>
         <td>138 min</td>
-        <td data-sort="81"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(81.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="all-about-eve">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="Disney+,Hulu" data-has-free="true">
-        <td><a href="details/the-sound-of-music.html" target="_blank" class="show-link">The Sound of Music</a></td>
+      <tr class="show-row" data-show-id="the-sound-of-music" data-type="movie" data-free-services="Disney+,Hulu" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/1808" target="_blank" class="show-link">The Sound of Music</a></td>
         <td>Movie</td>
         <td data-sort="1965">1965</td>
         <td>175 min</td>
-        <td data-sort="80"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(80.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="the-sound-of-music">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama, Family</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/1808" target="_blank" class="service-badge disney+" data-service="Disney+">Disney+</a> <a href="https://www.movieofthenight.com/show/1808" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/the-bridge-on-the-river-kwai.html" target="_blank" class="show-link">The Bridge on the River Kwai</a></td>
+      <tr class="show-row" data-show-id="the-bridge-on-the-river-kwai" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/1980" target="_blank" class="show-link">The Bridge on the River Kwai</a></td>
         <td>Movie</td>
         <td data-sort="1957">1957</td>
         <td>154 min</td>
-        <td data-sort="80"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(80.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="the-bridge-on-the-river-kwai">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Adventure, Drama, War</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/on-the-waterfront.html" target="_blank" class="show-link">On the Waterfront</a></td>
+      <tr class="show-row" data-show-id="on-the-waterfront" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/2946" target="_blank" class="show-link">On the Waterfront</a></td>
         <td>Movie</td>
         <td data-sort="1954">1954</td>
         <td>103 min</td>
-        <td data-sort="80"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(80.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="on-the-waterfront">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Crime, Drama, Thriller</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/the-king-s-speech.html" target="_blank" class="show-link">The King's Speech</a></td>
+      <tr class="show-row" data-show-id="the-king-s-speech" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/370" target="_blank" class="show-link">The King's Speech</a></td>
         <td>Movie</td>
         <td data-sort="2010">2010</td>
         <td>118 min</td>
-        <td data-sort="79"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(79.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="the-king-s-speech">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama, History</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/rain-man.html" target="_blank" class="show-link">Rain Man</a></td>
+      <tr class="show-row" data-show-id="rain-man" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/596" target="_blank" class="show-link">Rain Man</a></td>
         <td>Movie</td>
         <td data-sort="1988">1988</td>
         <td>128 min</td>
-        <td data-sort="79"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(79.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="rain-man">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="Disney+,Hulu" data-has-free="true">
-        <td><a href="details/the-princess-bride.html" target="_blank" class="show-link">The Princess Bride</a></td>
+      <tr class="show-row" data-show-id="the-princess-bride" data-type="movie" data-free-services="Disney+,Hulu" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/791" target="_blank" class="show-link">The Princess Bride</a></td>
         <td>Movie</td>
         <td data-sort="1987">1987</td>
         <td>93 min</td>
-        <td data-sort="79"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(79.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="the-princess-bride">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Adventure, Comedy, Family</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/791" target="_blank" class="service-badge disney+" data-service="Disney+">Disney+</a> <a href="https://www.movieofthenight.com/show/791" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/butch-cassidy-and-the-sundance-kid.html" target="_blank" class="show-link">Butch Cassidy and the Sundance Kid</a></td>
+      <tr class="show-row" data-show-id="butch-cassidy-and-the-sundance-kid" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/2045" target="_blank" class="show-link">Butch Cassidy and the Sundance Kid</a></td>
         <td>Movie</td>
         <td data-sort="1969">1969</td>
         <td>110 min</td>
-        <td data-sort="79"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(79.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="butch-cassidy-and-the-sundance-kid">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Adventure, Crime</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/cool-hand-luke.html" target="_blank" class="show-link">Cool Hand Luke</a></td>
+      <tr class="show-row" data-show-id="cool-hand-luke" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/2567" target="_blank" class="show-link">Cool Hand Luke</a></td>
         <td>Movie</td>
         <td data-sort="1967">1967</td>
         <td>121 min</td>
-        <td data-sort="79"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(79.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="cool-hand-luke">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Crime, Drama</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/patton.html" target="_blank" class="show-link">Patton</a></td>
+      <tr class="show-row" data-show-id="patton" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/4486" target="_blank" class="show-link">Patton</a></td>
         <td>Movie</td>
         <td data-sort="1970">1970</td>
         <td>164 min</td>
-        <td data-sort="78"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(78.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="patton">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama, War</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/doctor-zhivago.html" target="_blank" class="show-link">Doctor Zhivago</a></td>
+      <tr class="show-row" data-show-id="doctor-zhivago" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/5692" target="_blank" class="show-link">Doctor Zhivago</a></td>
         <td>Movie</td>
         <td data-sort="1965">1965</td>
         <td>185 min</td>
-        <td data-sort="78"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(78.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="doctor-zhivago">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama, Romance, War</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/the-ten-commandments.html" target="_blank" class="show-link">The Ten Commandments</a></td>
+      <tr class="show-row" data-show-id="the-ten-commandments" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/6085" target="_blank" class="show-link">The Ten Commandments</a></td>
         <td>Movie</td>
         <td data-sort="1956">1956</td>
         <td>220 min</td>
-        <td data-sort="78"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(78.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="the-ten-commandments">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Adventure, Drama, Family</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/midnight-cowboy.html" target="_blank" class="show-link">Midnight Cowboy</a></td>
+      <tr class="show-row" data-show-id="midnight-cowboy" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/4107" target="_blank" class="show-link">Midnight Cowboy</a></td>
         <td>Movie</td>
         <td data-sort="1969">1969</td>
         <td>108 min</td>
-        <td data-sort="77"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(77.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="midnight-cowboy">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/guess-who-s-coming-to-dinner.html" target="_blank" class="show-link">Guess Who's Coming to Dinner</a></td>
+      <tr class="show-row" data-show-id="guess-who-s-coming-to-dinner" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/8447" target="_blank" class="show-link">Guess Who's Coming to Dinner</a></td>
         <td>Movie</td>
         <td data-sort="1967">1967</td>
         <td>103 min</td>
-        <td data-sort="77"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(77.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="guess-who-s-coming-to-dinner">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="Disney+" data-has-free="true">
-        <td><a href="details/mary-poppins.html" target="_blank" class="show-link">Mary Poppins</a></td>
+      <tr class="show-row" data-show-id="mary-poppins" data-type="movie" data-free-services="Disney+" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/2616" target="_blank" class="show-link">Mary Poppins</a></td>
         <td>Movie</td>
         <td data-sort="1964">1964</td>
         <td>143 min</td>
-        <td data-sort="77"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(77.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="mary-poppins">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Comedy, Family, Fantasy</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/2616" target="_blank" class="service-badge disney+" data-service="Disney+">Disney+</a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/my-fair-lady.html" target="_blank" class="show-link">My Fair Lady</a></td>
+      <tr class="show-row" data-show-id="my-fair-lady" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/4724" target="_blank" class="show-link">My Fair Lady</a></td>
         <td>Movie</td>
         <td data-sort="1964">1964</td>
         <td>170 min</td>
-        <td data-sort="76"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(76.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="my-fair-lady">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Family</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/the-longest-day.html" target="_blank" class="show-link">The Longest Day</a></td>
+      <tr class="show-row" data-show-id="the-longest-day" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/7311" target="_blank" class="show-link">The Longest Day</a></td>
         <td>Movie</td>
         <td data-sort="1962">1962</td>
         <td>180 min</td>
-        <td data-sort="76"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(76.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="the-longest-day">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Action, Drama, History</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/giant.html" target="_blank" class="show-link">Giant</a></td>
+      <tr class="show-row" data-show-id="giant" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/9304" target="_blank" class="show-link">Giant</a></td>
         <td>Movie</td>
         <td data-sort="1956">1956</td>
         <td>201 min</td>
-        <td data-sort="76"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(76.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="giant">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama, Western</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/the-quiet-man.html" target="_blank" class="show-link">The Quiet Man</a></td>
+      <tr class="show-row" data-show-id="the-quiet-man" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/9355" target="_blank" class="show-link">The Quiet Man</a></td>
         <td>Movie</td>
         <td data-sort="1952">1952</td>
         <td>129 min</td>
-        <td data-sort="76"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(76.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="the-quiet-man">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Comedy, Drama, Romance</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/the-african-queen.html" target="_blank" class="show-link">The African Queen</a></td>
+      <tr class="show-row" data-show-id="the-african-queen" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/5594" target="_blank" class="show-link">The African Queen</a></td>
         <td>Movie</td>
         <td data-sort="1951">1951</td>
         <td>105 min</td>
-        <td data-sort="76"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(76.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="the-african-queen">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Adventure, Drama, Romance</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/on-golden-pond.html" target="_blank" class="show-link">On Golden Pond</a></td>
+      <tr class="show-row" data-show-id="on-golden-pond" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/10760" target="_blank" class="show-link">On Golden Pond</a></td>
         <td>Movie</td>
         <td data-sort="1981">1981</td>
         <td>109 min</td>
-        <td data-sort="75"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(75.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="on-golden-pond">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/the-birds.html" target="_blank" class="show-link">The Birds</a></td>
+      <tr class="show-row" data-show-id="the-birds" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/2355" target="_blank" class="show-link">The Birds</a></td>
         <td>Movie</td>
         <td data-sort="1963">1963</td>
         <td>119 min</td>
-        <td data-sort="75"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(75.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="the-birds">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Horror, Mystery</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/the-music-man.html" target="_blank" class="show-link">The Music Man</a></td>
+      <tr class="show-row" data-show-id="the-music-man" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/15436" target="_blank" class="show-link">The Music Man</a></td>
         <td>Movie</td>
         <td data-sort="1962">1962</td>
         <td>151 min</td>
-        <td data-sort="75"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(75.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="the-music-man">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Comedy, Family</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="Hulu" data-has-free="true">
-        <td><a href="details/breakfast-at-tiffany-s.html" target="_blank" class="show-link">Breakfast at Tiffany's</a></td>
+      <tr class="show-row" data-show-id="breakfast-at-tiffany-s" data-type="movie" data-free-services="Hulu" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/2506" target="_blank" class="show-link">Breakfast at Tiffany's</a></td>
         <td>Movie</td>
         <td data-sort="1961">1961</td>
         <td>110 min</td>
-        <td data-sort="75"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(75.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="breakfast-at-tiffany-s">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Comedy, Drama, Romance</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/2506" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="Prime Video" data-has-free="true">
-        <td><a href="details/terms-of-endearment.html" target="_blank" class="show-link">Terms of Endearment</a></td>
+      <tr class="show-row" data-show-id="terms-of-endearment" data-type="movie" data-free-services="Prime Video" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/6812" target="_blank" class="show-link">Terms of Endearment</a></td>
         <td>Movie</td>
         <td data-sort="1983">1983</td>
         <td>132 min</td>
-        <td data-sort="73"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(73.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="terms-of-endearment">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Comedy, Drama</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/6812" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/an-affair-to-remember.html" target="_blank" class="show-link">An Affair to Remember</a></td>
+      <tr class="show-row" data-show-id="an-affair-to-remember" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/10981" target="_blank" class="show-link">An Affair to Remember</a></td>
         <td>Movie</td>
         <td data-sort="1957">1957</td>
         <td>110 min</td>
-        <td data-sort="73"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(73.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="an-affair-to-remember">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama, Romance</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/driving-miss-daisy.html" target="_blank" class="show-link">Driving Miss Daisy</a></td>
+      <tr class="show-row" data-show-id="driving-miss-daisy" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/4139" target="_blank" class="show-link">Driving Miss Daisy</a></td>
         <td>Movie</td>
         <td data-sort="1989">1989</td>
         <td>99 min</td>
-        <td data-sort="72"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(72.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="driving-miss-daisy">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/the-great-race.html" target="_blank" class="show-link">The Great Race</a></td>
+      <tr class="show-row" data-show-id="the-great-race" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/15175" target="_blank" class="show-link">The Great Race</a></td>
         <td>Movie</td>
         <td data-sort="1965">1965</td>
         <td>146 min</td>
-        <td data-sort="71"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(71.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="the-great-race">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Action, Adventure, Comedy</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="" data-has-free="false">
-        <td><a href="details/calamity-jane.html" target="_blank" class="show-link">Calamity Jane</a></td>
+      <tr class="show-row" data-show-id="calamity-jane" data-type="movie" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/21605" target="_blank" class="show-link">Calamity Jane</a></td>
         <td>Movie</td>
         <td data-sort="1953">1953</td>
         <td>97 min</td>
-        <td data-sort="71"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(71.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="calamity-jane">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Comedy, Romance</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="Prime Video" data-has-free="true">
+      <tr class="show-row" data-show-id="oklahoma-" data-type="movie" data-free-services="Prime Video" data-has-free="true">
         <td><a href="details/oklahoma-.html" target="_blank" class="show-link">Oklahoma!</a></td>
         <td>Movie</td>
         <td data-sort="1955">1955</td>
         <td>140 min</td>
-        <td data-sort="69"><span class="stars">⭐⭐⭐</span> <span class="rating-number">(69.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="oklahoma-">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Romance</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/18549" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="Disney+,Netflix" data-has-free="true">
-        <td><a href="details/midway.html" target="_blank" class="show-link">Midway</a></td>
+      <tr class="show-row" data-show-id="midway" data-type="movie" data-free-services="Disney+,Netflix" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/5216" target="_blank" class="show-link">Midway</a></td>
         <td>Movie</td>
         <td data-sort="2019">2019</td>
         <td>138 min</td>
-        <td data-sort="68"><span class="stars">⭐⭐⭐</span> <span class="rating-number">(68.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="midway">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Action, History</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/5216" target="_blank" class="service-badge disney+" data-service="Disney+">Disney+</a> <a href="https://www.movieofthenight.com/show/5216" target="_blank" class="service-badge netflix" data-service="Netflix">Netflix</a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="movie" data-free-services="Prime Video" data-has-free="true">
-        <td><a href="details/south-pacific.html" target="_blank" class="show-link">South Pacific</a></td>
+      <tr class="show-row" data-show-id="south-pacific" data-type="movie" data-free-services="Prime Video" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/23122" target="_blank" class="show-link">South Pacific</a></td>
         <td>Movie</td>
         <td data-sort="1958">1958</td>
         <td>157 min</td>
-        <td data-sort="66"><span class="stars">⭐⭐⭐</span> <span class="rating-number">(66.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="south-pacific">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Romance</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/23122" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="Prime Video,Prime Video,Netflix,Disney+" data-has-free="true">
-        <td><a href="details/the-chosen.html" target="_blank" class="show-link">The Chosen</a></td>
+      <tr class="show-row" data-show-id="the-chosen" data-type="series" data-free-services="Prime Video,Prime Video,Netflix,Disney+" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/1506" target="_blank" class="show-link">The Chosen</a></td>
         <td>Series</td>
         <td data-sort="2019">2019</td>
         <td>5 Seasons</td>
-        <td data-sort="85"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(85.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="the-chosen">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama, History</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/1506" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a> <a href="https://www.movieofthenight.com/show/1506" target="_blank" class="service-badge netflix" data-service="Netflix">Netflix</a> <a href="https://www.movieofthenight.com/show/1506" target="_blank" class="service-badge disney+" data-service="Disney+">Disney+</a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="Hulu" data-has-free="true">
-        <td><a href="details/pushing-daisies.html" target="_blank" class="show-link">Pushing Daisies</a></td>
+      <tr class="show-row" data-show-id="pushing-daisies" data-type="series" data-free-services="Hulu" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/874" target="_blank" class="show-link">Pushing Daisies</a></td>
         <td>Series</td>
         <td data-sort="2007">2007</td>
         <td>2 Seasons</td>
-        <td data-sort="82"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(82.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="pushing-daisies">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama, Fantasy</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/874" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="Netflix" data-has-free="true">
-        <td><a href="details/call-the-midwife.html" target="_blank" class="show-link">Call the Midwife</a></td>
+      <tr class="show-row" data-show-id="call-the-midwife" data-type="series" data-free-services="Netflix" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/1665" target="_blank" class="show-link">Call the Midwife</a></td>
         <td>Series</td>
         <td data-sort="2012">2012</td>
         <td>14 Seasons</td>
-        <td data-sort="81"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(81.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="call-the-midwife">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama, History</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/1665" target="_blank" class="service-badge netflix" data-service="Netflix">Netflix</a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="Prime Video" data-has-free="true">
-        <td><a href="details/monk.html" target="_blank" class="show-link">Monk</a></td>
+      <tr class="show-row" data-show-id="monk" data-type="series" data-free-services="Prime Video" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/686" target="_blank" class="show-link">Monk</a></td>
         <td>Series</td>
         <td data-sort="2002">2002</td>
         <td>8 Seasons</td>
-        <td data-sort="80"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(80.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="monk">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Comedy, Crime, Drama</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/686" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="Hulu" data-has-free="true">
-        <td><a href="details/the-golden-girls.html" target="_blank" class="show-link">The Golden Girls</a></td>
+      <tr class="show-row" data-show-id="the-golden-girls" data-type="series" data-free-services="Hulu" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/1157" target="_blank" class="show-link">The Golden Girls</a></td>
         <td>Series</td>
         <td data-sort="1985">1985</td>
         <td>7 Seasons</td>
-        <td data-sort="80"><span class="stars">⭐⭐⭐⭐</span> <span class="rating-number">(80.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="the-golden-girls">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Comedy</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/1157" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="Prime Video" data-has-free="true">
-        <td><a href="details/miss-fisher-s-murder-mysteries.html" target="_blank" class="show-link">Miss Fisher's Murder Mysteries</a></td>
+      <tr class="show-row" data-show-id="miss-fisher-s-murder-mysteries" data-type="series" data-free-services="Prime Video" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/2646" target="_blank" class="show-link">Miss Fisher's Murder Mysteries</a></td>
         <td>Series</td>
         <td data-sort="2012">2012</td>
         <td>3 Seasons</td>
-        <td data-sort="79"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(79.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="miss-fisher-s-murder-mysteries">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Crime, Drama, History</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/2646" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="Prime Video,Netflix" data-has-free="true">
-        <td><a href="details/heartland.html" target="_blank" class="show-link">Heartland</a></td>
+      <tr class="show-row" data-show-id="heartland" data-type="series" data-free-services="Prime Video,Netflix" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/2526" target="_blank" class="show-link">Heartland</a></td>
         <td>Series</td>
         <td data-sort="2007">2007</td>
         <td>19 Seasons</td>
-        <td data-sort="79"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(79.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="heartland">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama, Family</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/2526" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a> <a href="https://www.movieofthenight.com/show/2526" target="_blank" class="service-badge netflix" data-service="Netflix">Netflix</a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
-        <td><a href="details/doc-martin.html" target="_blank" class="show-link">Doc Martin</a></td>
+      <tr class="show-row" data-show-id="doc-martin" data-type="series" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/2522" target="_blank" class="show-link">Doc Martin</a></td>
         <td>Series</td>
         <td data-sort="2004">2004</td>
         <td>10 Seasons</td>
-        <td data-sort="79"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(79.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="doc-martin">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Comedy, Drama, Romance</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
-        <td><a href="details/when-calls-the-heart.html" target="_blank" class="show-link">When Calls the Heart</a></td>
+      <tr class="show-row" data-show-id="when-calls-the-heart" data-type="series" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/3113" target="_blank" class="show-link">When Calls the Heart</a></td>
         <td>Series</td>
         <td data-sort="2014">2014</td>
         <td>13 Seasons</td>
-        <td data-sort="78"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(78.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="when-calls-the-heart">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama, History, Romance</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video" data-has-free="true">
-        <td><a href="details/midsomer-murders.html" target="_blank" class="show-link">Midsomer Murders</a></td>
+      <tr class="show-row" data-show-id="midsomer-murders" data-type="series" data-free-services="Prime Video,Prime Video,Prime Video,Prime Video,Prime Video,Prime Video" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/1390" target="_blank" class="show-link">Midsomer Murders</a></td>
         <td>Series</td>
         <td data-sort="1997">1997</td>
         <td>24 Seasons</td>
-        <td data-sort="78"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(78.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="midsomer-murders">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Crime, Drama, Mystery</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/1390" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="Prime Video" data-has-free="true">
+      <tr class="show-row" data-show-id="northern-exposure" data-type="series" data-free-services="Prime Video" data-has-free="true">
         <td><a href="details/northern-exposure.html" target="_blank" class="show-link">Northern Exposure</a></td>
         <td>Series</td>
         <td data-sort="1990">1990</td>
         <td>6 Seasons</td>
-        <td data-sort="78"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(78.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="northern-exposure">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Comedy, Drama</td>
         <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
-        <td><a href="details/i-love-lucy.html" target="_blank" class="show-link">I Love Lucy</a></td>
+      <tr class="show-row" data-show-id="i-love-lucy" data-type="series" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/1685" target="_blank" class="show-link">I Love Lucy</a></td>
         <td>Series</td>
         <td data-sort="1951">1951</td>
         <td>6 Seasons</td>
-        <td data-sort="78"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(78.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="i-love-lucy">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Comedy</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="Prime Video,Prime Video,Prime Video,Prime Video" data-has-free="true">
-        <td><a href="details/grantchester.html" target="_blank" class="show-link">Grantchester</a></td>
+      <tr class="show-row" data-show-id="grantchester" data-type="series" data-free-services="Prime Video,Prime Video,Prime Video,Prime Video" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/2916" target="_blank" class="show-link">Grantchester</a></td>
         <td>Series</td>
         <td data-sort="2014">2014</td>
         <td>10 Seasons</td>
-        <td data-sort="77"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(77.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="grantchester">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Crime, Drama, Mystery</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/2916" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
-        <td><a href="details/father-brown.html" target="_blank" class="show-link">Father Brown</a></td>
+      <tr class="show-row" data-show-id="father-brown" data-type="series" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/3278" target="_blank" class="show-link">Father Brown</a></td>
         <td>Series</td>
         <td data-sort="2013">2013</td>
         <td>12 Seasons</td>
-        <td data-sort="77"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(77.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="father-brown">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Crime, Drama, Mystery</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="Prime Video,Prime Video,Prime Video,Prime Video" data-has-free="true">
-        <td><a href="details/little-house-on-the-prairie.html" target="_blank" class="show-link">Little House on the Prairie</a></td>
+      <tr class="show-row" data-show-id="little-house-on-the-prairie" data-type="series" data-free-services="Prime Video,Prime Video,Prime Video,Prime Video" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/1902" target="_blank" class="show-link">Little House on the Prairie</a></td>
         <td>Series</td>
         <td data-sort="1974">1974</td>
         <td>9 Seasons</td>
-        <td data-sort="76"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(76.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="little-house-on-the-prairie">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama, Family, Romance</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/1902" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
-        <td><a href="details/the-andy-griffith-show.html" target="_blank" class="show-link">The Andy Griffith Show</a></td>
+      <tr class="show-row" data-show-id="the-andy-griffith-show" data-type="series" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/2797" target="_blank" class="show-link">The Andy Griffith Show</a></td>
         <td>Series</td>
         <td data-sort="1960">1960</td>
         <td>8 Seasons</td>
-        <td data-sort="76"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(76.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="the-andy-griffith-show">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Comedy, Family</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
-        <td><a href="details/drop-dead-diva.html" target="_blank" class="show-link">Drop Dead Diva</a></td>
+      <tr class="show-row" data-show-id="drop-dead-diva" data-type="series" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/2241" target="_blank" class="show-link">Drop Dead Diva</a></td>
         <td>Series</td>
         <td data-sort="2009">2009</td>
         <td>6 Seasons</td>
-        <td data-sort="75"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(75.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="drop-dead-diva">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Comedy, Drama</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
-        <td><a href="details/lark-rise-to-candleford.html" target="_blank" class="show-link">Lark Rise to Candleford</a></td>
+      <tr class="show-row" data-show-id="lark-rise-to-candleford" data-type="series" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/4602" target="_blank" class="show-link">Lark Rise to Candleford</a></td>
         <td>Series</td>
         <td data-sort="2008">2008</td>
         <td>4 Seasons</td>
-        <td data-sort="75"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(75.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="lark-rise-to-candleford">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama, Romance</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="Prime Video,Prime Video" data-has-free="true">
-        <td><a href="details/the-dick-van-dyke-show.html" target="_blank" class="show-link">The Dick Van Dyke Show</a></td>
+      <tr class="show-row" data-show-id="the-dick-van-dyke-show" data-type="series" data-free-services="Prime Video,Prime Video" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/3600" target="_blank" class="show-link">The Dick Van Dyke Show</a></td>
         <td>Series</td>
         <td data-sort="1961">1961</td>
         <td>5 Seasons</td>
-        <td data-sort="75"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(75.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="the-dick-van-dyke-show">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Comedy, Family</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/3600" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
-        <td><a href="details/perry-mason.html" target="_blank" class="show-link">Perry Mason</a></td>
+      <tr class="show-row" data-show-id="perry-mason" data-type="series" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/3888" target="_blank" class="show-link">Perry Mason</a></td>
         <td>Series</td>
         <td data-sort="1957">1957</td>
         <td>9 Seasons</td>
-        <td data-sort="75"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(75.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="perry-mason">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Crime, Drama, Mystery</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
+      <tr class="show-row" data-show-id="a-place-to-call-home" data-type="series" data-free-services="" data-has-free="false">
         <td><a href="details/a-place-to-call-home.html" target="_blank" class="show-link">A Place to Call Home</a></td>
         <td>Series</td>
         <td data-sort="2013">2013</td>
         <td>6 Seasons</td>
-        <td data-sort="74"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(74.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="a-place-to-call-home">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="Prime Video,Prime Video" data-has-free="true">
-        <td><a href="details/the-waltons.html" target="_blank" class="show-link">The Waltons</a></td>
+      <tr class="show-row" data-show-id="the-waltons" data-type="series" data-free-services="Prime Video,Prime Video" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/4510" target="_blank" class="show-link">The Waltons</a></td>
         <td>Series</td>
         <td data-sort="1972">1972</td>
         <td>9 Seasons</td>
-        <td data-sort="74"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(74.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="the-waltons">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama, Family, Romance</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/4510" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
+      <tr class="show-row" data-show-id="rosemary---thyme" data-type="series" data-free-services="" data-has-free="false">
         <td><a href="details/rosemary---thyme.html" target="_blank" class="show-link">Rosemary & Thyme</a></td>
         <td>Series</td>
         <td data-sort="2003">2003</td>
         <td>3 Seasons</td>
-        <td data-sort="73"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(73.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="rosemary---thyme">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Crime, Drama, Mystery</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="Hulu" data-has-free="true">
-        <td><a href="details/mcleod-s-daughters.html" target="_blank" class="show-link">McLeod's Daughters</a></td>
+      <tr class="show-row" data-show-id="mcleod-s-daughters" data-type="series" data-free-services="Hulu" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/5425" target="_blank" class="show-link">McLeod's Daughters</a></td>
         <td>Series</td>
         <td data-sort="2001">2001</td>
         <td>8 Seasons</td>
-        <td data-sort="73"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(73.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="mcleod-s-daughters">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama, Romance</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/5425" target="_blank" class="service-badge hulu" data-service="Hulu">Hulu</a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="Prime Video" data-has-free="true">
-        <td><a href="details/the-carol-burnett-show.html" target="_blank" class="show-link">The Carol Burnett Show</a></td>
+      <tr class="show-row" data-show-id="the-carol-burnett-show" data-type="series" data-free-services="Prime Video" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/5255" target="_blank" class="show-link">The Carol Burnett Show</a></td>
         <td>Series</td>
         <td data-sort="1967">1967</td>
         <td>11 Seasons</td>
-        <td data-sort="73"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(73.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="the-carol-burnett-show">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Comedy, Family</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/5255" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="Prime Video" data-has-free="true">
+      <tr class="show-row" data-show-id="the-bob-newhart-show" data-type="series" data-free-services="Prime Video" data-has-free="true">
         <td><a href="details/the-bob-newhart-show.html" target="_blank" class="show-link">The Bob Newhart Show</a></td>
         <td>Series</td>
         <td data-sort="1972">1972</td>
         <td>6 Seasons</td>
-        <td data-sort="72"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(72.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="the-bob-newhart-show">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Comedy</td>
         <td class="services-cell"><a href="https" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
-        <td><a href="details/all-creatures-great-and-small.html" target="_blank" class="show-link">All Creatures Great and Small</a></td>
+      <tr class="show-row" data-show-id="all-creatures-great-and-small" data-type="series" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/7548" target="_blank" class="show-link">All Creatures Great and Small</a></td>
         <td>Series</td>
         <td data-sort="2020">2020</td>
         <td>7 Seasons</td>
-        <td data-sort="71"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(71.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="all-creatures-great-and-small">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Comedy, Drama</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
+      <tr class="show-row" data-show-id="road-to-avonlea" data-type="series" data-free-services="" data-has-free="false">
         <td><a href="details/road-to-avonlea.html" target="_blank" class="show-link">Road to Avonlea</a></td>
         <td>Series</td>
         <td data-sort="1990">1990</td>
         <td>7 Seasons</td>
-        <td data-sort="71"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(71.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="road-to-avonlea">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Adventure, Drama, Family</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="Prime Video,Prime Video,Prime Video" data-has-free="true">
-        <td><a href="details/matlock.html" target="_blank" class="show-link">Matlock</a></td>
+      <tr class="show-row" data-show-id="matlock" data-type="series" data-free-services="Prime Video,Prime Video,Prime Video" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/4407" target="_blank" class="show-link">Matlock</a></td>
         <td>Series</td>
         <td data-sort="1986">1986</td>
         <td>9 Seasons</td>
-        <td data-sort="71"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(71.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="matlock">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Crime, Drama, Mystery</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/4407" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="" data-has-free="false">
-        <td><a href="details/the-repair-shop.html" target="_blank" class="show-link">The Repair Shop</a></td>
+      <tr class="show-row" data-show-id="the-repair-shop" data-type="series" data-free-services="" data-has-free="false">
+        <td><a href="https://www.movieofthenight.com/show/13037" target="_blank" class="show-link">The Repair Shop</a></td>
         <td>Series</td>
         <td data-sort="2017">2017</td>
         <td>15 Seasons</td>
-        <td data-sort="70"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(70.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="the-repair-shop">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Documentary, Reality</td>
         <td class="services-cell"></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="Prime Video" data-has-free="true">
-        <td><a href="details/highway-to-heaven.html" target="_blank" class="show-link">Highway to Heaven</a></td>
+      <tr class="show-row" data-show-id="highway-to-heaven" data-type="series" data-free-services="Prime Video" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/5779" target="_blank" class="show-link">Highway to Heaven</a></td>
         <td>Series</td>
         <td data-sort="1984">1984</td>
         <td>5 Seasons</td>
-        <td data-sort="70"><span class="stars">⭐⭐⭐½</span> <span class="rating-number">(70.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="highway-to-heaven">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama, Fantasy</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/5779" target="_blank" class="service-badge prime-video" data-service="Prime Video">Prime Video<br><span class="free-label">(free)</span></a></td>
       </tr>
     
 
-      <tr class="show-row" data-type="series" data-free-services="Netflix" data-has-free="true">
-        <td><a href="details/touched-by-an-angel.html" target="_blank" class="show-link">Touched by an Angel</a></td>
+      <tr class="show-row" data-show-id="touched-by-an-angel" data-type="series" data-free-services="Netflix" data-has-free="true">
+        <td><a href="https://www.movieofthenight.com/show/4834" target="_blank" class="show-link">Touched by an Angel</a></td>
         <td>Series</td>
         <td data-sort="1994">1994</td>
         <td>9 Seasons</td>
-        <td data-sort="63"><span class="stars">⭐⭐⭐</span> <span class="rating-number">(63.0)</span></td>
+        <td class="user-rating-cell">
+          <div class="user-rating-container">
+            <div class="user-stars" data-show-id="touched-by-an-angel">
+              <span class="star" data-rating="1">★</span>
+              <span class="star" data-rating="2">★</span>
+              <span class="star" data-rating="3">★</span>
+              <span class="star" data-rating="4">★</span>
+              <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="rating-info"></div>
+          </div>
+        </td>
         <td>Drama, Family, Fantasy</td>
         <td class="services-cell"><a href="https://www.movieofthenight.com/show/4834" target="_blank" class="service-badge netflix" data-service="Netflix">Netflix</a></td>
       </tr>
@@ -1291,6 +2200,153 @@
 
     // Initial filter application (show all with free streaming)
     updateFilters();
+
+    // ========================================
+    // SUPABASE RATING SYSTEM
+    // ========================================
+
+    const SUPABASE_URL = 'https://azdxbbkhbasjpbcqtchw.supabase.co';
+    // const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6ZHhiYmtoYmFzanBiY3F0Y2h3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzI4OTk2MDAsImV4cCI6MjA0ODQ3NTYwMH0.PLACEHOLDER';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6ZHhiYmtoYmFzanBiY3F0Y2h3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0NTEwMzAsImV4cCI6MjA4MDAyNzAzMH0.nQV5w8B6j2uebbPBMfyWvP9pXxuyQvcs9Sjv9QzS67U';
+
+    // Initialize Supabase client
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Generate a unique fingerprint for this user
+    function getUserFingerprint() {
+      let fingerprint = localStorage.getItem('user_fingerprint');
+      if (!fingerprint) {
+        fingerprint = 'user_' + Date.now() + '_' + Math.random().toString(36).substring(2, 15);
+        localStorage.setItem('user_fingerprint', fingerprint);
+      }
+      return fingerprint;
+    }
+
+    const userFingerprint = getUserFingerprint();
+
+    // Load existing ratings from Supabase
+    async function loadUserRatings() {
+      try {
+        const { data, error } = await supabase
+          .from('show_ratings')
+          .select('show_id, rating')
+          .eq('user_fingerprint', userFingerprint);
+
+        if (error) throw error;
+
+        // Update UI with existing ratings
+        data.forEach(({ show_id, rating }) => {
+          const starsContainer = document.querySelector(`[data-show-id="${show_id}"].user-stars`);
+          if (starsContainer) {
+            updateStarsDisplay(starsContainer, rating);
+            const info = starsContainer.parentElement.querySelector('.rating-info');
+            info.textContent = 'Your rating';
+            info.className = 'rating-info';
+          }
+        });
+      } catch (error) {
+        console.error('Error loading ratings:', error);
+      }
+    }
+
+    // Update star display
+    function updateStarsDisplay(container, rating) {
+      const stars = container.querySelectorAll('.star');
+      stars.forEach((star, index) => {
+        if (index < rating) {
+          star.classList.add('selected');
+        } else {
+          star.classList.remove('selected');
+        }
+      });
+    }
+
+    // Save or update rating
+    async function saveRating(showId, rating) {
+      try {
+        // Use upsert to insert or update
+        const { data, error } = await supabase
+          .from('show_ratings')
+          .upsert(
+            {
+              show_id: showId,
+              rating: rating,
+              user_fingerprint: userFingerprint
+            },
+            {
+              onConflict: 'show_id,user_fingerprint'
+            }
+          );
+
+        if (error) throw error;
+        return true;
+      } catch (error) {
+        console.error('Error saving rating:', error);
+        return false;
+      }
+    }
+
+    // Initialize star rating interactions
+    function initializeStarRatings() {
+      const allStarContainers = document.querySelectorAll('.user-stars');
+
+      allStarContainers.forEach(container => {
+        const stars = container.querySelectorAll('.star');
+        const showId = container.dataset.showId;
+        const info = container.parentElement.querySelector('.rating-info');
+
+        // Hover effect
+        stars.forEach((star, index) => {
+          star.addEventListener('mouseenter', () => {
+            stars.forEach((s, i) => {
+              if (i <= index) {
+                s.classList.add('hover');
+              } else {
+                s.classList.remove('hover');
+              }
+            });
+          });
+
+          // Click to rate
+          star.addEventListener('click', async () => {
+            const rating = parseInt(star.dataset.rating);
+
+            // Show loading state
+            info.textContent = 'Saving...';
+            info.className = 'rating-info rating-loading';
+
+            // Save to database
+            const success = await saveRating(showId, rating);
+
+            if (success) {
+              updateStarsDisplay(container, rating);
+              info.textContent = 'Saved!';
+              info.className = 'rating-info rating-success';
+
+              // Change to "Your rating" after 2 seconds
+              setTimeout(() => {
+                info.textContent = 'Your rating';
+                info.className = 'rating-info';
+              }, 2000);
+            } else {
+              info.textContent = 'Error saving';
+              info.className = 'rating-info rating-error';
+            }
+          });
+        });
+
+        // Remove hover effect when mouse leaves
+        container.addEventListener('mouseleave', () => {
+          stars.forEach(s => s.classList.remove('hover'));
+        });
+      });
+    }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      initializeStarRatings();
+      loadUserRatings();
+    });
   </script>
 </body>
 </html>
