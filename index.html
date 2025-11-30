@@ -294,8 +294,19 @@
       transform: scale(1.2);
     }
 
+    /* Community rating (yellow stars) */
     .user-stars .star.selected {
       color: #ffd700;
+    }
+
+    /* User's own rating (green stars) */
+    .user-stars .star.user-rated {
+      color: #4ade80;
+    }
+
+    .user-stars .star.user-rated:hover,
+    .user-stars .star.user-rated.hover {
+      color: #22c55e;
     }
 
     .rating-info {
@@ -2224,7 +2235,31 @@
 
     const userFingerprint = getUserFingerprint();
 
-    // Load existing ratings from Supabase
+    // Load community average ratings from Supabase
+    async function loadCommunityRatings() {
+      try {
+        const { data, error } = await supabase
+          .from('show_ratings_summary')
+          .select('show_id, average_rating, total_votes');
+
+        if (error) throw error;
+
+        // Update UI with community averages (yellow stars)
+        data.forEach(({ show_id, average_rating, total_votes }) => {
+          const starsContainer = document.querySelector(`[data-show-id="${show_id}"].user-stars`);
+          if (starsContainer) {
+            updateStarsDisplay(starsContainer, Math.round(average_rating), false);
+            const info = starsContainer.parentElement.querySelector('.rating-info');
+            info.textContent = `(${total_votes} vote${total_votes !== 1 ? 's' : ''})`;
+            info.className = 'rating-info';
+          }
+        });
+      } catch (error) {
+        console.error('Error loading community ratings:', error);
+      }
+    }
+
+    // Load user's own ratings from Supabase
     async function loadUserRatings() {
       try {
         const { data, error } = await supabase
@@ -2234,31 +2269,39 @@
 
         if (error) throw error;
 
-        // Update UI with existing ratings
+        // Update UI with user's ratings (green stars, overriding community ratings)
         data.forEach(({ show_id, rating }) => {
           const starsContainer = document.querySelector(`[data-show-id="${show_id}"].user-stars`);
           if (starsContainer) {
-            updateStarsDisplay(starsContainer, rating);
+            updateStarsDisplay(starsContainer, rating, true);
             const info = starsContainer.parentElement.querySelector('.rating-info');
             info.textContent = 'Your rating';
             info.className = 'rating-info';
           }
         });
       } catch (error) {
-        console.error('Error loading ratings:', error);
+        console.error('Error loading user ratings:', error);
       }
     }
 
     // Update star display
-    function updateStarsDisplay(container, rating) {
+    // isUserRating: true = green stars (user's own), false = yellow stars (community)
+    function updateStarsDisplay(container, rating, isUserRating = false) {
       const stars = container.querySelectorAll('.star');
+      const cssClass = isUserRating ? 'user-rated' : 'selected';
+
       stars.forEach((star, index) => {
+        // Remove both classes first
+        star.classList.remove('selected', 'user-rated');
+
+        // Add appropriate class based on rating
         if (index < rating) {
-          star.classList.add('selected');
-        } else {
-          star.classList.remove('selected');
+          star.classList.add(cssClass);
         }
       });
+
+      // Store whether this is user's rating for later reference
+      container.dataset.isUserRating = isUserRating;
     }
 
     // Save or update rating
@@ -2319,7 +2362,8 @@
             const success = await saveRating(showId, rating);
 
             if (success) {
-              updateStarsDisplay(container, rating);
+              // Update to green stars (user's rating)
+              updateStarsDisplay(container, rating, true);
               info.textContent = 'Saved!';
               info.className = 'rating-info rating-success';
 
@@ -2343,9 +2387,14 @@
     }
 
     // Initialize on page load
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
       initializeStarRatings();
-      loadUserRatings();
+
+      // Load community ratings first (yellow stars with vote counts)
+      await loadCommunityRatings();
+
+      // Then load user's ratings (green stars, overrides community where user has voted)
+      await loadUserRatings();
     });
   </script>
 </body>
