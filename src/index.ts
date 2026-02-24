@@ -128,14 +128,9 @@ async function main() {
       await htmlGenerator.generateTableHtmlFile(
         combined,
         'index.html',
-        'details',
         'TV for Older People',
         ''
       );
-
-      // Generate detail pages for all shows
-      await htmlGenerator.generateAllDetailPages(sortedMovies, config.movies.detailsDirectory);
-      await htmlGenerator.generateAllDetailPages(sortedTvShows, config.tvShows.detailsDirectory);
     }
 
     // ========== SUMMARY ==========

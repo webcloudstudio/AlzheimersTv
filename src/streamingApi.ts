@@ -88,6 +88,7 @@ export class StreamingApiClient {
       runtime: input.cachedRuntime,
       showType: showType,
       seasonCount: input.cachedSeasonCount,
+      youtubeUrl: input.youtubeUrl,
     };
   }
 
@@ -207,6 +208,7 @@ export class StreamingApiClient {
         showType: showType,
         episodeCount: show.episodeCount,
         seasonCount: show.seasonCount,
+        youtubeUrl: input.youtubeUrl,
       };
     } catch (error: any) {
       this.consecutiveErrors++;

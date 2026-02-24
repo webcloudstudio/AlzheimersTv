@@ -1,6 +1,5 @@
 import { ShowWithStreaming } from './types.js';
-import { writeFile, mkdir } from 'fs/promises';
-import { join, dirname } from 'path';
+import { writeFile } from 'fs/promises';
 
 export class HtmlTableGenerator {
   private generateStars(rating: number): string {
@@ -13,12 +12,7 @@ export class HtmlTableGenerator {
     return '⭐'.repeat(fullStars) + (hasHalfStar ? '½' : '');
   }
 
-  private sanitizeFileName(title: string): string {
-    return title.replace(/[^a-z0-9]/gi, '-').toLowerCase();
-  }
-
-  private generateTableRow(show: ShowWithStreaming, detailsDir: string): string {
-    const detailFile = `${detailsDir}/${this.sanitizeFileName(show.title)}.html`;
+  private generateTableRow(show: ShowWithStreaming): string {
     const stars = this.generateStars(show.rating);
     const genres = show.genres.slice(0, 3).join(', ');
 
@@ -30,15 +24,21 @@ export class HtmlTableGenerator {
       }
     });
 
-    const freeServices = Array.from(uniqueFreeServices.values()).map(s => {
+    let freeServices = Array.from(uniqueFreeServices.values()).map(s => {
       let serviceHtml = s.name;
       if (s.name.toLowerCase().includes('prime')) {
         serviceHtml = `${s.name}<br><span class="free-label">(free)</span>`;
       }
-      // Use Movie of the Night show URL instead of incomplete streaming service links
+      // Use Movie of the Night show URL
       const linkUrl = show.showUrl || s.link;
       return `<a href="${linkUrl}" target="_blank" class="service-badge ${s.name.toLowerCase().replace(/\s+/g, '-')}" data-service="${s.name}">${serviceHtml}</a>`;
     }).join(' ');
+
+    // Add YouTube badge if YouTube URL exists - links to YouTube URL
+    if (show.youtubeUrl && show.youtubeUrl.startsWith('http')) {
+      const youtubeBadge = `<a href="${show.youtubeUrl}" target="_blank" class="service-badge youtube" data-service="YouTube">YouTube</a>`;
+      freeServices = freeServices + (freeServices ? ' ' : '') + youtubeBadge;
+    }
 
     const metaInfo = show.showType === 'series'
       ? (show.seasonCount ? `${show.seasonCount} Season${show.seasonCount > 1 ? 's' : ''}` : 'Series')
@@ -46,9 +46,16 @@ export class HtmlTableGenerator {
 
     const showType = show.showType === 'series' ? 'Series' : 'Movie';
 
+    // Build free services list including YouTube
+    const freeServiceNames = show.freeStreamingServices.map(s => s.name);
+    if (show.youtubeUrl && show.youtubeUrl.startsWith('http')) {
+      freeServiceNames.push('YouTube');
+    }
+    const hasFree = freeServiceNames.length > 0;
+
     return `
-      <tr class="show-row" data-type="${showType.toLowerCase()}" data-free-services="${show.freeStreamingServices.map(s => s.name).join(',')}" data-has-free="${show.freeStreamingServices.length > 0}">
-        <td><a href="${detailFile}" target="_blank" class="show-link">${show.title}</a></td>
+      <tr class="show-row" data-type="${showType.toLowerCase()}" data-free-services="${freeServiceNames.join(',')}" data-has-free="${hasFree}">
+        <td><a href="${show.showUrl}" target="_blank" class="show-link">${show.title}</a></td>
         <td>${showType}</td>
         <td data-sort="${show.year}">${show.year}</td>
         <td>${metaInfo}</td>
@@ -59,7 +66,7 @@ export class HtmlTableGenerator {
     `;
   }
 
-  private generateTableHtml(shows: ShowWithStreaming[], title: string, subtitle: string, detailsDir: string, generatedDate: string): string {
+  private generateTableHtml(shows: ShowWithStreaming[], title: string, subtitle: string, generatedDate: string): string {
     const showsJson = JSON.stringify(shows.map(show => ({
       title: show.title,
       year: show.year,
@@ -68,13 +75,17 @@ export class HtmlTableGenerator {
       paidServices: show.paidStreamingServices.map(s => s.name),
     })));
 
-    const tableRows = shows.map(show => this.generateTableRow(show, detailsDir)).join('\n');
+    const tableRows = shows.map(show => this.generateTableRow(show)).join('\n');
 
     // Get all unique services for filter buttons
     const allServices = new Set<string>();
     shows.forEach(show => {
       show.freeStreamingServices.forEach(s => allServices.add(s.name));
       show.paidStreamingServices.forEach(s => allServices.add(s.name));
+      // Add YouTube if available
+      if (show.youtubeUrl && show.youtubeUrl.startsWith('http')) {
+        allServices.add('YouTube');
+      }
     });
 
     const serviceButtons = Array.from(allServices).map(service =>
@@ -333,6 +344,7 @@ export class HtmlTableGenerator {
     .service-badge.peacock { background: #000000; }
     .service-badge.paramount,
     .service-badge.paramount\\+ { background: #0064FF; }
+    .service-badge.youtube { background: #FF0000; }
     .service-badge.paid { background: #888; }
 
     .footer {
@@ -522,7 +534,6 @@ export class HtmlTableGenerator {
   async generateTableHtmlFile(
     shows: ShowWithStreaming[],
     outputPath: string,
-    detailsDir: string,
     title: string,
     subtitle: string
   ): Promise<void> {
@@ -532,229 +543,8 @@ export class HtmlTableGenerator {
       day: 'numeric'
     });
 
-    const html = this.generateTableHtml(shows, title, subtitle, detailsDir, generatedDate);
+    const html = this.generateTableHtml(shows, title, subtitle, generatedDate);
     await writeFile(outputPath, html, 'utf-8');
     console.log(`✓ Table HTML file generated: ${outputPath}`);
-  }
-
-  async generateDetailPage(
-    show: ShowWithStreaming,
-    detailsDir: string
-  ): Promise<void> {
-    const fileName = `${this.sanitizeFileName(show.title)}.html`;
-    const filePath = join(detailsDir, fileName);
-
-    // Create directory if it doesn't exist
-    await mkdir(detailsDir, { recursive: true });
-
-    const stars = this.generateStars(show.rating);
-    const genresList = show.genres.join(', ');
-
-    // Get unique free services (remove duplicates)
-    const uniqueFreeServices = new Map<string, any>();
-    show.freeStreamingServices.forEach(s => {
-      if (!uniqueFreeServices.has(s.name)) {
-        uniqueFreeServices.set(s.name, s);
-      }
-    });
-
-    const freeServices = Array.from(uniqueFreeServices.values()).map(s => {
-      let serviceName = s.name;
-      if (s.name.toLowerCase().includes('prime')) {
-        serviceName += ' (free with subscription)';
-      }
-      return `<a href="${s.link}" target="_blank" class="service-link ${s.name.toLowerCase().replace(/\s+/g, '-')}">${serviceName}</a>`;
-    }).join('');
-
-    const metaInfo = show.showType === 'series'
-      ? `<p><strong>Seasons:</strong> ${show.seasonCount || 'N/A'}</p>`
-      : `<p><strong>Runtime:</strong> ${show.runtime ? show.runtime + ' minutes' : 'N/A'}</p>`;
-
-    const html = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${show.title} - Details</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-      color: #fff;
-      padding: 40px 20px;
-      line-height: 1.6;
-    }
-
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 20px;
-      padding: 40px;
-      backdrop-filter: blur(10px);
-    }
-
-    .poster {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    .poster img {
-      max-width: 400px;
-      border-radius: 15px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    }
-
-    h1 {
-      font-size: 2.5em;
-      margin-bottom: 15px;
-      color: #4ecdc4;
-    }
-
-    .meta {
-      font-size: 1.2em;
-      color: #b8b8b8;
-      margin-bottom: 20px;
-    }
-
-    .rating {
-      font-size: 1.5em;
-      margin-bottom: 20px;
-    }
-
-    .stars {
-      color: #ffd700;
-    }
-
-    .rating-number {
-      color: #fff;
-      font-weight: 600;
-    }
-
-    .info-section {
-      margin-bottom: 30px;
-    }
-
-    .info-section h2 {
-      color: #4ecdc4;
-      margin-bottom: 10px;
-      font-size: 1.5em;
-    }
-
-    .info-section p {
-      font-size: 1.1em;
-      line-height: 1.8;
-      color: #d0d0d0;
-    }
-
-    .streaming-section {
-      margin-top: 30px;
-    }
-
-    .service-link {
-      display: inline-block;
-      padding: 12px 24px;
-      margin: 8px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 1.1em;
-      color: white;
-      transition: transform 0.2s, opacity 0.2s;
-    }
-
-    .service-link:hover {
-      transform: scale(1.05);
-      opacity: 0.9;
-    }
-
-    .service-link.netflix { background: #E50914; }
-    .service-link.prime,
-    .service-link.amazon-prime,
-    .service-link.amazon-prime-video { background: #00A8E1; }
-    .service-link.hulu { background: #1CE783; }
-    .service-link.disney,
-    .service-link.disney\\+ { background: #113CCF; }
-    .service-link.max,
-    .service-link.hbo-max { background: #002BE7; }
-    .service-link.appletv,
-    .service-link.apple-tv,
-    .service-link.apple-tv\\+ { background: #000000; }
-    .service-link.peacock { background: #000000; }
-    .service-link.paramount,
-    .service-link.paramount\\+ { background: #0064FF; }
-    .service-link.paid { background: #888; }
-
-    .back-link {
-      display: inline-block;
-      margin-top: 30px;
-      color: #4ecdc4;
-      text-decoration: none;
-      font-size: 1.1em;
-    }
-
-    .back-link:hover {
-      text-decoration: underline;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <div class="poster">
-      ${show.imageUrl ? `<img src="${show.imageUrl}" alt="${show.title}">` : '<p style="color: #888;">No image available</p>'}
-    </div>
-
-    <h1>${show.title}</h1>
-
-    <div class="meta">
-      ${show.year} • ${show.showType === 'series' ? 'TV Series' : 'Movie'}
-    </div>
-
-    <div class="rating">
-      <span class="stars">${stars}</span> <span class="rating-number">${show.rating.toFixed(1)}/10</span>
-    </div>
-
-    <div class="info-section">
-      <h2>Overview</h2>
-      <p>${show.overview || 'No overview available.'}</p>
-    </div>
-
-    <div class="info-section">
-      <h2>Details</h2>
-      <p><strong>Genres:</strong> ${genresList || 'N/A'}</p>
-      ${metaInfo}
-      ${show.imdbId ? `<p><strong>IMDb:</strong> <a href="https://www.imdb.com/title/${show.imdbId}" target="_blank" style="color: #4ecdc4;">${show.imdbId}</a></p>` : ''}
-    </div>
-
-    ${freeServices ? `
-    <div class="info-section streaming-section">
-      <h2>Watch Free (with subscription)</h2>
-      ${freeServices}
-    </div>
-    ` : '<div class="info-section"><p>No free streaming options available.</p></div>'}
-  </div>
-</body>
-</html>`;
-
-    await writeFile(filePath, html, 'utf-8');
-  }
-
-  async generateAllDetailPages(
-    shows: ShowWithStreaming[],
-    detailsDir: string
-  ): Promise<void> {
-    console.log(`\nGenerating ${shows.length} detail pages...`);
-
-    for (const show of shows) {
-      await this.generateDetailPage(show, detailsDir);
-    }
-
-    console.log(`✓ Generated ${shows.length} detail pages in ${detailsDir}`);
   }
 }

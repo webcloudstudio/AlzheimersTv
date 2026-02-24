@@ -36,6 +36,7 @@ export async function parseShowsCSV(filePath: string, maxRows?: number): Promise
           cachedShowUrl: row.cachedShowUrl || undefined,
           cachedFreeServices: row.cachedFreeServices || undefined,
           cachedPaidServices: row.cachedPaidServices || undefined,
+          youtubeUrl: row.youtubeUrl || undefined,
         });
       })
       .on('end', () => {

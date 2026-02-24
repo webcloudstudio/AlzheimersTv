@@ -1,5 +1,6 @@
 export interface Config {
   apiKey: string;
+  youtubeApiKey?: string; // Optional YouTube Data API v3 key for YouTube discovery
   country: string;
   maxItemsToProcess: number;
   targetServices: string[];
@@ -35,6 +36,7 @@ export interface ShowInput {
   cachedShowUrl?: string; // Movie of the Night show page URL
   cachedFreeServices?: string;
   cachedPaidServices?: string;
+  youtubeUrl?: string; // YouTube URL if available, or 'not on youtube' if checked
 }
 
 export interface ShowWithStreaming {
@@ -52,6 +54,7 @@ export interface ShowWithStreaming {
   showType: 'movie' | 'series';
   episodeCount?: number;
   seasonCount?: number;
+  youtubeUrl?: string; // YouTube URL if available
 }
 
 export interface StreamingService {

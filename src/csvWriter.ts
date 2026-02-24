@@ -2,6 +2,18 @@ import { stringify } from 'csv-stringify/sync';
 import { writeFile } from 'fs/promises';
 import { ShowInput, ShowWithStreaming } from './types.js';
 
+function getValidYouTubeUrl(url: string): string {
+  // Filter out non-YouTube URLs (like movieofthenight.com)
+  if (!url || url === '') return '';
+  if (url === 'not on youtube') return url;
+  // Only allow actual YouTube URLs
+  if (url.includes('youtube.com') || url.includes('youtu.be')) {
+    return url;
+  }
+  // Invalid YouTube URL, clear it
+  return '';
+}
+
 export async function updateCsvWithApiData(
   filePath: string,
   originalInputs: ShowInput[],
@@ -39,6 +51,7 @@ export async function updateCsvWithApiData(
         cachedShowUrl: apiData.showUrl,
         cachedFreeServices: freeServices,
         cachedPaidServices: paidServices,
+        youtubeUrl: getValidYouTubeUrl(apiData.youtubeUrl || input.youtubeUrl || ''),
       };
     } else {
       // Mark as failed if no API data (but was attempted)
@@ -61,6 +74,7 @@ export async function updateCsvWithApiData(
         cachedShowUrl: input.cachedShowUrl || '',
         cachedFreeServices: input.cachedFreeServices || '',
         cachedPaidServices: input.cachedPaidServices || '',
+        youtubeUrl: getValidYouTubeUrl(input.youtubeUrl || ''),
       };
     }
   });
@@ -85,6 +99,7 @@ export async function updateCsvWithApiData(
       'cachedShowUrl',
       'cachedFreeServices',
       'cachedPaidServices',
+      'youtubeUrl',
     ],
   });
 
