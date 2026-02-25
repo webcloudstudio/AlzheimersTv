@@ -1,0 +1,23 @@
+{
+  "dbPath": "./alzheimerstv.db",
+  "tmdbApiKey": "3b810a58ada6a70bd207e5df6f35f3f0",
+  "watchmodeApiKey": "uJVNf3BZIEucZ2Q2T7lT8AbldF4s1N2IR1BBh15g",
+  "motnApiKey": "1c7e12488fmsh90337cf4f5e6ce6p1b0524jsn50d3e32df35e",
+  "country": "us",
+  "targetServices": [
+    "netflix", "prime", "hulu", "disney", "max", "appletv",
+    "paramount", "peacock", "amc", "britbox", "criterion",
+    "tubi", "pluto", "roku", "freevee", "youtube"
+  ],
+  "pipeline": {
+    "watchmodeDailyBudget": 33,
+    "watchmodeMonthlyBudget": 950,
+    "motnDailyBudget": 95,
+    "urlVerifyPerRun": 200,
+    "tmdbRatePerSecond": 40
+  },
+  "seedCsvs": {
+    "movies": "../movies.csv",
+    "tvshows": "../tvshows.csv"
+  }
+}

@@ -1,0 +1,162 @@
+# AlzheimersTv — Downloader
+
+This is the data pipeline for the AlzheimersTv streaming guide.
+It maintains a SQLite database of ~2,000 curated shows with direct streaming URLs,
+then generates `../index.html` (the senior-facing TV guide in the parent directory).
+
+---
+
+## Quick start
+
+```bash
+cd downloader
+npm install
+# Add your tmdbApiKey to config.json first
+npm run init       # create DB, seed 16 streaming services
+npm run seed       # import ~111 curated titles from ../movies.csv + ../tvshows.csv
+npm run pipeline   # daily: enrich metadata + fetch URLs + verify + generate HTML
+```
+
+---
+
+## Project structure
+
+```
+downloader/
+  src/
+    db/
+      connection.ts     singleton SQLite connection (better-sqlite3)
+      schema.ts         DDL, service seed data, TMDB provider ID map
+      queries.ts        all typed DB query functions
+    pipeline/
+      tmdbBulkImport.ts Phase A1 — download TMDB daily export (~900K titles, no key needed)
+      tmdbEnrich.ts     Phase A2 — full metadata per show from TMDB API
+      tmdbProviders.ts  Phase A3 — which services carry each show (no URLs yet)
+      watchmodeEnrich.ts Phase B1 — direct stream URLs from Watchmode (33/day, 950/mo)
+      motnEnrich.ts     Phase B2 — direct stream URLs from Movie of the Night (95/day)
+      urlVerifier.ts    Phase C  — HEAD ping to verify stored URLs are live
+      seedFeatured.ts   import CSVs as featured shows (resolves IMDB→TMDB IDs)
+    scheduler.ts        CLI orchestrator
+    htmlGenerator.ts    queries DB → writes ../index.html
+    types.ts            TypeScript interfaces
+  config.json           API keys and settings (fill in keys)
+  alzheimerstv.db       SQLite database (gitignored, created by npm run init)
+  dist/                 compiled JS output (gitignored)
+```
+
+---
+
+## npm scripts
+
+| Command | What it does |
+|---|---|
+| `npm run init` | Create DB schema + seed 16 streaming services |
+| `npm run seed` | Import `../movies.csv` + `../tvshows.csv` as featured shows |
+| `npm run pipeline:full` | A1 bulk import + seed + A2 + A3 + B1 + B2 + C + generate HTML |
+| `npm run pipeline` | Daily: A2 + A3 + B1 + B2 + C + generate HTML (no bulk re-download) |
+| `npm run pipeline:verify` | Only Phase C — verify stored URLs |
+| `npm run generate` | Only regenerate `../index.html` from current DB state |
+
+---
+
+## Configuration (`config.json`)
+
+```json
+{
+  "dbPath": "./alzheimerstv.db",
+  "tmdbApiKey": "",       ← required for enrichment + seed
+  "watchmodeApiKey": "",  ← optional, for direct streaming URLs
+  "motnApiKey": "",       ← optional, for direct streaming URLs
+  "country": "us",
+  "targetServices": [...],
+  "pipeline": {
+    "watchmodeDailyBudget": 33,
+    "watchmodeMonthlyBudget": 950,
+    "motnDailyBudget": 95,
+    "urlVerifyPerRun": 200,
+    "tmdbRatePerSecond": 40
+  },
+  "seedCsvs": {
+    "movies": "../movies.csv",
+    "tvshows": "../tvshows.csv"
+  }
+}
+```
+
+---
+
+## API keys
+
+### TMDB (required)
+- Free, no monthly cap, ~50 req/sec
+- Sign up: https://www.themoviedb.org/signup
+- Get key: https://www.themoviedb.org/settings/api → "API Key (v3 auth)"
+- Used for: all metadata, watch providers, bulk export (bulk needs no key)
+
+### Watchmode (optional — direct URLs)
+- Free tier: 1,000 calls/month
+- Sign up: https://api.watchmode.com/
+- Used for: direct deep-link URLs to shows on each service
+
+### Movie of the Night / streaming-availability (optional — direct URLs)
+- Free tier: ~3,000 calls/month (100/day)
+- Sign up: https://rapidapi.com/movie-of-the-night-movie-of-the-night-default/api/streaming-availability
+- Used for: direct deep-link URLs, fallback after Watchmode
+
+---
+
+## Database tables
+
+| Table | Purpose |
+|---|---|
+| `shows` | One row per title — tmdb_id, imdb_id, title, metadata, is_featured |
+| `services` | 16 streaming services with display names, colors, base URLs |
+| `streaming_availability` | One row per (show × service × access_type) — nullable stream_url |
+| `featured_shows` | Editorial state for the ~2,000 curated senior guide titles |
+| `api_quota_log` | Tracks free-tier API usage to enforce daily/monthly budget limits |
+
+---
+
+## Data flow
+
+```
+Phase A1  TMDB bulk export (free, monthly) → ~900K rows in shows table
+Phase A2  TMDB API → full metadata for featured shows (title, rating, genres, image, etc.)
+Phase A3  TMDB watch providers → confirms which services carry each show (no URL yet)
+Phase B1  Watchmode → direct stream URLs (budget-limited)
+Phase B2  MOTN → direct stream URLs for any remaining gaps (budget-limited)
+Phase C   HTTP HEAD ping → verifies each URL is still live; marks dead links
+Generate  SQL query → ../index.html with service badges per show
+```
+
+---
+
+## Verification checkpoints
+
+```bash
+# After init:
+sqlite3 alzheimerstv.db "SELECT COUNT(*) FROM services"  -- expect 16
+
+# After seed:
+sqlite3 alzheimerstv.db "SELECT COUNT(*) FROM featured_shows"  -- expect ~111
+
+# After TMDB enrichment:
+sqlite3 alzheimerstv.db "SELECT COUNT(*) FROM shows WHERE tmdb_fetched_at IS NOT NULL AND is_featured=1"
+
+# After watch providers:
+sqlite3 alzheimerstv.db "SELECT service_id, COUNT(*) FROM streaming_availability GROUP BY service_id"
+
+# URL health:
+sqlite3 alzheimerstv.db "SELECT stream_url_status, COUNT(*) FROM streaming_availability WHERE stream_url IS NOT NULL GROUP BY stream_url_status"
+```
+
+---
+
+## TMDB provider ID map (for reference)
+
+```
+Netflix=8, Prime=9, Hulu=15, Disney+=337, Max=1899, AppleTV+=350,
+Paramount+=531, Peacock=386, AMC+=526, BritBox=151, Criterion=258,
+Tubi=73, Pluto=300, Roku=207, Freevee=613
+```
+Defined in `src/db/schema.ts` as `TMDB_PROVIDER_MAP`.
