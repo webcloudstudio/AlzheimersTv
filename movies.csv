@@ -1,70 +1,427 @@
-title,imdbId,year
-The Shawshank Redemption,tt0111161,1994
-The Godfather,tt0068646,1972
-Casablanca,tt0034583,1942
-12 Angry Men,tt0050083,1957
-Schindler's List,tt0108052,1993
-The Sound of Music,tt0059742,1965
-Forrest Gump,tt0109830,1994
-It's a Wonderful Life,tt0038650,1946
-To Kill a Mockingbird,tt0056592,1962
-Gone with the Wind,tt0031381,1939
-The Green Mile,tt0120689,1999
-Rain Man,tt0095953,1988
-Driving Miss Daisy,tt0097239,1989
-The King's Speech,tt1504320,2010
-A Beautiful Mind,tt0268978,2001
-The Bridge on the River Kwai,tt0050212,1957
-Lawrence of Arabia,tt0056172,1962
-Doctor Zhivago,tt0059113,1965
-Ben-Hur,tt0052618,1959
-The Ten Commandments,tt0049833,1956
-Singin' in the Rain,tt0045152,1952
-West Side Story,tt0055614,1961
-My Fair Lady,tt0058385,1964
-Mary Poppins,tt0058331,1964
-The Wizard of Oz,tt0032138,1939
-Citizen Kane,tt0033467,1941
-On the Waterfront,tt0047296,1954
-Roman Holiday,tt0046250,1953
-Breakfast at Tiffany's,tt0054698,1961
-An Affair to Remember,tt0050105,1957
-The Philadelphia Story,tt0032904,1940
-Guess Who's Coming to Dinner,tt0061735,1967
-Cool Hand Luke,tt0061512,1967
-The Great Escape,tt0057115,1963
-Sunset Boulevard,tt0043014,1950
-All About Eve,tt0042192,1950
-Rear Window,tt0047396,1954
-North by Northwest,tt0053125,1959
-Vertigo,tt0052357,1958
-Psycho,tt0054215,1960
-The Birds,tt0056869,1963
-Mr. Smith Goes to Washington,tt0031679,1939
-It Happened One Night,tt0025316,1934
-The Apartment,tt0053604,1960
-Some Like It Hot,tt0053291,1959
-The Sting,tt0070735,1973
-Butch Cassidy and the Sundance Kid,tt0064115,1969
-The Graduate,tt0061722,1967
-Midnight Cowboy,tt0064665,1969
-Terms of Endearment,tt0086425,1983
-The Longest Day,tt0056197,1962
-Patton,tt0066206,1970
-The Princess Bride,tt0093779,1987
-The Music Man,tt0056262,1962
-On Golden Pond,tt0082846,1981
-The King and I,tt0049408,1956
-Midway,tt6924650,2019
-Friendly Persuasion,tt0049214,1956
-Calamity Jane,tt0045591,1953
-The Quiet Man,tt0045061,1952
-Meet Me in St. Louis,tt0037059,1944
-Oklahoma!,tt0048445,1955
-The African Queen,tt0043265,1951
-The Great Race,tt0059243,1965
-Shenandoah,tt0059715,1965
-Giant,tt0049261,1956
-7 Brides for 7 Brothers,tt0046824,1954
-Carousel,tt0048983,1956
-South Pacific,tt0052225,1958
+title,imdbId,year,tmdbId
+The Shawshank Redemption,tt0111161,1994,
+The Godfather,tt0068646,1972,
+Casablanca,tt0034583,1942,
+12 Angry Men,tt0050083,1957,
+Schindler's List,tt0108052,1993,
+The Sound of Music,tt0059742,1965,
+Forrest Gump,tt0109830,1994,
+It's a Wonderful Life,tt0038650,1946,
+To Kill a Mockingbird,tt0056592,1962,
+Gone with the Wind,tt0031381,1939,
+The Green Mile,tt0120689,1999,
+Rain Man,tt0095953,1988,
+Driving Miss Daisy,tt0097239,1989,
+The King's Speech,tt1504320,2010,
+A Beautiful Mind,tt0268978,2001,
+The Bridge on the River Kwai,tt0050212,1957,
+Lawrence of Arabia,tt0056172,1962,
+Doctor Zhivago,tt0059113,1965,
+Ben-Hur,tt0052618,1959,
+The Ten Commandments,tt0049833,1956,
+Singin' in the Rain,tt0045152,1952,
+West Side Story,tt0055614,1961,
+My Fair Lady,tt0058385,1964,
+Mary Poppins,tt0058331,1964,
+The Wizard of Oz,tt0032138,1939,
+Citizen Kane,tt0033467,1941,
+On the Waterfront,tt0047296,1954,
+Roman Holiday,tt0046250,1953,
+Breakfast at Tiffany's,tt0054698,1961,
+An Affair to Remember,tt0050105,1957,
+The Philadelphia Story,tt0032904,1940,
+Guess Who's Coming to Dinner,tt0061735,1967,
+Cool Hand Luke,tt0061512,1967,
+The Great Escape,tt0057115,1963,
+Sunset Boulevard,tt0043014,1950,
+All About Eve,tt0042192,1950,
+Rear Window,tt0047396,1954,
+North by Northwest,tt0053125,1959,
+Vertigo,tt0052357,1958,
+Psycho,tt0054215,1960,
+The Birds,tt0056869,1963,
+Mr. Smith Goes to Washington,tt0031679,1939,
+It Happened One Night,tt0025316,1934,
+The Apartment,tt0053604,1960,
+Some Like It Hot,tt0053291,1959,
+The Sting,tt0070735,1973,
+Butch Cassidy and the Sundance Kid,tt0064115,1969,
+The Graduate,tt0061722,1967,
+Midnight Cowboy,tt0064665,1969,
+Terms of Endearment,tt0086425,1983,
+The Longest Day,tt0056197,1962,
+Patton,tt0066206,1970,
+The Princess Bride,tt0093779,1987,
+The Music Man,tt0056262,1962,
+On Golden Pond,tt0082846,1981,
+The King and I,tt0049408,1956,
+Midway,tt6924650,2019,
+Friendly Persuasion,tt0049214,1956,
+Calamity Jane,tt0045591,1953,
+The Quiet Man,tt0045061,1952,
+Meet Me in St. Louis,tt0037059,1944,
+Oklahoma!,tt0048445,1955,
+The African Queen,tt0043265,1951,
+The Great Race,tt0059243,1965,
+Shenandoah,tt0059715,1965,
+Giant,tt0049261,1956,
+7 Brides for 7 Brothers,tt0046824,1954,
+Carousel,tt0048983,1956,
+South Pacific,tt0052225,1958,
+
+BTS: Permission to Dance on Stage - LA,,2022,1022102
+Chivas: The Movie,,2018,553674
+Emicida: AmarElo - It's All for Yesterday,,2020,765613
+Selena Gomez: My Mind & Me,,2022,1022256
+Spirited Away,,2001,129
+Dilwale Dulhania Le Jayenge,,1995,19404
+Faustina: Love and Mercy,,2019,588709
+Your Name.,,2016,372058
+Folklore: The Long Pond Studio Sessions,,2020,768141
+David Attenborough: A Life on Our Planet,,2020,664280
+Grave of the Fireflies,,1988,12477
+Heroes: Silence and Rock & Roll,,2021,812031
+Queen: Live at Wembley Stadium,,1986,20575
+Colombia: Wild Magic,,2015,364375
+Gleason,,2016,373446
+Spider-Man: Into the Spider-Verse,,2018,324857
+Howl's Moving Castle,,2004,4935
+Whiplash,,2014,244786
+Lucy Shimmers and the Prince of Peace,,2020,770156
+Racionais MC's: From the Streets of São Paulo,,2022,1033303
+Princess Mononoke,,1997,128
+The Legend of Hei,,2019,620249
+The King of Kings,,2025,1181107
+The Wild Robot,,2024,1184918
+BTS: Yet to Come in Cinemas,,2023,1063453
+We All Loved Each Other So Much,,1974,42269
+Terra,,2015,395985
+Spider-Man: Across the Spider-Verse,,2023,569094
+Neon Genesis Evangelion: The End of Evangelion,,1997,18491
+Ennio,,2022,396194
+The Quintessential Quintuplets Movie,,2022,820067
+Violet Evergarden: The Movie,,2020,533514
+Modern Times,,1936,3082
+Once Upon a Studio,,2023,1139087
+The Intouchables,,2011,77338
+City Lights,,1931,901
+Love Meetings,,1965,42733
+The Lion King,,1994,8587
+Out of the Clear Blue Sky,,2019,654299
+One Direction: This Is Us,,2013,164558
+Billie Eilish: The World's a Little Blurry,,2021,654754
+Baraka,,1992,14002
+Klaus,,2019,508965
+BLACKPINK: Light Up the Sky,,2020,740996
+TAYLOR SWIFT | THE ERAS TOUR,,2023,1160164
+Justice League Dark: Apokolips War,,2020,618344
+"The Boy, the Mole, the Fox and the Horse",,2022,995133
+Puss in Boots: The Last Wish,,2022,315162
+Il Sorpasso,,1962,24188
+Night and Fog,,1956,803
+Wolf Children,,2012,110420
+The Forge,,2024,1186532
+Maquia: When the Promised Flower Blooms,,2018,476292
+Coco,,2017,354912
+Evangelion: 3.0+1.0 Thrice Upon a Time,,2021,283566
+Wolfwalkers,,2020,441130
+Dying to Survive,,2018,532753
+Steven Universe: The Movie,,2019,537061
+Shawn Mendes: In Wonder,,2020,752939
+Piper,,2016,399106
+The Kid,,1921,10098
+Avicii - I'm Tim,,2024,1275945
+My Hero Academia: Heroes Rising,,2019,592350
+The Fresh Prince of Bel-Air Reunion,,2020,738362
+Togo,,2019,606856
+Rising Phoenix,,2020,726887
+Ocean with David Attenborough,,2025,1448497
+Queen: Days of Our Lives,,2011,74406
+Jujutsu Kaisen 0,,2021,810693
+Ultraman: Rising,,2024,829402
+Pictures of Ghosts,,2023,1112548
+The Remarkable Life of Ibelin,,2024,1167027
+Ne Zha 2,,2025,980477
+Wonder,,2017,406997
+Latin Blood – The Ballad of Ney Matogrosso,,2025,1212121
+KPop Demon Hunters,,2025,803796
+WALL·E,,2008,10681
+"Miraculous World: New York, United HeroeZ",,2020,755812
+Far from the Tree,,2021,831827
+Soul,,2020,508442
+Flow,,2024,823219
+The Tale of The Princess Kaguya,,2013,149871
+HOMECOMING: A film by Beyoncé,,2019,593691
+Black Clover: Sword of the Wizard King,,2023,812225
+Green Snake,,2021,795607
+Look Back,,2024,1244492
+Music by John Williams,,2024,1076708
+Super/Man: The Christopher Reeve Story,,2024,1128559
+Violet Evergarden: Eternity and the Auto Memory Doll,,2019,610892
+My Neighbor Totoro,,1988,8392
+Where the Tracks End,,2023,1121316
+New Gods: Nezha Reborn,,2021,663558
+Samsara,,2011,89708
+Memoir of a Snail,,2024,1064486
+Me Against You: Mr. S's Vendetta,,2020,640344
+Sherlock Jr.,,1924,992
+How to Train Your Dragon: Homecoming,,2019,638507
+Guillermo del Toro's Pinocchio,,2022,555604
+Bo Burnham: Make Happy,,2016,400608
+Bilby,,2018,528644
+Chasing Happiness,,2019,601169
+"ariana grande: excuse me, i love you",,2020,774372
+Hachi: A Dog's Tale,,2009,28178
+Bo Burnham: Inside,,2021,823754
+Monster High: Why Do Ghouls Fall in Love?,,2012,167313
+My Little Pony: Equestria Girls – Rainbow Rocks,,2014,292177
+Paperman,,2012,140420
+The Gold Rush,,1925,962
+Toy Story,,1995,862
+Chungking Express,,1994,11104
+Won't You Be My Neighbor?,,2018,490003
+Whisper of the Heart,,1995,37797
+Transformers Prime: Beast Hunters - Predacons Rising,,2013,268092
+Paris Is Burning,,1991,31225
+Transformers One,,2024,698687
+Weathering with You,,2019,568160
+Robot Dreams,,2023,838240
+Castle in the Sky,,1986,10515
+Bohemian Rhapsody,,2018,424694
+The Rescue,,2021,680058
+Up,,2009,14160
+Sanjuro,,1962,11712
+Kitbull,,2019,574074
+The Cove,,2009,23128
+Hannah Gadsby: Nanette,,2018,529531
+The Exterminating Angel,,1962,29264
+"Red, White & Royal Blue",,2023,930094
+Beyond the Universe,,2022,962232
+How to Train Your Dragon,,2025,1087192
+Tokyo Godfathers,,2003,13398
+Castaway on the Moon,,2009,18438
+Winter on Fire: Ukraine's Fight for Freedom,,2015,355020
+Inside Out,,2015,150540
+John Mulaney: Kid Gorgeous at Radio City,,2018,520594
+Free Solo,,2018,515042
+Limelight,,1952,28971
+Mulan,,1998,10674
+My Father's Violin,,2022,920394
+Koyaanisqatsi,,1983,11314
+Sing Street,,2016,369557
+The Circus,,1928,28978
+La La Land,,2016,313369
+Miracle in Cell No. 7,,2013,158445
+Bruce Lee: The Legend,,1984,44645
+Robin Williams: Come Inside My Mind,,2018,493100
+Varda by Agnès,,2019,554967
+The Year Earth Changed,,2021,811703
+When Marnie Was There,,2014,242828
+Coraline,,2009,14836
+Searching for Sugar Man,,2012,84334
+CODA,,2021,776503
+Dangal,,2016,360814
+Honeyland,,2019,566213
+Ivan Vasilyevich Changes His Profession,,1973,20803
+"No manches, Frida 2: paraíso destruido",,2019,554596
+Amarcord,,1973,7857
+You've Got This,,2020,746957
+Karol G: Tomorrow Was Beautiful,,2025,1469239
+Apollo 11,,2019,549559
+13th,,2016,407806
+The Greatest Night in Pop,,2024,1226841
+Mary and Max,,2009,24238
+Ron's Gone Wrong,,2021,482321
+Nimona,,2023,961323
+My Octopus Teacher,,2020,682110
+Creating The Queen's Gambit,,2021,784047
+Bo Burnham: What.,,2013,244001
+The Mitchells vs. the Machines,,2021,501929
+Wish Dragon,,2021,550205
+Miss Americana,,2020,653567
+"Monsters, Inc.",,2001,585
+Isle of Dogs,,2018,399174
+Feast,,2014,293299
+The Wizards Return: Alex vs. Alex,,2013,178682
+Ratatouille,,2007,2062
+Inner Workings,,2016,406785
+Happier Than Ever: A Love Letter to Los Angeles,,2021,853088
+"Monster High: Boo York, Boo York",,2015,360404
+We Bare Bears: The Movie,,2020,677638
+Straight Outta Compton,,2015,277216
+
+"The Boy, the Mole, the Fox and the Horse",,2022,995133
+"Miraculous World: New York, United HeroeZ",,2020,755812
+"ariana grande: excuse me, i love you",,2020,774372
+Nausicaä of the Valley of the Wind,,1984,81
+"Red, White & Royal Blue",,2023,930094
+Miraculous World: Shanghai - The Legend of Ladydragon,,2021,726684
+Ghost in the Shell,,1995,9323
+In This Corner of the World,,2016,378108
+Dragon Ball Super: Broly,,2018,503314
+The Legend of the Nahuala,,2007,29826
+Ne Zha,,2019,615453
+Sailor Moon SuperS: The Movie - Black Dream Hole,,1995,28460
+A Street Cat Named Bob,,2016,404378
+"No manches, Frida 2: paraíso destruido",,2019,554596
+Suzume,,2022,916224
+Justice League: The Flashpoint Paradox,,2013,183011
+A Whisker Away,,2020,667520
+Dino King: Journey to Fire Mountain,,2019,561974
+Friends: The Reunion,,2021,691179
+The Plague Dogs,,1982,30060
+"Monsters, Inc.",,2001,585
+Millennium Actress,,2002,33320
+Monster High: Scaris City of Frights,,2013,192911
+John Candy: I Like Me,,2025,1492608
+Blackfish,,2013,158999
+Jodorowsky's Dune,,2013,191720
+The Nightmare Before Christmas,,1993,9479
+The Cameraman,,1928,31411
+La luna,,2012,83564
+Finding Nemo,,2003,12
+Blush,,2021,818350
+The Princess and the Pilot,,2011,93013
+Fantastic Mr. Fox,,2009,10315
+Tampopo,,1985,11830
+Toy Story 3,,2010,10193
+Raya and the Last Dragon,,2021,527774
+Monty Python and the Holy Grail,,1975,762
+"Monster High: Boo York, Boo York",,2015,360404
+Rental Family,,2025,1208348
+Porco Rosso,,1992,11621
+Stand by Me Doraemon 2,,2020,728754
+Life of Brian,,1979,583
+Too Funny to Fail: The Life & Death of The Dana Carvey Show,,2017,482004
+Racing Extinction,,2015,300792
+Little Girl,,2020,656274
+Disclosure,,2020,653610
+The Look of Silence,,2014,267480
+The Mole Agent,,2020,653756
+Period. End of Sentence.,,2018,524288
+For All Mankind,,1989,20423
+OLIVIA RODRIGO: driving home 2 u (a SOUR film),,2022,939790
+Kiki's Delivery Service,,1989,16859
+Us Again,,2021,779047
+The Summit of the Gods,,2021,712454
+Bajrangi Bhaijaan,,2015,348892
+Evangelion: 2.0 You Can (Not) Advance,,2009,22843
+The Wind Rises,,2013,149870
+Presto,,2008,13042
+Monster High: Great Scarrier Reef,,2016,382581
+Luca,,2021,508943
+The Girl Who Leapt Through Time,,2006,14069
+The First Slam Dunk,,2022,783675
+STILL: A Michael J. Fox Movie,,2023,1058699
+Sailor Moon R: The Movie - The Promise of the Rose,,1993,37100
+Talking Heads,,1980,49098
+Still Walking,,2008,25050
+Dancing with the Birds,,2019,634541
+Let the Bullets Fly,,2010,51533
+Tomorrow,,2015,371492
+Zootopia,,2016,269149
+Shrek,,2001,808
+Ponyo,,2008,12429
+Partly Cloudy,,2009,24480
+Empire of Dreams: The Story of the Star Wars Trilogy,,2004,76180
+No End in Sight,,2007,12901
+Monster High: Friday Night Frights,,2012,166747
+A Man Called Otto,,2022,937278
+Ernest & Celestine,,2012,126319
+Flee,,2021,680813
+Instructions Not Included,,2013,211954
+The Red Balloon,,1956,15265
+Luck,,2022,585511
+Jiro Dreams of Sushi,,2011,80767
+Annie Hall,,1977,703
+PlayTime,,1967,10227
+To End All War: Oppenheimer & the Atomic Bomb,,2023,1149947
+TINA,,2021,773736
+Big Hero 6,,2014,177572
+The Breakfast Club,,1985,2108
+Beauty and the Beast,,1991,10020
+John Mulaney: The Comeback Kid,,2015,367735
+The Incredibles,,2004,9806
+Manhattan,,1979,696
+Requiem for the American Dream,,2015,333377
+Caramelo,,2025,1277988
+Monster High: Escape from Skull Shores,,2012,167666
+Hustle,,2022,705861
+I Believe,,2019,499338
+Marriage Italian Style,,1964,49687
+Kiss the Ground,,2020,737157
+Red Shoes and the Seven Dwarfs,,2019,486589
+Chasing Coral,,2017,432615
+Safety Last!,,1923,22596
+My Little Pony: A New Generation,,2021,597316
+A Chinese Odyssey Part Two: Cinderella,,1995,21835
+Day & Night,,2010,40619
+Sweet & Sour,,2021,662237
+Good Morning,,1959,28276
+One Piece: Adventure of Nebulandia,,2015,373879
+Kin-dza-dza!,,1986,20874
+Kabhi Khushi Kabhie Gham,,2001,10757
+War of Likes,,2021,709629
+I Am Not Your Negro,,2017,411019
+Citizenfour,,2014,293310
+Valley Uprising,,2014,294959
+Tokyo Olympiad,,1965,43618
+P!nk: All I Know So Far,,2021,807597
+Minding the Gap,,2018,489985
+Dragonkeeper,,2024,588648
+The Secret World of Arrietty,,2010,51739
+Elephant,,2020,665135
+Hitting the Apex,,2015,357681
+Sound of Metal,,2020,502033
+PK,,2014,297222
+Entergalactic,,2022,1027014
+Before the Flood,,2016,410718
+Tony Hawk: Until the Wheels Fall Off,,2022,881198
+The Bad Guys 2,,2025,1175942
+Fried Green Tomatoes,,1991,1633
+"No manches, Frida",,2016,375794
+A Charlie Brown Christmas,,1965,13187
+I Am: Celine Dion,,2024,879805
+How to Train Your Dragon 2,,2014,82702
+The Young Girls of Rochefort,,1967,2433
+Descendants 3,,2019,506574
+Monster High: 13 Wishes,,2013,212470
+Mickey's Christmas Carol,,1983,14813
+Father There Is Only One,,2019,587272
+Aladdin,,1992,812
+Onward,,2020,508439
+"Summer of Soul (...Or, When the Revolution Could Not Be Televised)",,2021,776527
+Back to the Outback,,2021,770254
+Cobain: Montage of Heck,,2015,319075
+Better Man,,2024,799766
+"tick, tick... BOOM!",,2021,537116
+Belle,,2021,776305
+The Last Waltz,,1978,13963
+Dinner in America,,2020,653664
+Anvil! The Story of Anvil,,2008,18094
+Amy,,2015,331781
+Feel the Beat,,2020,707886
+When We Were Kings,,1996,10548
+Marley,,2012,90125
+Moulin Rouge!,,2001,824
+Moonage Daydream,,2022,957457
+Liz and the Blue Bird,,2018,482150
+Beastie Boys Story,,2020,664416
+The Music Room,,1958,822
+Work It,,2020,612706
+Let It Be,,1970,20556
+Buena Vista Social Club,,1999,11779
+Ray,,2004,1677
+Mixed by Erry,,2023,921785
+The Dirt,,2019,327331
+Song Sung Blue,,2025,1371185
+Gaga: Five Foot Two,,2017,472424
+My Little Pony: Equestria Girls,,2013,201676
+This Is Spinal Tap,,1984,11031
+My Little Pony: Equestria Girls - Friendship Games,,2015,349158
+The Muppet Christmas Carol,,1992,10437
+Cold War,,2018,440298
+Lemonade Mouth,,2011,65218
+"What Happened, Miss Simone?",,2015,318044
+My Little Pony: Equestria Girls - Legend of Everfree,,2016,405314
+Dont Look Back,,1967,135

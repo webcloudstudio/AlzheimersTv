@@ -1,53 +1,455 @@
-title,imdbId,year
-Monk,tt0312172,2002
-Drop Dead Diva,tt1280822,2009
-Miss Fisher's Murder Mysteries,tt1988386,2012
-Murder She Wrote,tt0086765,1984
-Matlock,tt0090481,1986
-Diagnosis Murder,tt0106582,1993
-Father Brown,tt2215842,2013
-All Creatures Great and Small,tt11836696,2020
-The Andy Griffith Show,tt0053479,1960
-The Waltons,tt0068149,1972
-Little House on the Prairie,tt0071007,1974
-Perry Mason,tt0050051,1957
-The Dick Van Dyke Show,tt0054533,1961
-I Love Lucy,tt0043208,1951
-Call the Midwife,tt1983079,2012
-Midsomer Murders,tt0118401,1997
-Grantchester,tt3349144,2014
-The Golden Girls,tt0088526,1985
-Columbo,tt1466074,1971
-Highway to Heaven,tt0086730,1984
-Touched by an Angel,tt0108923,1994
-Dr. Quinn Medicine Woman,tt0103405,1993
-The Carol Burnett Show,tt0061240,1967
-The Lawrence Welk Show,tt0047749,1955
-Heartland,tt1094229,2007
-When Calls the Heart,tt2874692,2014
-Road to Avonlea,tt0098900,1990
-Antiques Roadshow,tt0200325,1979
-The Repair Shop,tt6850362,2017
-Rosemary & Thyme,tt0377253,2003
-Doc Martin,tt0375346,2004
-Lark Rise to Candleford,tt1006587,2008
-A Place to Call Home,tt2258904,2013
-Northern Exposure,tt0098878,1990
-The Chosen,tt8419792,2019
-The Brady Bunch,tt0063878,1969
-The Bob Newhart Show,tt0068049,1972
-The Mary Tyler Moore Show,tt0065314,1970
-Pushing Daisies,tt0925266,2007
-Hart to Hart,tt0078622,1979
-McLeod's Daughters,tt0292414,2001
-Landman,tt14186672,2024
-The Queens Gambit
-Psych
-Drop Dead Diva
-Victoria
-Downton Abbey
-Live in Color
-our Planet
-Our Living World
-Our Universe
-Earthsea
+title,imdbId,year,tmdbId
+Monk,tt0312172,2002,
+Drop Dead Diva,tt1280822,2009,
+Miss Fisher's Murder Mysteries,tt1988386,2012,
+Murder She Wrote,tt0086765,1984,
+Matlock,tt0090481,1986,
+Diagnosis Murder,tt0106582,1993,
+Father Brown,tt2215842,2013,
+All Creatures Great and Small,tt11836696,2020,
+The Andy Griffith Show,tt0053479,1960,
+The Waltons,tt0068149,1972,
+Little House on the Prairie,tt0071007,1974,
+Perry Mason,tt0050051,1957,
+The Dick Van Dyke Show,tt0054533,1961,
+I Love Lucy,tt0043208,1951,
+Call the Midwife,tt1983079,2012,
+Midsomer Murders,tt0118401,1997,
+Grantchester,tt3349144,2014,
+The Golden Girls,tt0088526,1985,
+Columbo,tt1466074,1971,
+Highway to Heaven,tt0086730,1984,
+Touched by an Angel,tt0108923,1994,
+Dr. Quinn Medicine Woman,tt0103405,1993,
+The Carol Burnett Show,tt0061240,1967,
+The Lawrence Welk Show,tt0047749,1955,
+Heartland,tt1094229,2007,
+When Calls the Heart,tt2874692,2014,
+Road to Avonlea,tt0098900,1990,
+Antiques Roadshow,tt0200325,1979,
+The Repair Shop,tt6850362,2017,
+Rosemary & Thyme,tt0377253,2003,
+Doc Martin,tt0375346,2004,
+Lark Rise to Candleford,tt1006587,2008,
+A Place to Call Home,tt2258904,2013,
+Northern Exposure,tt0098878,1990,
+The Chosen,tt8419792,2019,
+The Brady Bunch,tt0063878,1969,
+The Bob Newhart Show,tt0068049,1972,
+The Mary Tyler Moore Show,tt0065314,1970,
+Pushing Daisies,tt0925266,2007,
+Hart to Hart,tt0078622,1979,
+McLeod's Daughters,tt0292414,2001,
+Landman,tt14186672,2024,
+The Queens Gambit,
+Psych,
+Drop Dead Diva,
+Victoria,
+Downton Abbey,
+Live in Color,
+our Planet,
+Our Living World,
+Our Universe,
+Earthsea,
+
+The Gumball Chronicles,,2020,133529
+The Good Bad Mother,,2023,214999
+La Casa de los Famosos,,2021,137228
+Wizards Beyond Waverly Place,,2024,245026
+Dance Moms: A New Era,,2024,258866
+Cobra Kai: Inside the Dojo,,2024,259383
+Reply 1988,,2015,64010
+The Green Planet,,2022,96323
+Selena + Chef,,2020,106978
+One Piece,,1999,37854
+Good Boy,,2025,231280
+Adventure Time: Fionna & Cake,,2023,131378
+Rick and Morty,,2013,60625
+The Owl House,,2020,92685
+Anne with an E,,2017,70785
+Slam Dunk,,1993,42573
+Fighting Spirit,,2000,42705
+Wizards of Waverly Place,,2007,3498
+Regular Show,,2010,31132
+Planet Earth II,,2016,68595
+Planet Earth,,2006,1044
+Superbook,,2011,44931
+Gravity Falls,,2012,40075
+Blue Planet II,,2017,74313
+Kamisama Kiss,,2012,62741
+Hazbin Hotel,,2024,94954
+Haikyu!!,,2014,60863
+Ranma ½,,1989,57706
+Scissor Seven,,2018,79141
+Over the Garden Wall,,2014,61617
+The Office,,2005,2316
+"Love, Victor",,2020,97186
+Bluey,,2018,82728
+Boris,,2007,36189
+Dan Da Dan,,2024,240411
+Your Lie in April,,2014,61663
+Amphibia,,2019,85349
+No One Will Miss Us,,2024,259666
+Planet Earth III,,2023,116156
+The Trauma Code: Heroes on Call,,2025,217553
+Crash Landing on You,,2019,94796
+BoJack Horseman,,2014,61222
+The Rookie,,2018,79744
+Mr. Queen,,2020,108261
+Horimiya,,2021,110070
+It's Okay to Not Be Okay,,2020,96462
+SPY x FAMILY,,2022,120089
+Vincenzo,,2021,117376
+Chainsaw Man,,2022,114410
+Miss Night and Day,,2024,231749
+The Amazing World of Gumball,,2011,37606
+Dr. STONE,,2019,86031
+Rascal Does Not Dream of Bunny Girl Senpai,,2018,82739
+Hotel Del Luna,,2019,90447
+Dickinson,,2019,89901
+Yuri!!! on Ice,,2016,68129
+Hospital Playlist,,2020,96102
+The Dangers in My Heart,,2023,207250
+Marry My Husband,,2024,221851
+Captains of the World,,2023,242238
+The Joy of Painting,,1983,10382
+"Seven Worlds, One Planet",,2019,90790
+Island of the Sea Wolves,,2022,211694
+Mama June: Family Crisis,,2017,70284
+The Kardashians,,2022,154521
+Trolls: TrollsTopia,,2020,113378
+Buzzfeed Unsolved: Supernatural,,2016,80044
+Adventure Time,,2010,15260
+Smiling Friends,,2020,126506
+Mob Psycho 100,,2016,67075
+Clarkson's Farm,,2021,117648
+Only Murders in the Building,,2021,107113
+Peter the Great: Greater Than Ever,,2024,236996
+Teen Wolf,,2011,34524
+Malcolm in the Middle,,2000,2004
+Delicious in Dungeon,,2024,207784
+My Demon,,2023,218539
+Business Proposal,,2022,154825
+Culinary Class Wars,,2024,245684
+Trollhunters: Tales of Arcadia,,2016,68267
+Food Wars! Shokugeki no Soma,,2015,62273
+Julie and the Phantoms,,2020,106292
+Steven Universe,,2013,61175
+The Quintessential Quintuplets,,2019,84669
+Frozen Planet,,2011,8724
+Life,,2009,16946
+Wildfire,,2005,2464
+Dragons: Race to the Edge,,2015,78173
+The Wonderfully Weird World of Gumball,,2025,291904
+The Beatles: Get Back,,2021,128876
+Hilda,,2018,82456
+Slugterra,,2012,46994
+Holly Hobbie,,2018,89221
+Star vs. the Forces of Evil,,2015,61923
+Africa,,2013,46664
+The Wonder Years,,1988,4500
+9/11: One Day in America,,2021,126422
+My Dad the Bounty Hunter,,2023,157221
+Dynasties,,2018,82953
+The Hunt,,2015,64313
+The Incredible Dr. Pol,,2011,49297
+Daddies on Request,,2022,114138
+Kickin' It,,2011,32716
+Jurassic World: Chaos Theory,,2024,237512
+Girl Meets World,,2014,46028
+Boy Meets World,,1993,1777
+Prehistoric Planet,,2022,95171
+How the Universe Works,,2010,33827
+Henry Danger,,2014,61852
+The Last Dance,,2020,79525
+Tour de France: Unchained,,2023,225335
+Dark Side of the Ring,,2019,88401
+Nathan for You,,2013,58957
+Tyler Perry's The Oval,,2019,95004
+Long Way Round,,2004,2899
+The Beatles Anthology,,1995,16906
+Money Heist: From Tokyo to Berlin,,2021,132719
+Scooby-Doo! Mystery Incorporated,,2010,18123
+The Avengers: Earth's Mightiest Heroes,,2010,33623
+The Storyteller,,1988,5303
+Secrets of Sulphur Springs,,2021,114547
+Mayday,,2003,90
+Bee and PuppyCat,,2014,61174
+Drawn Together,,2004,4336
+R. L. Stine's The Haunting Hour,,2010,33841
+Steven Universe Future,,2019,94280
+How To with John Wilson,,2020,110971
+Adventure Time: Distant Lands,,2020,94810
+Jose Jose: The Prince of Song,,2018,76541
+Limitless with Chris Hemsworth,,2022,115996
+Formula 1: Drive to Survive,,2019,87083
+The Imagineering Story,,2019,95339
+Wonders of the Solar System,,2010,32374
+Caso Cerrado,,,3957
+Swamp People,,2010,39290
+The Looney Tunes Show,,2011,32605
+Find Me in Paris,,2018,82199
+A gURLs wURLd,,2010,38949
+Monster Farm,,1999,15130
+Liv and Maddie,,2013,59375
+Buzzfeed Unsolved: True Crime,,2016,74826
+Norm Macdonald Has a Show,,2018,82193
+Beckham,,2023,235345
+The Nanny,,1993,2352
+The Secret of Skinwalker Ranch,,2020,101359
+Undercover Billionaire,,2019,91987
+Young Sheldon,,2017,71728
+Pit Bulls and Parolees,,2009,31537
+Life on Our Planet,,2023,213609
+The Men Who Built America,,2012,56304
+The Grand Tour,,2016,67557
+Street Outlaws,,2013,61019
+90 Day Fiancé: The Other Way,,2019,90046
+Bar Rescue,,2011,44470
+Destination Truth,,2007,4706
+Jessie,,2011,38974
+Best Friends Whenever,,2015,62783
+James Acaster: Repertoire,,2018,78319
+The Rehearsal,,2022,204284
+The Jinx: The Life and Deaths of Robert Durst,,2015,61929
+Tiny World,,2020,108303
+Long Way Down,,2007,1240
+Expedition Unknown,,2015,61833
+QI,,2003,1554
+The Universe,,2007,2622
+The First 48,,2004,5146
+Leah Remini: Scientology and the Aftermath,,2016,68901
+Ink Master,,2012,46286
+Arnold,,2023,226135
+Making a Murderer,,2015,64439
+Forensic Files,,1996,11105
+Brawn: The Impossible Formula 1 Story,,2023,233254
+Love on the Spectrum,,2022,200731
+Forged in Fire,,2015,62884
+"Argentine National Team, Road to Qatar",,2022,206085
+Headspace Guide to Meditation,,2021,114419
+Celebrity Family Feud,,2015,82108
+Paranormal Lockdown,,2016,65815
+Fixer Upper,,2013,60911
+Nineteen to Twenty,,2023,218475
+Last Week Tonight with John Oliver,,2014,60694
+Survivorman,,2005,4437
+Terrace House: Boys & Girls in the City,,2015,66647
+Single's Inferno,,2021,139798
+To Catch a Smuggler,,2015,101129
+Physical: 100,,2023,210905
+Ghost Adventures,,2008,17937
+The Devil's Plan,,2023,214582
+La Casa de los Famosos México,,2023,226658
+Take Two with Phineas and Ferb,,2010,34406
+The Masked Singer,,2019,84910
+Below Deck Mediterranean,,2016,66902
+Rust Valley Restorers,,2018,85837
+Cake Boss,,2009,18664
+Top Gear,,2002,45
+MTV Floribama Shore,,2017,75383
+Brain Games,,2011,54315
+90 Day Fiancé: Before the 90 Days,,2017,73319
+The Tonight Show Starring Johnny Carson,,1962,2261
+8 Out of 10 Cats Does Countdown,,2013,62974
+
+"Love, Victor",,2020,97186
+"Seven Worlds, One Planet",,2019,90790
+No Gain No Love,,2024,229480
+Animaniacs,,2020,107124
+Great Teacher Onizuka,,1999,43017
+Tear Along the Dotted Line,,2021,135918
+Kenichi: The Mightiest Disciple,,2006,37585
+Queen of Tears,,2024,215720
+Friends,,1994,1668
+TSUKIMICHI -Moonlit Fantasy-,,2021,111819
+Magic Knight Rayearth,,1994,34158
+The Amazing Digital Circus,,2023,261145
+La Familia del Barrio,,2013,92468
+Brassic,,2019,92621
+Kuroko's Basketball,,2012,45783
+Club de Cuervos,,2015,63314
+That Time I Got Reincarnated as a Slime,,2018,82684
+Our Beloved Summer,,2021,135897
+One-Punch Man,,2015,63926
+Wednesday,,2022,119051
+Drake & Josh,,2004,2038
+Common Side Effects,,2025,228878
+Tyler Perry's Sistas,,2019,94686
+Fire Force,,2019,88046
+Sailor Moon,,1992,3570
+Futurama,,1999,615
+The Way of the Househusband,,2021,112160
+Ted Lasso,,2020,97546
+Tale of the Nine Tailed,,2020,108284
+Rent-a-Girlfriend,,2020,96316
+Lookism,,2022,210942
+What's Wrong with Secretary Kim,,2018,79434
+Vgly,,2023,226241
+MASHLE: MAGIC AND MUSCLES,,2023,204832
+A Love So Beautiful,,2020,114395
+Teenage Mutant Ninja Turtles,,2012,51817
+Harley Quinn,,2019,74440
+Romantic Killer,,2022,208730
+Lovely★Complex,,2007,27167
+On My Block,,2018,76747
+Miss Kobayashi's Dragon Maid,,2017,69291
+Komi Can't Communicate,,2021,123876
+The Disastrous Life of Saiki K.,,2016,67676
+PEN15,,2019,85702
+My Love from the Star,,2013,60957
+Wakfu,,2008,64414
+Dorohedoro,,2020,94404
+Succession,,2018,76331
+Fleabag,,2016,67070
+It's Always Sunny in Philadelphia,,2005,2710
+Wayne,,2019,84231
+Touch Your Heart,,2019,85404
+The Midnight Gospel,,2020,96713
+Monty Python's Flying Circus,,1969,849
+Taskmaster,,2015,63404
+Boys Over Flowers,,2009,16420
+Merlí. Sapere Aude,,2019,95601
+Welcome to Samdal-ri,,2023,219651
+Welcome to Demon School! Iruma-kun,,2019,91801
+Seinfeld,,1989,1400
+Harina,,2022,158793
+Win or Lose,,2025,114500
+Andi Mack,,2017,70540
+Green Eggs and Ham,,2019,86957
+Jurassic World Camp Cretaceous,,2020,93741
+The Thundermans,,2013,58981
+Phantom Pups,,2022,210694
+The Simpsons,,1989,456
+Transformers: Animated,,2007,10548
+MECH-X4,,2016,68654
+Unicorn Academy,,2023,221504
+Ninjago: Masters of Spinjitzu,,2012,38693
+Horrible Histories,,2009,32419
+The Cuphead Show!,,2022,103786
+High School Musical: The Musical: The Series,,2019,85801
+The Muppet Show,,1976,4459
+The Addams Family,,1964,14009
+Mrs. Fazilet and Her Daughters,,2017,76560
+iCarly,,2007,5371
+Gudetama: An Eggcellent Adventure,,2022,203949
+That '70s Show,,1998,52
+The Munsters,,1964,1712
+The Fresh Prince of Bel-Air,,1990,1892
+Kid vs. Kat,,2008,17463
+Good Luck Charlie,,2010,21641
+The Scooby-Doo/Dynomutt Hour,,1976,2150
+Free Rein,,2017,72462
+Trolls: The Beat Goes On!,,2018,76205
+Phineas and Ferb,,2007,1877
+Maya and the Three,,2021,132141
+Barbie: It Takes Two,,2022,199175
+Danger Force,,2020,99583
+Bewitched,,1964,4482
+The Loud House,,2016,68073
+"Scooby-Doo, Where Are You!",,1969,926
+K.C. Undercover,,2015,61915
+MythBusters,,2003,1428
+Chef's Table,,2015,62391
+Mr. McMahon,,2024,263089
+"Argentine National Team, Road to Qatar",,2022,206085
+Pair of Kings,,2010,31628
+I Dream of Jeannie,,1965,1660
+Ultraseven,,1967,77396
+Asterix & Obelix: The Big Fight,,2025,122781
+DuckTales,,2017,72350
+Gloria Trevi: Ellas soy yo,,2023,231952
+Welcome to Wrexham,,2022,126929
+Conversations with a Killer: The Jeffrey Dahmer Tapes,,2022,209167
+Anthony Bourdain: No Reservations,,2005,4533
+Abstract: The Art of Design,,2017,70177
+The Walking Dead: Origins,,2021,129035
+Anthony Bourdain: Parts Unknown,,2013,56305
+Into the Fire: The Lost Daughter,,2024,261649
+LIGHT & MAGIC,,2022,201285
+The Curious Case of Natalia Grace,,2023,226706
+Unsolved Mysteries,,2020,105177
+Wild Wild Country,,2018,77601
+One Strange Rock,,2018,75782
+The Story of Film: An Odyssey,,2011,45571
+Taco Chronicles,,2019,91065
+Quiet on Set: The Dark Side of Kids TV,,2024,245902
+BREAK IT ALL: The History of Rock in Latin America,,2020,114404
+Welcome to Earth,,2021,127700
+How It's Made,,2001,1749
+Down to Earth with Zac Efron,,2020,105288
+Attenborough's Life in Colour,,2021,119815
+American Manhunt: Osama bin Laden,,2025,283367
+American Manhunt: The Boston Marathon Bombing,,2023,222314
+The Surgeon's Cut,,2020,113647
+Don't F**k with Cats: Hunting an Internet Killer,,2019,96129
+Sunderland 'Til I Die,,2018,84777
+The Staircase,,2004,21421
+James May: Our Man in…,,2020,96723
+CHIVAS: El Rebaño Sagrado,,2021,128009
+The Toys That Made Us,,2017,75871
+aka Charlie Sheen,,2025,298234
+Men on a Mission,,2015,70672
+Breaking the Magician's Code: Magic's Biggest Secrets Finally Revealed,,2008,6391
+Súbete a mi moto,,2020,111119
+Sasquatch,,2021,118556
+Hitler and the Nazis: Evil on Trial,,2024,253990
+Hip Hop Evolution,,2016,67706
+"The Mind, Explained",,2019,93514
+Long Way Up,,2020,106871
+Beast Games,,2024,249522
+The Great British Bake Off,,2010,34549
+WWE Friday Night SmackDown,,1999,1549
+Calle y Poché: No Labels,,2023,228966
+RuPaul's Drag Race,,2009,8514
+Carmel: Who Killed Maria Marta?,,2020,111495
+Ramsay's Kitchen Nightmares,,2004,2178
+McGREGOR FOREVER,,2023,225292
+American Nightmare,,2024,242845
+Kitchen Nightmares,,2007,11294
+Car Masters: Rust to Riches,,2018,82357
+Vatican Girl: The Disappearance of Emanuela Orlandi,,2022,212186
+When the Levees Broke: A Requiem in Four Acts,,2006,16468
+Night Stalker: The Hunt for a Serial Killer,,2021,114705
+The Keepers,,2017,26101
+Physical: Asia,,2025,293613
+My Cat from Hell,,2011,59687
+Queer Eye,,2018,76922
+90 Day Fiancé: Happily Ever After?,,2016,67757
+LEGO Masters,,2020,94064
+BattleBots,,2015,62959
+River Monsters,,2009,18150
+Keeping Up with the Kardashians,,2007,14814
+Queer Eye: We're in Japan!,,2019,95074
+Survivor,,2000,14658
+Harry Potter: Hogwarts Tournament of Houses,,2021,133723
+Haunted: Latin America,,2021,120587
+Life Below Zero,,2013,60910
+The Curse of Oak Island,,2014,60603
+Below Deck,,2013,50042
+The Last Drive-in with Joe Bob Briggs,,2019,88088
+Love Never Lies: Destination Sardinia,,2022,214302
+Gordon Ramsay's 24 Hours to Hell and Back,,2018,79679
+Somebody Feed Phil,,2018,76305
+Talking Dead,,2011,42021
+Beyond Belief: Fact or Fiction,,1997,12323
+The Lodge,,2016,68324
+Love & Hip Hop New York,,2011,38360
+Gold Rush: White Water,,2018,76506
+The Graham Norton Show,,2007,1220
+The Challenge,,1998,62
+Moonshiners,,2011,46268
+Alone,,2015,63726
+The Traitors,,2022,215307
+Too Hot to Handle: Brazil,,2021,128251
+Deadliest Catch,,2005,2612
+The Problem with Jon Stewart,,2021,123149
+Hot Ones,,2015,72649
+Dual Survival,,2010,32997
+Conan,,2010,32415
+School of Chocolate,,2021,137584
+Wheeler Dealers,,2003,10710
+8 Out of 10 Cats,,2005,4020
+Comedians in Cars Getting Coffee,,2012,59717
+Patriot Act with Hasan Minhaj,,2018,83519
+NASA's Unexplained Files,,2012,57478

@@ -11,7 +11,8 @@
     "pipeline:full": "tsc && node dist/scheduler.js pipeline:full",
     "pipeline": "tsc && node dist/scheduler.js pipeline",
     "pipeline:verify": "tsc && node dist/scheduler.js pipeline:verify",
-    "generate": "tsc && node dist/scheduler.js generate"
+    "generate": "tsc && node dist/scheduler.js generate",
+    "discover": "tsc && node dist/pipeline/discoverContent.js"
   },
   "dependencies": {
     "better-sqlite3": "^12.6.2",

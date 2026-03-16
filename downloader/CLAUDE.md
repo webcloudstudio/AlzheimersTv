@@ -1,38 +1,11 @@
 # AlzheimersTv — Downloader
 
-This is the data pipeline for the AlzheimersTv streaming guide.
-It maintains a SQLite database of curated shows with direct streaming URLs,
-then generates `../index.html` (the senior-facing TV guide in the parent directory).
+Data pipeline for the AlzheimersTv streaming guide. Maintains a SQLite database of curated shows with direct streaming URLs, then generates `../index.html`.
 
----
+## Project Overview
+Node/TypeScript pipeline that builds and maintains the show database. Runs in four phases: bulk TMDB catalog download → metadata enrichment → stream URL fetching (Watchmode + MOTN) → URL verification → HTML generation. Designed to run daily via `npm run pipeline`.
 
-## Recommended workflow
-
-```bash
-cd downloader
-
-# 1. First time only
-npm run init          # create DB, seed 16 streaming services
-
-# 2. Every few weeks — download full TMDB catalog (~900K titles, no API key needed)
-npm run bulk
-
-# 3. When CSVs change — import curated titles, resolve TMDB IDs automatically
-npm run seed
-
-# 4. Daily — enrich metadata, fetch stream URLs, verify links, regenerate HTML
-npm run pipeline
-```
-
-**First full run after a fresh install:**
-```bash
-npm run init && npm run bulk && npm run seed && npm run pipeline
-```
-
----
-
-## Project structure
-
+## Architecture
 ```
 downloader/
   src/
@@ -56,6 +29,37 @@ downloader/
   dist/                  compiled JS output (gitignored)
   node_modules/          (gitignored)
 ```
+
+## Dev Commands
+```bash
+cd downloader
+
+# 1. First time only
+npm run init          # create DB, seed 16 streaming services
+
+# 2. Every few weeks — download full TMDB catalog (~900K titles, no API key needed)
+npm run bulk
+
+# 3. When CSVs change — import curated titles, resolve TMDB IDs automatically
+npm run seed
+
+# 4. Daily — enrich metadata, fetch stream URLs, verify links, regenerate HTML
+npm run pipeline
+```
+
+**First full run after a fresh install:**
+```bash
+npm run init && npm run bulk && npm run seed && npm run pipeline
+```
+
+## Service Endpoints
+<!-- Downloader does not serve a web endpoint — it generates ../index.html for the webserver -->
+
+## Bookmarks
+### APIs
+- [TMDB API](https://www.themoviedb.org/settings/api)
+- [Watchmode API](https://api.watchmode.com/)
+- [Movie of the Night API](https://rapidapi.com/movie-of-the-night-movie-of-the-night-default/api/streaming-availability)
 
 ---
 

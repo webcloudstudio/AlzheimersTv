@@ -1,19 +1,37 @@
 # AlzheimersTv Web Server
 
-Express + TypeScript web server serving the senior TV guide from SQLite.
-The database is maintained by the `../downloader/` pipeline — this project only reads it.
+Express + TypeScript web server serving the senior TV guide from SQLite. The database is maintained by the `../downloader/` pipeline — this project only reads it.
 
----
+## Project Overview
+Express 4 server on port 3000 that exposes `/api/shows` and `/api/services` endpoints, then serves a vanilla JS SPA shell. All filtering and sorting is client-side after a single API payload. Star ratings are optional via Supabase.
 
-## Quick Start
+## Architecture
+- **Server**: Express 4 on port 3000 (override with `PORT` env var)
+- **DB**: better-sqlite3, read-only from `../downloader/alzheimerstv.db`
+- **Frontend**: Vanilla JS ES Modules — no build step for client code
+- **Filtering/sorting**: 100% client-side after single `/api/shows` payload
 
+**DB path resolution** — `src/db/connection.ts` uses `__dirname` (CommonJS):
+```
+webserver/dist/db/ → ../../../ → AlzheimersTv/ → downloader/alzheimerstv.db
+```
+
+**Frontend modules (`public/js/`)**
+
+| File | Role |
+|---|---|
+| `app.js` | Entry point — init, state, event wiring |
+| `filters.js` | Pure filter/sort functions (no DOM access) |
+| `render.js` | Card + badge DOM rendering (createElement, not innerHTML) |
+| `modal.js` | Detail overlay — open/close/populate |
+| `stars.js` | Optional Supabase star ratings |
+
+## Dev Commands
 ```bash
 cd webserver
 npm install
 npm run dev        # http://localhost:3000
 ```
-
-## Commands
 
 | Command | Purpose |
 |---|---|
@@ -22,21 +40,12 @@ npm run dev        # http://localhost:3000
 | `npm start` | Run compiled server (after build) |
 | `npm run typecheck` | Type-check without emitting files |
 
----
+## Service Endpoints
+- Local: http://localhost:3000
 
-## Architecture
-
-- **Server**: Express 4 on port 3000 (override with `PORT` env var)
-- **DB**: better-sqlite3, read-only from `../downloader/alzheimerstv.db`
-- **Frontend**: Vanilla JS ES Modules — no build step for client code
-- **Filtering/sorting**: 100% client-side after single `/api/shows` payload
-
-## DB path resolution
-
-`src/db/connection.ts` uses `__dirname` (CommonJS):
-```
-webserver/dist/db/ → ../../../ → AlzheimersTv/ → downloader/alzheimerstv.db
-```
+## Bookmarks
+### Code
+<!-- Add repo link when available -->
 
 ---
 
@@ -48,18 +57,6 @@ webserver/dist/db/ → ../../../ → AlzheimersTv/ → downloader/alzheimerstv.d
 | `GET /api/services` | All 16 streaming services for filter bar |
 | `GET /health` | `{ ok, shows, cachedAt }` |
 | `GET /` | index.html SPA shell |
-
----
-
-## Frontend modules (`public/js/`)
-
-| File | Role |
-|---|---|
-| `app.js` | Entry point — init, state, event wiring |
-| `filters.js` | Pure filter/sort functions (no DOM access) |
-| `render.js` | Card + badge DOM rendering (createElement, not innerHTML) |
-| `modal.js` | Detail overlay — open/close/populate |
-| `stars.js` | Optional Supabase star ratings |
 
 ---
 
