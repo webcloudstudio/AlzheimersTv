@@ -1,21 +1,97 @@
-node_modules/
-dist/
-*.log
+# =============================================================================
+# Standard .gitignore for all projects
+# Source: Specifications/gitignore
+# =============================================================================
+
+# --- Secrets & Environment ---
 .env
-config.local.json
+.env.local
+.env.*.local
+*.secrets
 
-# System files
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+wheels/
+MANIFEST
+.Python
+
+# --- Virtual Environments ---
+venv/
+.venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+__pypackages__/
+
+# --- Testing & Coverage ---
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+.hypothesis/
+nosetests.xml
+coverage.xml
+*.cover
+
+# --- Type Checkers ---
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+
+# --- Logs ---
+logs/
+*.log
+
+# --- Data / Runtime ---
+data/*.db
+data/*.sqlite
+data/*.pid
+*.db
+*.sqlite3
+*.sqlite3-journal
+
+# --- Generated Output ---
+usage_report*.html
+doc/_build/
+/site
+
+# --- Node / JS ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp/
+.pnp.js
+.next/
+.nuxt/
+dist/
+
+# --- OS ---
 .DS_Store
+.DS_Store?
 Thumbs.db
+ehthumbs.db
+Desktop.ini
 
-# Editor files
-.vscode/
+# --- IDE / Editors ---
 .idea/
+.vscode/
 *.swp
 *.swo
 *~
 
-# SQLite database
-alzheimerstv.db
-*.db-shm
-*.db-wal
+# --- Claude Code ---
+.claude/
